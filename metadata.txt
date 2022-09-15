@@ -1,0 +1,7 @@
+[general]
+name = netCDFileVisualization
+email = e.oceguera@gmx.de
+author = Emmanuel Oceguera-Conchas
+qgisMinimunVersion= 3.0
+description= the plugin make your life esier 
+version= 0.1
