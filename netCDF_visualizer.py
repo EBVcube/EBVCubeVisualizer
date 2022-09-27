@@ -1,10 +1,11 @@
 #we import the important functions from the pyQt5 library
+from Py
 from PyQt5.QtCore import *  # @UnusedWildImport
 from PyQt5.QtGui import *  # @UnusedWildImport
 from PyQt5.QtWidgets import *  # @UnusedWildImport
 
 #import everthing from the netCDF_visualization_funtionality.py file
-from netCDF_visualization_funtionality import *
+from netCDF_visualizer_funtionality import *
 
 #we write a class, Plugins is a class
 import os
@@ -34,7 +35,7 @@ class netCDF_visualizer:
         
     def callMask (self):
         #the GUI will be built!
-        self.unsereGui = maskFuntionality(self.iface)
+        self.unsereGui = maskAndFuntionality(self.iface)
         #we open the Gui
         self.unsereGui.show()
 
