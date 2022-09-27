@@ -1,8 +1,31 @@
+'''
+/****************************************************************************************
+* This is a python script for visualizing netCDF files using PyQt5 and matplotlib
+* 
+* The script is based on the QGIS plugin template by Gispo
+* 
+* 
+****************************************************************************************/
+
+/****************************************************************************************
+* The program is free software; you can redistribute it and/or modify                   
+* it under the terms of the GNU General Public License as published by                  
+* the Free Software Foundation; either version 2 of the License, or                              
+* at your option) any later version.                                                     
+* 
+* The script is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
+* without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
+* See the GNU General Public License for more details.
+* 
+* You should have received a copy of the GNU General Public License along with this program. 
+* If not, see http://www.gnu.org/licenses/.
+****************************************************************************************/
+'''
 #we import the important functions from the pyQt5 library
-from Py
-from PyQt5.QtCore import *  # @UnusedWildImport
-from PyQt5.QtGui import *  # @UnusedWildImport
-from PyQt5.QtWidgets import *  # @UnusedWildImport
+
+from PyQt5.QtCore import *  
+from PyQt5.QtGui import *  
+from PyQt5.QtWidgets import *  
 
 #import everthing from the netCDF_visualization_funtionality.py file
 from netCDF_visualizer_funtionality import *
