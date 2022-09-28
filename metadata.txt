@@ -1,7 +1,10 @@
 [general]
-name = netCDFileVisualization
-email = e.oceguera@gmx.de
-author = Emmanuel Oceguera-Conchas
-qgisMinimunVersion= 3.0
-description= the plugin make your life esier 
-version= 0.1
+name=netCDFVisualizer
+email=e.oceguera@gmx.de
+author=Emmanuel Oceguera-Conchas
+qgisMinimumVersion=3.0
+description=The user can visualizes netCDF formatted data.
+about=The Plugin visualizes netCDF formatted data in a more efficient way, 
+as well as creates plots of the data and can be exported.
+version=0.1
+tags=python,netCDF,Visualizer
