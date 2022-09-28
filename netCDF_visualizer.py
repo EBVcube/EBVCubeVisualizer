@@ -33,8 +33,8 @@ from netCDF_visualizer_funtionality import *
 #we write a class, Plugins is a class
 import os
 
-class netCDF_visualizer:
-    """This is a class for the netCDF_visualizer Plugin"""
+class netCDFVisualizer:
+    """This is a class for the netCDFVisualizer Plugin"""
     #we set that we need the iface to build something with the class
     def __init__(self, iface):
         #our class builds netCDF_visualization Plugins
@@ -44,21 +44,26 @@ class netCDF_visualizer:
         
     #when we click the plugin in QGIS the plugin will be loaded
     def initGui(self):
-        #we build the menu entry without placing it in the menu
-        self.pluginButton = QAction('Start', self.iface.mainWindow())
-        #we add the menu entry
-        self.iface.addPluginToMenu('netCDF_visualizer', self.pluginButton)
-        #everytime the self.pluginButton is clicked the maskeAufrufen should be executed
-        self.pluginButton.triggered.connect(self.callMask)
-    
+        #we build the menu item without placing it already in the menu
+        self.pluginButton = QAction('start', self.iface.mainWindow())
+        #we connect the menu item
+        self.iface.addPlugintoMenu('netCDFVisualizer', self.pluginButton)
+        #whenever self.pluginButton is clicked, the maskCall should be executed
+        self.iface.triggered.connect(self.callMask)
+
+
+    #when we close the plugin in QGIS the plugin will be unloaded
     def unload(self):
-        #we have to remove the self.pluginButton and the menu entry again!1
-        self.iface.removePluginMenu('netCDF_visualizer', self.pluginButton)
-        
-        
-    def callMask (self):
-        #the GUI will be built!
-        self.unsereGui = maskAndFuntionality(self.iface)
-        #we open the Gui
-        self.unsereGui.show()
+        #we remove the menu item
+        self.iface.removePluginMenu('netCDFVisualizer', self.pluginButton)
+        #we remove the menu item
+        self.iface.removeToolBarIcon(self.pluginButton)   
+
+    #we create a function to call the mask       
+    def callMask(self):
+        #we create the mask or GUI
+        self.mask = maskAndFuntionality(self.iface)
+        #we show the mask
+        self.mask.show()
+
 

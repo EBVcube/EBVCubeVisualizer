@@ -24,7 +24,6 @@
 #we import the impotant libraries and modules
 #always import the libraries and modules at the top of the code
 
-from tkinter import Widget
 from PyQt5.Qtcore import *  
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
@@ -42,24 +41,26 @@ from netCDF4 import Dataset
 
 #we create the path to the ui file
 #Path to the Ordner where the ui file is
-ncPath = os.path.dirname(__file__) #the comand dirname gives the path to the directory where the file is
+ncvPath = os.path.dirname(__file__) #the comand dirname gives the path to the directory where the file is
 #path to the ui file
-uiPath = os.path.join(ncPath, 'netCDF_visualizer.ui')
+#dosn't matter where the ui file is located in the directory 
+uiPath = os.path.join(ncvPath, 'netCDF_visualizer.ui')
 
-#two class
+#TWO CLASES#    
 # WIDEGT is a class for the GUI
 # BASE is a PyQt5 class to insatalize the GUI
-
 WIDGET, BASE = uic.loadUiType(uiPath)
 
-class maskAndFuntionality (WIDGET, BASE):
+class maskAndFuntionality (BASE, WIDGET):
+    """Class for the mask and the funtionality of the netCDFVisualizer Plugin"""
     def __init__(self, iface):
-        #self = GUI/mask
+        #self is GUI and mask
         QDialog.__init__(self, iface.mainWindow())
-        self.setuoUi(self)
-        #self is a GUI
-       
-      
+        self.setupUi(self)
+        #self ist our GUI
+        #the GUI is built in the running of QGIS in the current session (using the iface)
+
+
 
 
         
