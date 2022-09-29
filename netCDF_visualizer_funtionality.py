@@ -24,27 +24,23 @@
 #we import the impotant libraries and modules
 #always import the libraries and modules at the top of the code
 
-from PyQt5.Qtcore import *  
+from PyQt5.QtCore import *  
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
-from pyQt5 import uic
+from PyQt5 import uic
 
 #we want to work with the os module
 import os
 #to import general tools from QGIS we need the qgis.core module
 from qgis.core import *
-#we want to work with the numpy module
-import numpy as np
-#for loading the netCDF files we need the netCDF4 module    
-import netCDF4 as nc
-from netCDF4 import Dataset
+#for loading the netCDF files we need the netCDF4 module
 
 #we create the path to the ui file
 #Path to the Ordner where the ui file is
 ncvPath = os.path.dirname(__file__) #the comand dirname gives the path to the directory where the file is
 #path to the ui file
 #dosn't matter where the ui file is located in the directory 
-uiPath = os.path.join(ncvPath, 'netCDF_visualizer.ui')
+uiPath = os.path.join(ncvPath, 'netCDFVisualizer.ui')
 
 #TWO CLASES#    
 # WIDEGT is a class for the GUI

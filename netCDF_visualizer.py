@@ -28,7 +28,7 @@ from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *  
 
 #import everthing from the netCDF_visualization_funtionality.py file
-from netCDF_visualizer_funtionality import *
+from .netCDF_visualizer_funtionality import *
 
 #we write a class, Plugins is a class
 import os
@@ -47,7 +47,7 @@ class netCDFVisualizer:
         #we build the menu item without placing it already in the menu
         self.pluginButton = QAction('start', self.iface.mainWindow())
         #we connect the menu item
-        self.iface.addPlugintoMenu('netCDFVisualizer', self.pluginButton)
+        self.iface.addPluginToMenu('netCDFVisualizer', self.pluginButton)
         #whenever self.pluginButton is clicked, the maskCall should be executed
         self.pluginButton.triggered.connect(self.callMask)
 
