@@ -49,7 +49,7 @@ class netCDFVisualizer:
         #we connect the menu item
         self.iface.addPlugintoMenu('netCDFVisualizer', self.pluginButton)
         #whenever self.pluginButton is clicked, the maskCall should be executed
-        self.iface.triggered.connect(self.callMask)
+        self.pluginButton.triggered.connect(self.callMask)
 
 
     #when we close the plugin in QGIS the plugin will be unloaded
@@ -65,5 +65,4 @@ class netCDFVisualizer:
         self.mask = maskAndFuntionality(self.iface)
         #we show the mask
         self.mask.show()
-
 
