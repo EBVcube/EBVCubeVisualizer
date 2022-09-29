@@ -55,11 +55,27 @@ class maskAndFuntionality (BASE, WIDGET):
         self.setupUi(self)
         #self ist our GUI
         #the GUI is built in the running of QGIS in the current session (using the iface)
+        """ Here is the place for the Clicked Signal"""
+        self.btn_closePlugin.clicked.connect(self.closePlugin)
+        self.btn_inputFile.clicked.connect(self.importData)
 
 
+    def closePlugin(self):
+        """This function closes the plugin"""
+        #we close the plugin
+        self.close()
 
+    def importData(self):
+        """This function imports the netCDF file"""
+        #we get the path to the netCDF file
+        path = QFileDialog.getOpenFileName(None,"select netCDF file", filter="*.nc")[0]
+        #we set the path in the text space
+        self.text_set.setText(path)
 
-        
+    def removePath(self):
+        """This function removes the path from the text space"""
+        #we remove the path from the text space
+        self.text_set.clear()
         
         
 
