@@ -34,7 +34,8 @@ import os
 #to import general tools from QGIS we need the qgis.core module
 from qgis.core import *
 #for loading the netCDF files we need the netCDF4 module
-
+import netCDF4 as nc
+from netCDF4 import Dataset
 #we create the path to the ui file
 #Path to the Ordner where the ui file is
 ncvPath = os.path.dirname(__file__) #the comand dirname gives the path to the directory where the file is
@@ -58,6 +59,8 @@ class maskAndFuntionality (BASE, WIDGET):
         """ Here is the place for the Clicked Signal"""
         self.btn_closePlugin.clicked.connect(self.closePlugin)
         self.btn_inputFile.clicked.connect(self.importData)
+        self.btn_remove.clicked.connect(self.removePath)
+        self.btn_load.clicked.connect(self.loadNetCDF)
 
 
     def closePlugin(self):
@@ -76,7 +79,21 @@ class maskAndFuntionality (BASE, WIDGET):
         """This function removes the path from the text space"""
         #we remove the path from the text space
         self.text_set.clear()
-        
+
+    def loadNetCDF(self):
+        """This function loads the netCDF file"""
+        #we get the path from the text space
+        path = self.text_set.text()
+        #we load the netCDF file
+        self.nc = Dataset(path, 'r', format='NETCDF4')
+        #we get the name of the variables
+        self.variables = self.nc.variables.keys()
+        #we set the name of the variables in the combo box  
+        self.txt_tab_dataSet.addItems(self.variables)
+        #we get the name of the dimensions
+        self.dimensions = self.nc.dimensions.keys()
+        #we set the name of the dimensions in the combo box
+        self.txt_tab_dataSet.addItems(self.dimensions)
         
 
 

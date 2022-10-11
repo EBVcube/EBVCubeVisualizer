@@ -50,7 +50,7 @@ class netCDFVisualizer:
         #decalre instance attributes
         self.actions = []
         self.menu = self.tr(u'&netCDFVisualizer')
-        
+
     
     def tr(self, message):
         """Get the translation for a string using Qt translation API.
@@ -135,22 +135,24 @@ class netCDFVisualizer:
     #when we click the plugin in QGIS the plugin will be loaded
     def initGui(self):
         """Create the menu entries and toolbar icons inside the QGIS GUI."""
-        icon_path = ':/plugins/netCDFVisualizer/icon.png'
+        icon_path = ':/plugins/netCDFVisualizer/adventure.png'
         self.add_action(
             icon_path,
             text=self.tr(u'netCDFVisualizer'),
             callback=self.callMask,
             parent=self.iface.mainWindow())
 
-        
-
-
     #when we close the plugin in QGIS the plugin will be unloaded
     def unload(self):
-        #we remove the menu item
-        self.iface.removePluginMenu('netCDFVisualizer', self.pluginButton)
-        #we remove the menu item
-        self.iface.removeToolBarIcon(self.pluginButton)   
+        """Removes the plugin menu item and icon from QGIS GUI."""	
+        for action in self.actions:
+            self.iface.removePluginMenu(
+                self.tr(u'&netCDFVisualizer'),
+                action)
+            self.iface.removeToolBarIcon(action)
+        else :
+            self.toolbar.removeAction(action)
+           
 
     #we create a function to call the mask       
     def callMask(self):
