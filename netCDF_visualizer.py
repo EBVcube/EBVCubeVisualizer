@@ -26,12 +26,12 @@
 from PyQt5.QtCore import *  
 from PyQt5.QtGui import *  
 from PyQt5.QtWidgets import *  
-
 #import everthing from the netCDF_visualization_funtionality.py file
 from .netCDF_visualizer_funtionality import *
-
 #we write a class, Plugins is a class
 import os
+
+
 
 class netCDFVisualizer:
     """This is a class for the netCDFVisualizer Plugin"""
@@ -153,7 +153,6 @@ class netCDFVisualizer:
         else :
             self.toolbar.removeAction(action)
            
-
     #we create a function to call the mask       
     def callMask(self):
         #we create the mask or GUI

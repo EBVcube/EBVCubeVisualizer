@@ -34,8 +34,26 @@ import os
 #to import general tools from QGIS we need the qgis.core module
 from qgis.core import *
 #for loading the netCDF files we need the netCDF4 module
-import netCDF4 as nc
-from netCDF4 import Dataset
+try:
+   from pip import main as pipmain
+except ImportError:
+   from pip._internal import main as pipmain
+
+try:
+   import netCDF4 as nc
+except ImportError:
+   pipmain(['install', 'netCDF4'])
+   import netCDF4 as nc
+   from netCDF4 import Dataset
+
+#we need the matplotlib module to plot the data
+#try: 
+#    import matplotlib
+#except ImportError:
+#    pipmain(['install', 'matplotlib'])
+#    import matplotlib
+
+
 #we create the path to the ui file
 #Path to the Ordner where the ui file is
 ncvPath = os.path.dirname(__file__) #the comand dirname gives the path to the directory where the file is
