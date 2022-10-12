@@ -24,6 +24,7 @@
 #we import the impotant libraries and modules
 #always import the libraries and modules at the top of the code
 
+from json import load
 from PyQt5.QtCore import *  
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
@@ -101,19 +102,36 @@ class maskAndFuntionality (BASE, WIDGET):
     def loadNetCDF(self):
         """This function loads the netCDF file"""
         #we get the path from the text space
-        path = self.text_set.text()
-        #we load the netCDF file
-        self.nc = Dataset(path, 'r', format='NETCDF4')
-        #we get the name of the variables
-        self.variables = self.nc.variables.keys()
-        #we set the name of the variables in the combo box  
-        self.txt_tab_dataSet.addItems(self.variables)
-        #we get the name of the dimensions
-        self.dimensions = self.nc.dimensions.keys()
-        #we set the name of the dimensions in the combo box
-        self.txt_tab_dataSet.addItems(self.dimensions)
-        
-
-
-
+        if self.text_set.text()=="": #if the text space is empty
+            QmessageBox.warning(None, "Warning", "Please select a netCDF file") #we show a warning
+        else: #if the text space is not empty
+            path = self.text_set.text() #we get the path from the text space
+            #we load the netCDF file
+            ncFile = nc.dataset(path, 'r', format='NETCDF4')
+            #we get the variables from the netCDF file
+            ncVar = ncFile.variables
+            #we get the names of the variables
+            ncVarNames = ncVar.keys()
+            #we get the dimensions of the variables
+            ncVarDimensions = ncVar.values()
+            #we get the attributes of the variables
+            ncVarAttributes = ncVar.values()
+            #we get the values of the variables
+            ncVarValues = ncVar.values()
+            #we get the units of the variables
+            ncVarUnits = ncVar.values()
+            
+            #we show the variables in the list
+            self.list_variables.addItems(ncVarNames)
+            #we show the dimensions in the list
+            self.list_dimensions.addItems(ncVarDimensions)
+            #we show the attributes in the list
+            self.list_attributes.addItems(ncVarAttributes)
+            #we show the values in the list
+            self.list_values.addItems(ncVarValues)
+            #we show the units in the list
+            self.list_units.addItems(ncVarUnits)
+            
+            #we close the netCDF file
+            ncFile.close()
 
