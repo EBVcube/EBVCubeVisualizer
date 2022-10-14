@@ -107,7 +107,7 @@ class maskAndFuntionality (BASE, WIDGET):
         else: #if the text space is not empty
             path = self.text_set.text() #we get the path from the text space
             #we load the netCDF file
-            ncFile = nc.Datasetataset(path, 'r', format='NETCDF4')
+            ncFile = nc.Dataset(path, 'r', format='NETCDF4')
             #we get the variables from the netCDF file
             ncVar = ncFile.variables
             #we get the names of the variables
