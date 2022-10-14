@@ -100,8 +100,6 @@ class maskAndFuntionality (BASE, WIDGET):
         #we remove the path from the text space
         self.text_set.clear()
 
-    
-
 
     def loadNetCDF(self):
         """This function loads the netCDF file"""
@@ -124,7 +122,8 @@ class maskAndFuntionality (BASE, WIDGET):
             ncVarValues = ncVar.values()
             #we get the units of the variables
             ncVarUnits = ncVar.values()
-            
+
+           
             #we show the variables in the list
             self.ListWidget.addItems(ncVarNames)
             #we show the dimensions in the list
@@ -139,5 +138,4 @@ class maskAndFuntionality (BASE, WIDGET):
             #we close the netCDF file
             ncFile.close()
         
-        def 
 
