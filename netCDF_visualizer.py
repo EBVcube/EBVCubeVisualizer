@@ -47,10 +47,29 @@ class netCDFVisualizer:
         #self is a Plugin
         #we set the iface as an attribute!!
         self.iface = iface
+        #initialize locale
+        locale = QSettings().value('locale/userLocale')[0:2]
+        locale_path = os.path.join(
+            os.path.dirname(__file__),
+            'i18n',
+            'netCDFVisualizer_{}.qm'.format(locale))
+        if os.path.exists(locale_path):
+            self.translator = QTranslator()
+            self.translator.load(locale_path)
+            if qVersion() > '4.3.3':
+                QCoreApplication.installTranslator(self.translator)
+    
         #decalre instance attributes
         self.actions = []
         self.menu = self.tr(u'&netCDFVisualizer')
+        #we want to add a toolbar
+        self.toolbar = self.iface.addToolBar(u'netCDFVisualizer')
+        self.toolbar.setObjectName(u'netCDFVisualizer')
+        
+        #print "** INITIALIZING netCDFVisualizer"
 
+        self.pluginIsActive = False
+        self.dockwidget = None
     
     def tr(self, message):
         """Get the translation for a string using Qt translation API.
