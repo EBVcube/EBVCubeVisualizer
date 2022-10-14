@@ -139,5 +139,5 @@ class maskAndFuntionality (BASE, WIDGET):
             #we close the netCDF file
             ncFile.close()
         
-        def 
+        
 
