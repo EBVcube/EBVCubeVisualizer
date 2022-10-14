@@ -25,6 +25,7 @@
 #always import the libraries and modules at the top of the code
 
 from json import load
+from msilib.schema import tables
 from PyQt5.QtCore import *  
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
@@ -99,6 +100,9 @@ class maskAndFuntionality (BASE, WIDGET):
         #we remove the path from the text space
         self.text_set.clear()
 
+    
+
+
     def loadNetCDF(self):
         """This function loads the netCDF file"""
         #we get the path from the text space
@@ -122,16 +126,18 @@ class maskAndFuntionality (BASE, WIDGET):
             ncVarUnits = ncVar.values()
             
             #we show the variables in the list
-            self.list_variables.addItems(ncVarNames)
+            self.ListWidget.addItems(ncVarNames)
             #we show the dimensions in the list
-            self.list_dimensions.addItems(ncVarDimensions)
+            self.ListWidget.addItems(ncVarDimensions)
             #we show the attributes in the list
-            self.list_attributes.addItems(ncVarAttributes)
+            self.ListWidget.addItems(ncVarAttributes)
             #we show the values in the list
-            self.list_values.addItems(ncVarValues)
+            self.ListWidget.addItems(ncVarValues)
             #we show the units in the list
-            self.list_units.addItems(ncVarUnits)
+            self.ListWidget.addItems(ncVarUnits)
             
             #we close the netCDF file
             ncFile.close()
+        
+        def 
 
