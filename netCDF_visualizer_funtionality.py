@@ -99,6 +99,11 @@ class maskAndFuntionality (BASE, WIDGET):
         """This function removes the path from the text space"""
         #we remove the path from the text space
         self.text_set.clear()
+        #we remove the information from the table widget
+        self.tbl_dataSet.clearContents()
+
+
+    
 
 
     def loadNetCDF(self):
@@ -110,36 +115,21 @@ class maskAndFuntionality (BASE, WIDGET):
             path = self.text_set.text() #we get the path from the text space
             #we load the netCDF file
             ncFile = nc.Dataset(path, 'r', format='NETCDF4')
-            #we get the variables from the netCDF file
-            ncVar = ncFile.variables
-            #we get the names of the variables
-            ncVarNames = ncVar.keys()
-            #we get the dimensions of the variables
-            ncVarDimensions = ncVar.values()
-            #we get the attributes of the variables
-            ncVarAttributes = ncVar.values()
-            #we get the values of the variables
-            ncVarValues = ncVar.values()
-            #we get the units of the variables
-            ncVarUnits = ncVar.values()
-
-           
-            #we show the variables in the list
-            self.ListWidget.addItems(ncVarNames)
-            #we show the dimensions in the list
-            self.ListWidget.addItems(ncVarDimensions)
-            #we show the attributes in the list
-            self.ListWidget.addItems(ncVarAttributes)
-            #we show the values in the list
-            self.ListWidget.addItems(ncVarValues)
-            #we show the units in the list
-            self.ListWidget.addItems(ncVarUnits)
+            #we get the name of the netCDF file to show it in the GUI
+            ncFileName = os.path.basename(path)
+            #We get the title of the netCDF file
+            ncFileTitle = ncFile.title
             
+            
+            #we set the name of the netCDF file in the Table widget
+            self.tbl_dataSet.setItem(0,0, QTableWidgetItem(ncFileName))
+            #we set the title of the netCDF file in the table Widget
+            self.tbl_dataSet.setItem(0,1, QTableWidgetItem(ncFileTitle))
+            
+            
+     
+
+          
             #we close the netCDF file
             ncFile.close()
-        
-<<<<<<< HEAD
-        
-=======
->>>>>>> 9c32cd5a5d426f9c313de99b822eb0250b25cfd9
 
