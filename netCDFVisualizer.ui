@@ -56,13 +56,6 @@
      <widget class="QLineEdit" name="text_set"/>
     </item>
     <item>
-     <widget class="QPushButton" name="btn_remove">
-      <property name="text">
-       <string>remove</string>
-      </property>
-     </widget>
-    </item>
-    <item>
      <widget class="QPushButton" name="btn_load">
       <property name="text">
        <string>load</string>
@@ -98,15 +91,30 @@
        </attribute>
        <layout class="QFormLayout" name="formLayout">
         <item row="0" column="1">
-         <widget class="QTableWidget" name="tableWidget">
+         <widget class="QTableWidget" name="tbl_dataSet">
           <property name="maximumSize">
            <size>
             <width>249000</width>
             <height>16777215</height>
            </size>
           </property>
+          <property name="frameShape">
+           <enum>QFrame::StyledPanel</enum>
+          </property>
+          <property name="frameShadow">
+           <enum>QFrame::Sunken</enum>
+          </property>
+          <property name="lineWidth">
+           <number>1</number>
+          </property>
+          <property name="showGrid">
+           <bool>false</bool>
+          </property>
           <property name="rowCount">
-           <number>0</number>
+           <number>25</number>
+          </property>
+          <property name="columnCount">
+           <number>3</number>
           </property>
           <attribute name="horizontalHeaderVisible">
            <bool>true</bool>
@@ -115,11 +123,54 @@
            <bool>true</bool>
           </attribute>
           <attribute name="horizontalHeaderDefaultSectionSize">
-           <number>249</number>
+           <number>233</number>
+          </attribute>
+          <attribute name="horizontalHeaderHighlightSections">
+           <bool>true</bool>
           </attribute>
           <attribute name="horizontalHeaderShowSortIndicator" stdset="0">
            <bool>false</bool>
           </attribute>
+          <attribute name="horizontalHeaderStretchLastSection">
+           <bool>false</bool>
+          </attribute>
+          <attribute name="verticalHeaderVisible">
+           <bool>false</bool>
+          </attribute>
+          <attribute name="verticalHeaderCascadingSectionResizes">
+           <bool>true</bool>
+          </attribute>
+          <attribute name="verticalHeaderDefaultSectionSize">
+           <number>27</number>
+          </attribute>
+          <attribute name="verticalHeaderShowSortIndicator" stdset="0">
+           <bool>false</bool>
+          </attribute>
+          <row/>
+          <row/>
+          <row/>
+          <row/>
+          <row/>
+          <row/>
+          <row/>
+          <row/>
+          <row/>
+          <row/>
+          <row/>
+          <row/>
+          <row/>
+          <row/>
+          <row/>
+          <row/>
+          <row/>
+          <row/>
+          <row/>
+          <row/>
+          <row/>
+          <row/>
+          <row/>
+          <row/>
+          <row/>
           <column>
            <property name="text">
             <string>Name</string>
@@ -146,9 +197,9 @@
   <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
-     <x>1030</x>
+     <x>953</x>
      <y>750</y>
-     <width>147</width>
+     <width>231</width>
      <height>25</height>
     </rect>
    </property>
@@ -186,7 +237,39 @@
    </property>
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
-     <widget class="QListWidget" name="listWidget"/>
+     <widget class="QListWidget" name="list_dataSet"/>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QWidget" name="">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>750</y>
+     <width>221</width>
+     <height>25</height>
+    </rect>
+   </property>
+   <layout class="QHBoxLayout" name="horizontalLayout_2">
+    <item>
+     <widget class="QPushButton" name="btn_remove">
+      <property name="text">
+       <string>Remove all</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <spacer name="horizontalSpacer_3">
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>56</width>
+        <height>20</height>
+       </size>
+      </property>
+     </spacer>
     </item>
    </layout>
   </widget>
