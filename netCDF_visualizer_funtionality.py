@@ -100,7 +100,9 @@ class maskAndFuntionality (BASE, WIDGET):
         #we remove the path from the text space
         self.text_set.clear()
         #we remove the information from the table widget
-        self.tbl_dataSet.clearContents()
+        self.tree_data.clearContents()
+        #we remove the information from the listWidget
+        self.column_data.clearContents()
 
 
     
@@ -116,18 +118,22 @@ class maskAndFuntionality (BASE, WIDGET):
             #we load the netCDF file
             ncFile = nc.Dataset(path, 'r', format='NETCDF4')
             #we get the name of the netCDF file to show it in the GUI
-            ncFileName = os.path.basename(path)
+            ncFileName = QTreeWidgetItem([os.path.basename(path)])
             #We get the title of the netCDF file
-            ncFileTitle = ncFile.title
+            ncFileTitle = QTreeWidgetItem([ncFile.title])
+            #we get the variables of the netCDf file
+            ncFileVariables = ncFile.variables
+        
+            #we set the top of the tree that it is the name od the file
+            self.tree_data.addTopLevelItem(ncFileName)
             
+               
+            #we set the dimensions in the ListWidget
+            self.column_data.addItems(ncFileDimensions)
+            #we set the variables in the ListWidget
+            self.column_data.addItems(ncFileVariables)
             
-            #we set the name of the netCDF file in the Table widget
-            self.tbl_dataSet.setItem(0,0, QTableWidgetItem(ncFileName))
-            #we set the title of the netCDF file in the table Widget
-            self.tbl_dataSet.setItem(0,1, QTableWidgetItem(ncFileTitle))
-            
-            
-     
+        
 
           
             #we close the netCDF file
