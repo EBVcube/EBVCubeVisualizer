@@ -183,7 +183,7 @@
     </item>
    </layout>
   </widget>
-  <widget class="QWidget" name="">
+  <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
      <x>30</x>
@@ -201,6 +201,13 @@
      </widget>
     </item>
     <item>
+     <widget class="QPushButton" name="btn_remove_sel">
+      <property name="text">
+       <string>Remove</string>
+      </property>
+     </widget>
+    </item>
+    <item>
      <spacer name="horizontalSpacer_3">
       <property name="orientation">
        <enum>Qt::Horizontal</enum>
@@ -214,6 +221,29 @@
      </spacer>
     </item>
    </layout>
+  </widget>
+  <widget class="QSplitter" name="splitter">
+   <property name="geometry">
+    <rect>
+     <x>1090</x>
+     <y>30</y>
+     <width>91</width>
+     <height>71</height>
+    </rect>
+   </property>
+   <property name="orientation">
+    <enum>Qt::Vertical</enum>
+   </property>
+   <widget class="QPushButton" name="btn_plot">
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label">
+    <property name="text">
+     <string>      Create Plot</string>
+    </property>
+   </widget>
   </widget>
  </widget>
  <resources/>
