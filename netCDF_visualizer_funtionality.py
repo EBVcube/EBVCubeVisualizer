@@ -100,9 +100,9 @@ class maskAndFuntionality (BASE, WIDGET):
         #we remove the path from the text space
         self.text_set.clear()
         #we remove the information from the table widget
-        self.tree_data.clearContents()
+        self.tree_data.clear()
         #we remove the information from the listWidget
-        self.column_data.clearContents()
+        #self.column_data.clear()
 
 
     
@@ -113,25 +113,33 @@ class maskAndFuntionality (BASE, WIDGET):
         #we get the path from the text space
         if self.text_set.text()=="": #if the text space is empty
             QmessageBox.warning(None, "Warning", "Please select a netCDF file") #we show a warning
+       
         else: #if the text space is not empty
             path = self.text_set.text() #we get the path from the text space
             #we load the netCDF file
             ncFile = nc.Dataset(path, 'r', format='NETCDF4')
             #we get the name of the netCDF file to show it in the GUI
-            ncFileName = QTreeWidgetItem([os.path.basename(path)])
+            ncFileName = os.path.basename(path)
             #We get the title of the netCDF file
-            ncFileTitle = QTreeWidgetItem([ncFile.title])
+            ncFileTitle = ncFile.title
+            #convert file name and file title into a QTreeWidgetItem
+            top_level = QTreeWidgetItem([ncFileName, ncFileTitle])
             #we get the variables of the netCDf file
-            ncFileVariables = ncFile.variables
-        
+            ncFileVariablesName = list(ncFile.variables.keys())
+           
             #we set the top of the tree that it is the name od the file
-            self.tree_data.addTopLevelItem(ncFileName)
+            self.tree_data.addTopLevelItem(top_level)
             
-               
-            #we set the dimensions in the ListWidget
-            self.column_data.addItems(ncFileDimensions)
-            #we set the variables in the ListWidget
-            self.column_data.addItems(ncFileVariables)
+            """we shoe the variables of the file in the QTreeWidgetite"""
+            for i in range(len(ncFileVariablesName)):
+                child = QTreeWidgetItem([ncFileVariablesName[i]])
+                top_level.addChild(child)
+            
+            
+            # #we set the dimensions in the ListWidget
+            # self.column_data.addItems(ncFileDimensions)
+            # #we set the variables in the ListWidget
+            # self.column_data.addItems(ncFileVariables)
             
         
 
