@@ -81,7 +81,10 @@ class maskAndFuntionality (BASE, WIDGET):
         self.btn_inputFile.clicked.connect(self.importData)
         self.btn_remove.clicked.connect(self.removePath)
         self.btn_load.clicked.connect(self.loadNetCDF)
-
+        self.btn_remove_sel.clicked.connect(self.removeSelection)
+        
+        """Here is the place for set stzlesheet"""
+        #self.btn_plot.setStyleSheet("backgrou")
 
     def closePlugin(self):
         """This function closes the plugin"""
@@ -104,7 +107,10 @@ class maskAndFuntionality (BASE, WIDGET):
         #we remove the information from the listWidget
         #self.column_data.clear()
 
-
+    def removeSelection(self):
+        """this function remove the selection in the tree widget"""
+        #remove the selection in the tree widget
+        self.tree_data.clearSelection()
     
 
 
@@ -126,7 +132,9 @@ class maskAndFuntionality (BASE, WIDGET):
             top_level = QTreeWidgetItem([ncFileName, ncFileTitle])
             #we get the variables of the netCDf file
             ncFileVariablesName = list(ncFile.variables.keys())
-           
+            #we get the groups of the file
+            ncFileGroupsName = list(ncFile.groups.keys())
+            
             #we set the top of the tree that it is the name od the file
             self.tree_data.addTopLevelItem(top_level)
             
@@ -135,6 +143,9 @@ class maskAndFuntionality (BASE, WIDGET):
                 child = QTreeWidgetItem([ncFileVariablesName[i]])
                 top_level.addChild(child)
             
+            for i in range(len(ncFileGroupsName)):
+                child = QTreeWidgetItem([ncFileGroupsName[i]])
+                top_level.addChild(child)
             
             # #we set the dimensions in the ListWidget
             # self.column_data.addItems(ncFileDimensions)
