@@ -115,7 +115,7 @@ class maskAndFuntionality (BASE, WIDGET):
 
 
     def loadNetCDF(self):
-        """This function loads the netCDF file"""
+        """This function loads the netCDF file and shows the variables, groups and the variables of the gorups in the QTreeWidget"""
         #we get the path from the text space
         if self.text_set.text()=="": #if the text space is empty
             QmessageBox.warning(None, "Warning", "Please select a netCDF file") #we show a warning
@@ -179,7 +179,11 @@ class maskAndFuntionality (BASE, WIDGET):
 
                     
 
-
+            """ here we are gonna show all information into the QColumnView"""
+            #show all information about the file that has been loaded
+          
+            
+            
 
 
         
