@@ -179,7 +179,7 @@
      <enum>QLayout::SetDefaultConstraint</enum>
     </property>
     <item>
-     <widget class="QColumnView" name="columnView"/>
+     <widget class="QColumnView" name="column_data"/>
     </item>
    </layout>
   </widget>
