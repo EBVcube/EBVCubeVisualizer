@@ -139,39 +139,44 @@ class maskAndFuntionality (BASE, WIDGET):
             #we set the top of the tree that it is the name od the file
             self.tree_data.addTopLevelItem(top_level)
             
-            """we show the variables of the file in the QTreeWidgetite"""
+            #we get the variables of the file and show then as well as the long name in the tree
             for i in range(len(ncFileVariablesName)):
-                child = QTreeWidgetItem([ncFileVariablesName[i]])
+                child = QTreeWidgetItem([ncFileVariablesName[i], ncFile.variables[ncFileVariablesName[i]].long_name])
                 top_level.addChild(child)
         
             #we show the groups of the file in the QTreeWidgetite
             for i in range(len(ncFileGroupsName)):
-                child = QTreeWidgetItem([ncFileGroupsName[i]])
+                child = QTreeWidgetItem([ncFileGroupsName[i], ncFileGroupsName[i]])
                 top_level.addChild(child)
+                
                 #we get the groups of the groups
                 ncFileGroupsName2 = list(ncFile.groups[ncFileGroupsName[i]].groups.keys())
+               
                 #we show the groups of the groups in the QTreeWidgetite
                 for j in range(len(ncFileGroupsName2)):
-                    child2 = QTreeWidgetItem([ncFileGroupsName2[j]])
+                    child2 = QTreeWidgetItem([ncFileGroupsName2[j], ncFileGroupsName2[j]])
                     child.addChild(child2)
+                   
                     #we get the variables of the groups of the groups
                     ncFileVariablesName2 = list(ncFile.groups[ncFileGroupsName[i]].groups[ncFileGroupsName2[j]].variables.keys())
-                    #we show the variables of the groups of the groups in the QTreeWidgetite
+                   
+                    #we show the variables of the groups of the groups in the QTreeWidgetite an set the lon name of the variables
                     for k in range(len(ncFileVariablesName2)):
                         child3 = QTreeWidgetItem([ncFileVariablesName2[k]])
                         child2.addChild(child3)
+              
+                
                 #we get the variables of the groups
                 ncFileGroupsVariablesName = list(ncFile.groups[ncFileGroupsName[i]].variables.keys())
-                #we show the variables of the groups in the QTreeWidgetite
+                
+            
+                #we show the variables of the groups in the QTreeWidgetite and set the long name of the variables
                 for j in range(len(ncFileGroupsVariablesName)):
-                    child2 = QTreeWidgetItem([ncFileGroupsVariablesName[j], ncFileGroupsVariablesLongName[j]])
-                    child.addChild(child2)
-                #we get the long name of the variables
-                ncFileGroupsVariablesLongName = list(ncFile.groups[ncFileGroupsName[i]].variables[ncFileGroupsVariablesName[j]].long_name)
-                #we show the long name of the variables in the QTreeWidgetite  
-                for j in range(len(ncFileGroupsVariablesLongName)):
-                    child2 = QTreeWidgetItem([ncFileGroupsVariablesLongName[j]])
-                    child.addChild(child2)
+                    longNameVariables = ncFile.groups[ncFileGroupsName[i]].variables[ncFileGroupsVariablesName[j]].long_name
+                    child4 = QTreeWidgetItem([ncFileGroupsVariablesName[j],longNameVariables])
+                    child.addChild(child4)
+                    
+
                     
 
 
