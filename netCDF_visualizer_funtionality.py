@@ -49,11 +49,7 @@ except ImportError:
    from netCDF4 import Dataset
 
 #we need the matplotlib module to plot the data
-#try: 
-#    import matplotlib
-#except ImportError:
-#    pipmain(['install', 'matplotlib'])
-#    import matplotlib
+import matplotlib.pyplot as plt
 
 
 #we create the path to the ui file
@@ -82,7 +78,7 @@ class maskAndFuntionality (BASE, WIDGET):
         self.btn_remove.clicked.connect(self.removePath)
         self.btn_load.clicked.connect(self.loadNetCDF)
         self.btn_remove_sel.clicked.connect(self.removeSelection)
-        self.bt_plot.clicked.connect(self.plotEbvCube)
+        self.btn_plot.clicked.connect(self.plotEbvCube)
         
         """Here is the place for set stzlesheet"""
         #self.btn_plot.setStyleSheet("backgrou")
@@ -192,10 +188,10 @@ class maskAndFuntionality (BASE, WIDGET):
         
             #we close the netCDF file
             ncFile.close()
-            #remove the path from the text space whe the file is loaded
-            self.text_set.clear()
             
-     def plotEbvCube(self):
+            
+            
+    def plotEbvCube(self):
         """This function plots the EBV cube if the user select the EBV cube"""
         #we get the selected item from the tree widget
         item = self.tree_data.selectedItems()
