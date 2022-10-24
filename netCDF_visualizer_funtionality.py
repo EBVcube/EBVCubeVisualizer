@@ -148,7 +148,7 @@ class maskAndFuntionality (BASE, WIDGET):
         
             #we show the groups of the file in the QTreeWidgetite
             for i in range(len(ncFileGroupsName)):
-                longNameGroups = ncFile.groups[ncFileGroupsName[i]].standard_name
+                longNameGroups = ncFile.groups[ncFileGroupsName[i]].long_name
                 child = QTreeWidgetItem([ncFileGroupsName[i], longNameGroups])
                 top_level.addChild(child)
                 
