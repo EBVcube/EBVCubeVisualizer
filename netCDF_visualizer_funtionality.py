@@ -82,6 +82,7 @@ class maskAndFuntionality (BASE, WIDGET):
         self.btn_remove.clicked.connect(self.removePath)
         self.btn_load.clicked.connect(self.loadNetCDF)
         self.btn_remove_sel.clicked.connect(self.removeSelection)
+        #self.tree_data.itemClicked.connect(self.onItemClicked)
         
         """Here is the place for set stzlesheet"""
         #self.btn_plot.setStyleSheet("backgrou")
@@ -104,14 +105,19 @@ class maskAndFuntionality (BASE, WIDGET):
         self.text_set.clear()
         #we remove the information from the table widget
         self.tree_data.clear()
-        #we remove the information from the listWidget
-        #self.column_data.clear()
+        #we remove the information from the QtextBrowser
+        self.text_info.clear()
+        
 
     def removeSelection(self):
         """this function remove the selection in the tree widget"""
         #we remmove the selectec TopLevelItems from the tree widget
         for item in self.tree_data.selectedItems(): 
             self.tree_data.takeTopLevelItem(self.tree_data.indexOfTopLevelItem(item))
+        else:
+            self.text_info.clear()
+            
+        
 
 
     def loadNetCDF(self):
@@ -139,14 +145,11 @@ class maskAndFuntionality (BASE, WIDGET):
             #we set the top of the tree that it is the name od the file
             self.tree_data.addTopLevelItem(top_level)
             
-            #we get the variables of the file and show then as well as the long name in the tree
-            for i in range(len(ncFileVariablesName)):
-                child = QTreeWidgetItem([ncFileVariablesName[i], ncFile.variables[ncFileVariablesName[i]].long_name])
-                top_level.addChild(child)
         
             #we show the groups of the file in the QTreeWidgetite
             for i in range(len(ncFileGroupsName)):
-                child = QTreeWidgetItem([ncFileGroupsName[i], ncFileGroupsName[i]])
+                longNameGroups = ncFile.groups[ncFileGroupsName[i]].standard_name
+                child = QTreeWidgetItem([ncFileGroupsName[i], longNameGroups])
                 top_level.addChild(child)
                 
                 #we get the groups of the groups
@@ -154,15 +157,17 @@ class maskAndFuntionality (BASE, WIDGET):
                
                 #we show the groups of the groups in the QTreeWidgetite
                 for j in range(len(ncFileGroupsName2)):
-                    child2 = QTreeWidgetItem([ncFileGroupsName2[j], ncFileGroupsName2[j]])
+                    longNameGroups2 = ncFile.groups[ncFileGroupsName[i]].groups[ncFileGroupsName2[j]].long_name
+                    child2 = QTreeWidgetItem([ncFileGroupsName2[j], longNameGroups2])
                     child.addChild(child2)
-                   
+                        
                     #we get the variables of the groups of the groups
                     ncFileVariablesName2 = list(ncFile.groups[ncFileGroupsName[i]].groups[ncFileGroupsName2[j]].variables.keys())
                    
                     #we show the variables of the groups of the groups in the QTreeWidgetite an set the lon name of the variables
                     for k in range(len(ncFileVariablesName2)):
-                        child3 = QTreeWidgetItem([ncFileVariablesName2[k]])
+                        longNameVariables2 = ncFile.groups[ncFileGroupsName[i]].groups[ncFileGroupsName2[j]].variables[ncFileVariablesName2[k]].long_name
+                        child3 = QTreeWidgetItem([ncFileVariablesName2[k], longNameVariables2])
                         child2.addChild(child3)
               
                 
@@ -175,37 +180,21 @@ class maskAndFuntionality (BASE, WIDGET):
                     longNameVariables = ncFile.groups[ncFileGroupsName[i]].variables[ncFileGroupsVariablesName[j]].long_name
                     child4 = QTreeWidgetItem([ncFileGroupsVariablesName[j],longNameVariables])
                     child.addChild(child4)
-                    
-
-                    
+            
+            #expand all the data 
+            self.tree_data.expandAll()
+            
 
             """ here we are gonna show all information into the GUI"""
             #set all information about the file into the text browser
-            self.textBrowser.setText("File name: " + ncFileName + " \r                  
-                                        "File type: " + ncFile.file_format + " \r
-                                        "File title: " + ncFileTitle + " \r)
-            
-
-          
-            
-            
-
+            self.text_info.setText("File name: " + ncFileName)
 
         
-
-            # #we set the dimensions in the ListWidget
-            # self.column_data.addItems(ncFileDimensions)
-            # #we set the variables in the ListWidget
-            # self.column_data.addItems(ncFileVariables)
-            
-           
-
-                      
             #we close the netCDF file
             ncFile.close()
-            #remove the path from the text space
+            #remove the path from the text space whe the file is loaded
             self.text_set.clear()
             
-    def plotNetCDF(self):
-        """This function plots the netCDF file"""
+    # def onItemClicked(self, item, col):
+    #     """This function plot the ebv"""
         
