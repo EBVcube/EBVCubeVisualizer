@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1233</width>
-    <height>790</height>
+    <height>1291</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -179,7 +179,7 @@
      <enum>QLayout::SetDefaultConstraint</enum>
     </property>
     <item>
-     <widget class="QColumnView" name="column_data"/>
+     <widget class="QTextBrowser" name="text_info"/>
     </item>
    </layout>
   </widget>
