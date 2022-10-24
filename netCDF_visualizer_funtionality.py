@@ -179,8 +179,13 @@ class maskAndFuntionality (BASE, WIDGET):
 
                     
 
-            """ here we are gonna show all information into the QColumnView"""
-            #show all information about the file that has been loaded
+            """ here we are gonna show all information into the GUI"""
+            #set all information about the file into the text browser
+            self.textBrowser.setText("File name: " + ncFileName + " \r                  
+                                        "File type: " + ncFile.file_format + " \r
+                                        "File title: " + ncFileTitle + " \r)
+            
+
           
             
             
