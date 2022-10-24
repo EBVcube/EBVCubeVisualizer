@@ -82,7 +82,7 @@ class maskAndFuntionality (BASE, WIDGET):
         self.btn_remove.clicked.connect(self.removePath)
         self.btn_load.clicked.connect(self.loadNetCDF)
         self.btn_remove_sel.clicked.connect(self.removeSelection)
-        #self.tree_data.itemClicked.connect(self.onItemClicked)
+        self.bt_plot.clicked.connect(self.plotEbvCube)
         
         """Here is the place for set stzlesheet"""
         #self.btn_plot.setStyleSheet("backgrou")
@@ -195,6 +195,21 @@ class maskAndFuntionality (BASE, WIDGET):
             #remove the path from the text space whe the file is loaded
             self.text_set.clear()
             
-    # def onItemClicked(self, item, col):
-    #     """This function plot the ebv"""
+     def plotEbvCube(self):
+        """This function plots the EBV cube if the user select the EBV cube"""
+        #we get the selected item from the tree widget
+        item = self.tree_data.selectedItems()
+        #we get the name of the selected item
+        name = item[0].text(0)
+        #we get the path of the netCDF file
+        path = self.text_set.text()
+        #we load the netCDF file
+        ncFile = nc.Dataset(path, 'r', format='NETCDF4')
+        #we get the EBV cube
+        ebvCube = ncFile.variables[name][:]
+        #we plot the EBV cube
+        plt.imshow(ebvCube)
+        plt.show()
+        #we close the netCDF file
+        ncFile.close()
         
