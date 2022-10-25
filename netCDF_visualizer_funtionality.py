@@ -165,7 +165,7 @@ class maskAndFuntionality (BASE, WIDGET):
                         longNameVariables2 = ncFile.groups[ncFileGroupsName[i]].groups[ncFileGroupsName2[j]].variables[ncFileVariablesName2[k]].long_name
                         child3 = QTreeWidgetItem([ncFileVariablesName2[k], longNameVariables2])
                         child2.addChild(child3)
-              
+
                 
                 #we get the variables of the groups
                 ncFileGroupsVariablesName = list(ncFile.groups[ncFileGroupsName[i]].variables.keys())
@@ -177,6 +177,11 @@ class maskAndFuntionality (BASE, WIDGET):
                     child4 = QTreeWidgetItem([ncFileGroupsVariablesName[j],longNameVariables])
                     child.addChild(child4)
             
+                
+                                 
+            
+            
+            
             #expand all the data 
             self.tree_data.expandAll()
             
@@ -184,10 +189,19 @@ class maskAndFuntionality (BASE, WIDGET):
             """ here we are gonna show all information into the GUI"""
             #set all information about the file into the text browser
             self.text_info.setText("File name: " + ncFileName)
+            
+            
+            
+            
+            
+            
+                 
 
         
             #we close the netCDF file
             ncFile.close()
+                    
+                
             
             
             
