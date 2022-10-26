@@ -165,7 +165,14 @@ class maskAndFuntionality (BASE, WIDGET):
                         longNameVariables2 = ncFile.groups[ncFileGroupsName[i]].groups[ncFileGroupsName2[j]].variables[ncFileVariablesName2[k]].long_name
                         child3 = QTreeWidgetItem([ncFileVariablesName2[k], longNameVariables2])
                         child2.addChild(child3)
-              
+
+                    #we get the attributes of the variables of the groups of the groups and show them in the QTextBrowser if the variable is clicked
+                    if child3.isSelected():
+                        ncFileVariablesName2Attributes = list(ncFile.groups[ncFileGroupsName[i]].groups[ncFileGroupsName2[j]].variables[ncFileVariablesName2[k]].ncattrs())
+                        for l in range(len(ncFileVariablesName2Attributes)):
+                            ncFileVariablesName2AttributesValue = ncFile.groups[ncFileGroupsName[i]].groups[ncFileGroupsName2[j]].variables[ncFileVariablesName2[k]].getncattr(ncFileVariablesName2Attributes[l])
+                            self.text_info.append(ncFileVariablesName2Attributes[l] + ": " + str(ncFileVariablesName2AttributesValue))
+
                 
                 #we get the variables of the groups
                 ncFileGroupsVariablesName = list(ncFile.groups[ncFileGroupsName[i]].variables.keys())
@@ -182,8 +189,11 @@ class maskAndFuntionality (BASE, WIDGET):
             
 
             """ here we are gonna show all information into the GUI"""
-            #set all information about the file into the text browser
-            self.text_info.setText("File name: " + ncFileName)
+            #we get the attributes of the file and show them in the QTextBrowser when the file is loaded
+            ncFileAttributes = list(ncFile.ncattrs())
+            for i in range(len(ncFileAttributes)):
+                ncFileAttributesValue = ncFile.getncattr(ncFileAttributes[i])
+                self.text_info.append(ncFileAttributes[i] + ": " + str(ncFileAttributesValue)) 
 
         
             #we close the netCDF file
