@@ -166,12 +166,17 @@ class maskAndFuntionality (BASE, WIDGET):
                         child3 = QTreeWidgetItem([ncFileVariablesName2[k], longNameVariables2])
                         child2.addChild(child3)
 
+                        #get the entyties of the variables of the groups of the groups an set the lon name of the entyties into the QComboBox if the variable is a cube and click on the variable
+                        
+
+
                     #we get the attributes of the variables of the groups of the groups and show them in the QTextBrowser if the variable is clicked
                     if child3.isSelected():
                         ncFileVariablesName2Attributes = list(ncFile.groups[ncFileGroupsName[i]].groups[ncFileGroupsName2[j]].variables[ncFileVariablesName2[k]].ncattrs())
                         for l in range(len(ncFileVariablesName2Attributes)):
                             ncFileVariablesName2AttributesValue = ncFile.groups[ncFileGroupsName[i]].groups[ncFileGroupsName2[j]].variables[ncFileVariablesName2[k]].getncattr(ncFileVariablesName2Attributes[l])
                             self.text_info.append(ncFileVariablesName2Attributes[l] + ": " + str(ncFileVariablesName2AttributesValue))
+
 
                 
                 #we get the variables of the groups
@@ -183,6 +188,7 @@ class maskAndFuntionality (BASE, WIDGET):
                     longNameVariables = ncFile.groups[ncFileGroupsName[i]].variables[ncFileGroupsVariablesName[j]].long_name
                     child4 = QTreeWidgetItem([ncFileGroupsVariablesName[j],longNameVariables])
                     child.addChild(child4)
+        
             
             #expand all the data 
             self.tree_data.expandAll()
@@ -194,28 +200,20 @@ class maskAndFuntionality (BASE, WIDGET):
             for i in range(len(ncFileAttributes)):
                 ncFileAttributesValue = ncFile.getncattr(ncFileAttributes[i])
                 self.text_info.append(ncFileAttributes[i] + ": " + str(ncFileAttributesValue)) 
-
+            
         
             #we close the netCDF file
             ncFile.close()
+                    
+                
             
-            
+    def loadMap(self):
+        """This function loads the variables of groups of the groups into the panel layer of the QGIS if click on the variable"""
+
+        
+
             
     def plotEbvCube(self):
         """This function plots the EBV cube if the user select the EBV cube"""
-        #we get the selected item from the tree widget
-        item = self.tree_data.selectedItems()
-        #we get the name of the selected item
-        name = item[0].text(0)
-        #we get the path of the netCDF file
-        path = self.text_set.text()
-        #we load the netCDF file
-        ncFile = nc.Dataset(path, 'r', format='NETCDF4')
-        #we get the EBV cube
-        ebvCube = ncFile.variables[name][:]
-        #we plot the EBV cube
-        plt.imshow(ebvCube)
-        plt.show()
-        #we close the netCDF file
-        ncFile.close()
+       
         
