@@ -79,7 +79,9 @@ class maskAndFuntionality (BASE, WIDGET):
         self.btn_load.clicked.connect(self.loadNetCDF)
         self.btn_remove_sel.clicked.connect(self.removeSelection)
         self.btn_plot.clicked.connect(self.plotEbvCube)
-        self.
+        #here we set the clicked signal for the tree widget
+        self.tree_data.itemClicked.connect(self.showInfo)
+        
         
         """Here is the place for set stzlesheet"""
         #self.btn_plot.setStyleSheet("backgrou")
@@ -206,21 +208,44 @@ class maskAndFuntionality (BASE, WIDGET):
                 self.text_info.append(ncFileName) #we show the name of the file
                 self.text_info.append(ncFileAttributes[i] + ": " + str(ncFileAttributesValue)) #we show the attributes of the file
                 
-
-
-
-            
-
-
-
-
-             
-            
         
             #we close the netCDF file
             ncFile.close()
                     
+    def showInfo(self):
+        #we get the path of the netCDF file
+        path = self.tree_data.currentItem().text(0)
+        #we open the netCDF file
+        ncFile = nc.Dataset(path, 'r', format='NETCDF4')
+        #we get the name of the netCDF file to show it in the GUI
+        ncFileName = os.path.basename(path)
+        #We get the title of the netCDF file
+        ncFileTitle = ncFile.title
+        #convert file name and file title into a QTreeWidgetItem
+        top_level = QTreeWidgetItem([ncFileName, ncFileTitle])
+        #we get the variables of the netCDf file
+        ncFileVariablesName = list(ncFile.variables.keys())
+        #we get the groups of the file
+        ncFileGroupsName = list(ncFile.groups.keys())
+        
+        #we get the attributes of the variables and show them in the QTextBrowser if the variable is clicked
+        for i in range(len(ncFileVariablesName)):
+            ncFileVariablesNameAttributes = list(ncFile.variables[ncFileVariablesName[i]].ncattrs())
+            for j in range(len(ncFileVariablesNameAttributes)):
+                ncFileVariablesNameAttributesValue = ncFile.variables[ncFileVariablesName[i]].getncattr(ncFileVariablesNameAttributes[j])
+                self.text_info.append(ncFileVariablesNameAttributes[j] + ": " + str(ncFileVariablesNameAttributesValue))
                 
+        #get the entyties of the variables and set the lon name of the entyties into the QComboBox if the variable is a cube and click on the variable
+        for i in range(len(ncFileVariablesName)):
+            if len(ncFile.variables[ncFileVariablesName[i]].dimensions) == 3:
+                ncFileVariablesNameEntities = list(ncFile.variables[ncFileVariablesName[i]].dimensions)
+                for j in range(len(ncFileVariablesNameEntities)):
+                    ncFileVariablesNameEntitiesValue = ncFile.variables[ncFileVariablesName[i]].getncattr(ncFileVariablesNameEntities[j])
+                    self.combo_entity.addItem(ncFileVariablesNameEntities[j])
+                    self.combo_entity.setItemText(j, ncFileVariablesNameEntitiesValue)
+                    
+        #we close the netCDF file
+        ncFile.close()            
             
     def loadCubeLayer(self):
 
