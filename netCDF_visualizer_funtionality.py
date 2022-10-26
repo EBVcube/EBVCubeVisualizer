@@ -213,48 +213,43 @@ class maskAndFuntionality (BASE, WIDGET):
             ncFile.close()
                     
     def showInfo(self):
-        #we get the path of the netCDF file
-        path = self.tree_data.currentItem().text(0)
+        """this function is to show the attributes of the groups if the group is clicked and the groups of the groups if the group of the group is clicked and the attributes of the variables if the variable is clicked"""
+        #we get the item that is clicked
+        item = self.tree_data.currentItem()
+        #we get the name of the item that is clicked
+        itemName = item.text(0)
+        #we get the name of the file
+        fileName = self.text_file.text()
         #we open the netCDF file
-        ncFile = nc.Dataset(path, 'r', format='NETCDF4')
-        #we get the name of the netCDF file to show it in the GUI
-        ncFileName = os.path.basename(path)
-        #We get the title of the netCDF file
-        ncFileTitle = ncFile.title
-        #convert file name and file title into a QTreeWidgetItem
-        top_level = QTreeWidgetItem([ncFileName, ncFileTitle])
-        #we get the variables of the netCDf file
-        ncFileVariablesName = list(ncFile.variables.keys())
-        #we get the groups of the file
-        ncFileGroupsName = list(ncFile.groups.keys())
+        ncFile = Dataset(fileName, "r", format="NETCDF4")
+        #we get the name of the file without the extension
+        ncFileName = os.path.splitext(fileName)[0]
+
+        #we set first the name of the file in the QTextBrowser
+        self.text_info.append('File name: '+ ncFileName)
         
-        #we get the attributes of the variables and show them in the QTextBrowser if the variable is clicked
-        for i in range(len(ncFileVariablesName)):
-            ncFileVariablesNameAttributes = list(ncFile.variables[ncFileVariablesName[i]].ncattrs())
-            for j in range(len(ncFileVariablesNameAttributes)):
-                ncFileVariablesNameAttributesValue = ncFile.variables[ncFileVariablesName[i]].getncattr(ncFileVariablesNameAttributes[j])
-                self.text_info.append(ncFileVariablesNameAttributes[j] + ": " + str(ncFileVariablesNameAttributesValue))
+        #we get the attributes of the groups if the group is clicked
+        if item.parent() != None and item.parent().parent() == None:
+            ncFileGroupsAttributes = list(ncFile.groups[itemName].ncattrs())
+            for i in range(len(ncFileGroupsAttributes)):
+                ncFileGroupsAttributesValue = ncFile.groups[itemName].getncattr(ncFileGroupsAttributes[i])
+                self.text_info.append("- "+ ncFileGroupsAttributes[i] + ": " + str(ncFileGroupsAttributesValue))
                 
-        #get the entyties of the variables and set the lon name of the entyties into the QComboBox if the variable is a cube and click on the variable
-        for i in range(len(ncFileVariablesName)):
-            if len(ncFile.variables[ncFileVariablesName[i]].dimensions) == 3:
-                ncFileVariablesNameEntities = list(ncFile.variables[ncFileVariablesName[i]].dimensions)
-                for j in range(len(ncFileVariablesNameEntities)):
-                    ncFileVariablesNameEntitiesValue = ncFile.variables[ncFileVariablesName[i]].getncattr(ncFileVariablesNameEntities[j])
-                    self.combo_entity.addItem(ncFileVariablesNameEntities[j])
-                    self.combo_entity.setItemText(j, ncFileVariablesNameEntitiesValue)
-                    
-        #we close the netCDF file
-        ncFile.close()            
-            
-    def loadCubeLayer(self):
-
+        #we get the attributes of the groups of the groups if the group of the group is clicked
+        if item.parent() != None and item.parent().parent() != None and item.parent().parent().parent() == None:
+            ncFileGroupsAttributes2 = list(ncFile.groups[item.parent().text(0)].groups[itemName].ncattrs())
+            for i in range(len(ncFileGroupsAttributes2)):
+                ncFileGroupsAttributesValue2 = ncFile.groups[item.parent().text(0)].groups[itemName].getncattr(ncFileGroupsAttributes2[i])
+                self.text_info.append(ncFileGroupsAttributes2[i] + ": " + str(ncFileGroupsAttributesValue2))
+                
+        #we get the attributes of the variables if the variable is clicked
+        if item.parent() != None and item.parent().parent() != None and item.parent().parent().parent() != None:
+            ncFileVariablesAttributes = list(ncFile.groups[item.parent().parent().text(0)].groups[item.parent().text(0)].variables[itemName].ncattrs())
+            for i in range(len(ncFileVariablesAttributes)):
+                ncFileVariablesAttributesValue = ncFile.groups[item.parent().parent().text(0)].groups[item.parent().text(0)].variables[itemName].getncattr(ncFileVariablesAttributes[i])
+                self.text_info.append(ncFileVariablesAttributes[i] + ": " + str(ncFileVariablesAttributesValue))
+                
         
 
-        
-
-            
-    def plotEbvCube(self):
-        """This function plots the EBV cube if the user select the EBV cube"""
        
         
