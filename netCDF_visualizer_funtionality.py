@@ -168,11 +168,9 @@ class maskAndFuntionality (BASE, WIDGET):
                         child3 = QTreeWidgetItem([ncFileVariablesName2[k], longNameVariables2])
                         child2.addChild(child3)
 
-
                 #we get the variables of the groups
                 ncFileGroupsVariablesName = list(ncFile.groups[ncFileGroupsName[i]].variables.keys())
                 
-            
                 #we show the variables of the groups in the QTreeWidgetite and set the long name of the variables
                 for j in range(len(ncFileGroupsVariablesName)):
                     longNameVariables = ncFile.groups[ncFileGroupsName[i]].variables[ncFileGroupsVariablesName[j]].long_name
@@ -187,41 +185,35 @@ class maskAndFuntionality (BASE, WIDGET):
             ncFile.close()
                     
     def showInfo(self):
-        """this function is to show the attributes of the groups if the group is clicked and the groups of the groups if the group of the group is clicked and the attributes of the variables if the variable is clicked"""
-        #we get the item that is clicked
-        item = self.tree_data.currentItem()
-        #we get the name of the item that is clicked
-        itemName = item.text(0)
-        #we get the name of the file
-        fileName = self.text_file.text()
-        #we open the netCDF file
-        ncFile = Dataset(fileName, "r", format="NETCDF4")
-        #we get the name of the file without the extension
-        ncFileName = os.path.splitext(fileName)[0]
-
-        #we set first the name of the file in the QTextBrowser
-        self.text_info.append('File name: '+ ncFileName)
+        """this function shows first the name of the file and the global attributes and then if a varible is clicked delete the info and add the attributes of the selected variable"""
+        #we get the path from the text space
+        path = self.text_set.text()
+        #we load the netCDF file
+        ncFile = nc.Dataset(path, 'r', format='NETCDF4')
+        #we get the name of the netCDF file to show it in the GUI
+        ncFileName = os.path.basename(path)
+        #We get the title of the netCDF file
+        ncFileTitle = ncFile.title
+        #we get the global attributes of the netCDF file
+        ncFileGlobalAttributes = list(ncFile.ncattrs())
         
-        #we get the attributes of the groups if the group is clicked
-        if item.parent() != None and item.parent().parent() == None:
-            ncFileGroupsAttributes = list(ncFile.groups[itemName].ncattrs())
-            for i in range(len(ncFileGroupsAttributes)):
-                ncFileGroupsAttributesValue = ncFile.groups[itemName].getncattr(ncFileGroupsAttributes[i])
-                self.text_info.append("- "+ ncFileGroupsAttributes[i] + ": " + str(ncFileGroupsAttributesValue))
-                
-        #we get the attributes of the groups of the groups if the group of the group is clicked
-        if item.parent() != None and item.parent().parent() != None and item.parent().parent().parent() == None:
-            ncFileGroupsAttributes2 = list(ncFile.groups[item.parent().text(0)].groups[itemName].ncattrs())
-            for i in range(len(ncFileGroupsAttributes2)):
-                ncFileGroupsAttributesValue2 = ncFile.groups[item.parent().text(0)].groups[itemName].getncattr(ncFileGroupsAttributes2[i])
-                self.text_info.append(ncFileGroupsAttributes2[i] + ": " + str(ncFileGroupsAttributesValue2))
-                
-        #we get the attributes of the variables if the variable is clicked
-        if item.parent() != None and item.parent().parent() != None and item.parent().parent().parent() != None:
-            ncFileVariablesAttributes = list(ncFile.groups[item.parent().parent().text(0)].groups[item.parent().text(0)].variables[itemName].ncattrs())
-            for i in range(len(ncFileVariablesAttributes)):
-                ncFileVariablesAttributesValue = ncFile.groups[item.parent().parent().text(0)].groups[item.parent().text(0)].variables[itemName].getncattr(ncFileVariablesAttributes[i])
-                self.text_info.append(ncFileVariablesAttributes[i] + ": " + str(ncFileVariablesAttributesValue))
+        #we show the name of the file and the global attributes in the QtextBrowser
+        self.text_info.append("File name: " + ncFileName)
+        self.text_info.append("File title: " + ncFileTitle)
+        for i in range(len(ncFileGlobalAttributes)):
+            self.text_info.append(ncFileGlobalAttributes[i] + ": " + str(ncFile.getncattr(ncFileGlobalAttributes[i])))
+        
+        #if a variable is clicked delete the info and add the attributes of the selected item
+        if self.tree_data.currentItem().parent() != None:
+            self.text_info.clear()
+            self.text_info.append("File name: " + ncFileName)
+            self.text_info.append("File title: " + ncFileTitle)
+            ncFileVariableAttributes = list(ncFile.variables[self.tree_data.currentItem().text(0)].ncattrs())
+            for i in range(len(ncFileVariableAttributes)):
+                self.text_info.append(ncFileVariableAttributes[i] + ": " + str(ncFile.variables[self.tree_data.currentItem().text(0)].getncattr(ncFileVariableAttributes[i])))
+        
+        #we close the netCDF file
+        ncFile.close()
                 
         
 
