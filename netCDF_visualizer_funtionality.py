@@ -78,7 +78,6 @@ class maskAndFuntionality (BASE, WIDGET):
         self.btn_remove.clicked.connect(self.removePath)
         self.btn_load.clicked.connect(self.loadNetCDF)
         self.btn_remove_sel.clicked.connect(self.removeSelection)
-        self.btn_plot.clicked.connect(self.plotEbvCube)
         #here we set the clicked signal for the tree widget
         self.tree_data.itemClicked.connect(self.showInfo)
         
@@ -169,27 +168,12 @@ class maskAndFuntionality (BASE, WIDGET):
                         child3 = QTreeWidgetItem([ncFileVariablesName2[k], longNameVariables2])
                         child2.addChild(child3)
 
-                        #we get the attributes of the variables of the groups of the groups and show them in the QTextBrowser if the variable is clicked
-                        if child3.isSelected():
-                            ncFileVariablesName2Attributes = list(ncFile.groups[ncFileGroupsName[i]].groups[ncFileGroupsName2[j]].variables[ncFileVariablesName2[k]].ncattrs())
-                            for l in range(len(ncFileVariablesName2Attributes)):
-                                ncFileVariablesName2AttributesValue = ncFile.groups[ncFileGroupsName[i]].groups[ncFileGroupsName2[j]].variables[ncFileVariablesName2[k]].getncattr(ncFileVariablesName2Attributes[l])
-                                self.text_info.append(ncFileVariablesName2Attributes[l] + ": " + str(ncFileVariablesName2AttributesValue))
-                            
-                            #get the entyties of the variables of the groups of the groups an set the lon name of the entyties into the QComboBox if the variable is a cube and click on the variable
-                            if child3.isSelected() and len(ncFile.groups[ncFileGroupsName[i]].groups[ncFileGroupsName2[j]].variables[ncFileVariablesName2[k]].dimensions) == 3:
-                                ncFileVariablesName2Entities = list(ncFile.groups[ncFileGroupsName[i]].groups[ncFileGroupsName2[j]].variables[ncFileVariablesName2[k]].dimensions)
-                                for m in range(len(ncFileVariablesName2Entities)):
-                                    ncFileVariablesName2EntitiesValue = ncFile.groups[ncFileGroupsName[i]].groups[ncFileGroupsName2[j]].variables[ncFileVariablesName2[k]].getncattr(ncFileVariablesName2Entities[m])
-                                    self.combo_entity.addItem(ncFileVariablesName2Entities[m])
-                                    self.combo_entity.setItemText(m, ncFileVariablesName2EntitiesValue)
-
 
                 #we get the variables of the groups
                 ncFileGroupsVariablesName = list(ncFile.groups[ncFileGroupsName[i]].variables.keys())
                 
             
-                #we show the variables of the groups in the QTreeWidgetite and set the long name of the variables if the group is clicked
+                #we show the variables of the groups in the QTreeWidgetite and set the long name of the variables
                 for j in range(len(ncFileGroupsVariablesName)):
                     longNameVariables = ncFile.groups[ncFileGroupsName[i]].variables[ncFileGroupsVariablesName[j]].long_name
                     child4 = QTreeWidgetItem([ncFileGroupsVariablesName[j],longNameVariables])
@@ -199,16 +183,6 @@ class maskAndFuntionality (BASE, WIDGET):
             #expand all the data 
             self.tree_data.expandAll()
             
-
-            """ here we are gonna show all information into the GUI"""
-            #get the attributes and the name of the file and show them in the QTextBrowser
-            ncFileAttributes = list(ncFile.ncattrs())
-            for i in range(len(ncFileAttributes)):
-                ncFileAttributesValue = ncFile.getncattr(ncFileAttributes[i])
-                self.text_info.append(ncFileName) #we show the name of the file
-                self.text_info.append(ncFileAttributes[i] + ": " + str(ncFileAttributesValue)) #we show the attributes of the file
-                
-        
             #we close the netCDF file
             ncFile.close()
                     
