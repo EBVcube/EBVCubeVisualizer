@@ -185,7 +185,8 @@ class maskAndFuntionality (BASE, WIDGET):
             ncFile.close()
                     
     def showInfo(self):
-        """this function shows first the name of the file and the global attributes and then if a varible is clicked delete the info and add the attributes of the selected variable"""
+         """this function shows first the name of the file and the global attributes and then if a varible is clicked delete the info and add the attributes of the selected variable"""
+        self.text_info.clear()
         #we get the path from the text space
         path = self.text_set.text()
         #we load the netCDF file
@@ -197,24 +198,44 @@ class maskAndFuntionality (BASE, WIDGET):
         #we get the global attributes of the netCDF file
         ncFileGlobalAttributes = list(ncFile.ncattrs())
         
-        #we show the name of the file and the global attributes in the QtextBrowser
-        self.text_info.append("File name: " + ncFileName)
-        self.text_info.append("File title: " + ncFileTitle)
-        for i in range(len(ncFileGlobalAttributes)):
-            self.text_info.append(ncFileGlobalAttributes[i] + ": " + str(ncFile.getncattr(ncFileGlobalAttributes[i])))
-        
-        #if a variable is clicked delete the info and add the attributes of the selected item
-        if self.tree_data.currentItem().parent() != None:
+        #when we click on the top level item we show the name of the file, title and the global attributes
+        if self.tree_data.currentItem().parent() == None:
             self.text_info.clear()
             self.text_info.append("File name: " + ncFileName)
-            self.text_info.append("File title: " + ncFileTitle)
-            ncFileVariableAttributes = list(ncFile.variables[self.tree_data.currentItem().text(0)].ncattrs())
-            for i in range(len(ncFileVariableAttributes)):
-                self.text_info.append(ncFileVariableAttributes[i] + ": " + str(ncFile.variables[self.tree_data.currentItem().text(0)].getncattr(ncFileVariableAttributes[i])))
+            self.text_info.append("Title: " + ncFileTitle)
+            self.text_info.append("Global attributes:")
+            for i in range(len(ncFileGlobalAttributes)):
+                self.text_info.append("-- " + ncFileGlobalAttributes[i] + ": " + str(ncFile.getncattr(ncFileGlobalAttributes[i])))
+                
+        #when we click on a group we show the name of the group and the attributes of the group and if we click on a variable of the group we show the attributes of the variable
+        elif self.tree_data.currentItem().parent().parent() == None:
+            self.text_info.clear()
+            self.text_info.append("File name: " + ncFileName)
+            self.text_info.append("Title: " + ncFileTitle)
+            self.text_info.append("Group name: " + self.tree_data.currentItem().text(0))
+            self.text_info.append("Long name: " + self.tree_data.currentItem().text(1))
+            self.text_info.append("Attributes:")
+            for i in range(len(ncFile.groups[self.tree_data.currentItem().text(0)].ncattrs())):
+                self.text_info.append("-- " + ncFile.groups[self.tree_data.currentItem().text(0)].ncattrs()[i] + ": " + str(ncFile.groups[self.tree_data.currentItem().text(0)].getncattr(ncFile.groups[self.tree_data.currentItem().text(0)].ncattrs()[i])))   
+        
+        #when we click on a variable of the group and the attributes of the varibales
+        else:
+            self.text_info.append("File name: " + ncFileName)
+            self.text_info.append("Title: " + ncFileTitle)
+            self.text_info.append("Variable name: " + self.tree_data.currentItem().text(0))
+            self.text_info.append("Long name: " + self.tree_data.currentItem().text(1))
+            self.text_info.append("Attributes:")
+            variableAttributes = list(ncFile.groups[self.tree_data.currentItem().parent().text(0)].variables[self.tree_data.currentItem().text(0)].ncattrs())
+            for i in range(len(variableAttributes)):
+                self.text_info.append("-- " + variableAttributes[i] + ": " + str(ncFile.groups[self.tree_data.currentItem().parent().text(0)].variables[self.tree_data.currentItem().text(0)].getncattr(variableAttributes[i])))
         
         #we close the netCDF file
         ncFile.close()
-                
+
+           
+       
+        
+       
         
 
        
