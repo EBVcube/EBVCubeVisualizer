@@ -109,11 +109,19 @@ class maskAndFuntionality (BASE, WIDGET):
 
     def removeSelection(self):
         """this function remove the selection in the tree widget"""
-        #we remmove the selectec TopLevelItems from the tree widget
-        for item in self.tree_data.selectedItems(): 
-            self.tree_data.takeTopLevelItem(self.tree_data.indexOfTopLevelItem(item))
-        else:
+        item = self.tree_data.selectedItems()
+        if item[0].parent() == None:
+            self.tree_data.clear()
             self.text_info.clear()
+            self.cbox_entity.clear()
+            self.cbox_time.clear()
+        else:
+            pass
+        # #we remmove the selectec TopLevelItems from the tree widget
+        # for item in self.tree_data.selectedItems(): 
+        #     self.tree_data.takeTopLevelItem(self.tree_data.indexOfTopLevelItem(item))
+        # else:
+        #     self.text_info.clear()
             
         
 
@@ -183,9 +191,9 @@ class maskAndFuntionality (BASE, WIDGET):
             
             #we close the netCDF file
             ncFile.close()
-                    
+
     def showInfo(self):
-         """this function shows first the name of the file and the global attributes and then if a varible is clicked delete the info and add the attributes of the selected variable"""
+        """this function shows first the name of the file and the global attributes and then if a varible is clicked delete the info and add the attributes of the selected variable"""
         self.text_info.clear()
         #we get the path from the text space
         path = self.text_set.text()
@@ -228,7 +236,29 @@ class maskAndFuntionality (BASE, WIDGET):
             variableAttributes = list(ncFile.groups[self.tree_data.currentItem().parent().text(0)].variables[self.tree_data.currentItem().text(0)].ncattrs())
             for i in range(len(variableAttributes)):
                 self.text_info.append("-- " + variableAttributes[i] + ": " + str(ncFile.groups[self.tree_data.currentItem().parent().text(0)].variables[self.tree_data.currentItem().text(0)].getncattr(variableAttributes[i])))
-        
+    
+        #here we are gonna get the entities and the time of the netCDF file and set them into a QComboBox if the top level is clicked
+        if self.tree_data.currentItem().parent() == None:
+            #we get the time of the netCDF file
+            time = ncFile.variables['time']
+            #we have to get the units of the time
+            timeUnits = time.units
+            #get the calendar of the time
+            timeCalendar = time.calendar
+            #we get the time of the netCDF file
+            time = nc.num2date(time[:], timeUnits, timeCalendar)
+            #we set the time into the QComboBox
+            self.cbox_time.clear()
+            self.cbox_time.addItems([str(i) for i in time])
+            
+            #we get the entities of the netCDF file
+            entities = ncFile.variables['entity']
+            ##we get the entities od the netCDF file
+            entities = [entities[i].decode('UTF-8', 'strict') for i in range(len(entities))]
+            #we set the entities into the QComboBox
+            self.cbox_entity.clear()
+            self.cbox_entity.addItems(entities)
+            
         #we close the netCDF file
         ncFile.close()
 
