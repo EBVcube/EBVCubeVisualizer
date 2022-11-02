@@ -47,6 +47,7 @@ except ImportError:
    pipmain(['install', 'netCDF4'])
    import netCDF4 as nc
    from netCDF4 import Dataset
+   
 
 #we need the matplotlib module to plot the data
 import matplotlib.pyplot as plt
@@ -105,23 +106,24 @@ class maskAndFuntionality (BASE, WIDGET):
         self.tree_data.clear()
         #we remove the information from the QtextBrowser
         self.text_info.clear()
-        
+        #we remove the info from QCombobos
+        self.cbox_entity.clear()
+        self.cbox_time.clear()
 
     def removeSelection(self):
         """this function remove the selection in the tree widget"""
-        item = self.tree_data.selectedItems()
-        if item[0].parent() == None:
-            self.tree_data.clear()
+        #if the top level item is selected we remove the Item and the children as well text_info, cbox_entity and cbox_time
+        if self.tree_data.currentItem().parent() == None:
+            self.tree_data.takeTopLevelItem(self.tree_data.indexOfTopLevelItem(self.tree_data.currentItem()))
             self.text_info.clear()
             self.cbox_entity.clear()
             self.cbox_time.clear()
+        #if the child item is selected we don't remove anything
+        elif self.tree_data.currentItem() == None:
+            pass
+
         else:
             pass
-        # #we remmove the selectec TopLevelItems from the tree widget
-        # for item in self.tree_data.selectedItems(): 
-        #     self.tree_data.takeTopLevelItem(self.tree_data.indexOfTopLevelItem(item))
-        # else:
-        #     self.text_info.clear()
             
         
 
@@ -251,13 +253,19 @@ class maskAndFuntionality (BASE, WIDGET):
             self.cbox_time.clear()
             self.cbox_time.addItems([str(i) for i in time])
             
+            #we get the entities
+            self.cbox_entity.clear()
             #we get the entities of the netCDF file
             entities = ncFile.variables['entity']
-            ##we get the entities od the netCDF file
-            entities = [entities[i].decode('UTF-8', 'strict') for i in range(len(entities))]
+            #we get the name of the entities
+            entityScope = entities.ebv_entity_scope.split(',')
+            #we get the number of entities of the netCDF file
+            numberOfEntities = len(entities)
+            #we set the entity_scope and the number of the entity into the QComboBox
+            #self.cbox_entity.addItems([entityScope[i] + " " + str(i) for i in range(numberOfEntities)])
+            
             #we set the entities into the QComboBox
-            self.cbox_entity.clear()
-            self.cbox_entity.addItems(entities)
+            self.cbox_entity.addItems(entityScope)
             
         #we close the netCDF file
         ncFile.close()
