@@ -35,6 +35,8 @@ from PyQt5 import uic
 import os
 #to import general tools from QGIS we need the qgis.core module
 from qgis.core import *
+from qgis.utils import iface
+
 #for loading the netCDF files we need the netCDF4 module
 try:
    from pip import main as pipmain
@@ -51,6 +53,8 @@ except ImportError:
 
 #we need the matplotlib module to plot the data
 import matplotlib.pyplot as plt
+#we need gdal to work with the raster data 
+from osgeo import osr, gdal, ogr
 
 
 #we create the path to the ui file
@@ -270,7 +274,9 @@ class maskAndFuntionality (BASE, WIDGET):
         #we close the netCDF file
         ncFile.close()
 
-           
+
+    def loadRasterData(self):
+        """This function loads the raster data set into the QGIS layer from each time set and entity"""
        
         
        
