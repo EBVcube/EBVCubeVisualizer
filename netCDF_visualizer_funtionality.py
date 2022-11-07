@@ -23,7 +23,7 @@
 '''
 #we import the impotant libraries and modules
 #always import the libraries and modules at the top of the code
-
+from datetime import datetime
 from json import load
 from msilib.schema import tables
 from PyQt5.QtCore import *  
@@ -55,6 +55,8 @@ except ImportError:
 import matplotlib.pyplot as plt
 #we need gdal to work with the raster data 
 from osgeo import osr, gdal, ogr
+#we ned the numpy module to work with the data
+import numpy as np
 
 
 #we create the path to the ui file
@@ -85,7 +87,7 @@ class maskAndFuntionality (BASE, WIDGET):
         self.btn_remove_sel.clicked.connect(self.removeSelection)
         #here we set the clicked signal for the tree widget
         self.tree_data.itemClicked.connect(self.showInfo)
-        
+        self.btn_plot.clicked.connect(self.displayData)
         
         """Here is the place for set stzlesheet"""
         #self.btn_plot.setStyleSheet("backgrou")
@@ -275,8 +277,78 @@ class maskAndFuntionality (BASE, WIDGET):
         ncFile.close()
 
 
-    def loadRasterData(self):
-        """This function loads the raster data set into the QGIS layer from each time set and entity"""
+    def displayData(self):
+         """if the ebv_cube is clicked we add the raster layer to the QGIS"""
+        #we get the path from the text space
+        path = self.text_set.text()
+        #we load the netCDF file
+        ncFile = nc.Dataset(path, 'r', format='NETCDF4')
+        #we get the name of the netCDF file to show it in the GUI
+        ncFileName = os.path.basename(path)
+        
+        #we get the time of the netCDF file
+        time = ncFile.variables['time']
+        #we have to get the units of the time
+        timeUnits = time.units
+        #get the calendar of the time
+        timeCalendar = time.calendar
+        #we get the time of the netCDF file
+        time = nc.num2date(time[:], timeUnits, timeCalendar)
+        #we get the time selected in the QComboBox
+        timeSelected = self.cbox_time.currentText()
+        #we get the index of the time selected
+        timeIndex = [str(i) for i in time].index(timeSelected)
+        
+        #we get the entities
+        #we get the entities of the netCDF file
+        entities = ncFile.variables['entity']
+        #we get the name of the entities
+        entityScope = entities.ebv_entity_scope.split(',')
+        #we get the entity selected in the QComboBox
+        entitySelected = self.cbox_entity.currentText()
+        #we get the index of the entity selected
+        entityIndex = entityScope.index(entitySelected)
+
+        #from the groups and the groups of the groups we get the ebv_cube variable
+        for i in range(len(ncFile.groups)): #we go through the groups
+            if 'ebv_cube' in ncFile.groups[list(ncFile.groups.keys())[i]].variables: #if we find the ebv_cube variable
+                ebvCube = ncFile.groups[list(ncFile.groups.keys())[i]].variables['ebv_cube'] #we get the ebv_cube variable
+                break #we break the loop
+            else: #if we don't find the ebv_cube variable
+                for j in range(len(ncFile.groups[list(ncFile.groups.keys())[i]].groups)): #we go through the groups of the groups
+                    if 'ebv_cube' in ncFile.groups[list(ncFile.groups.keys())[i]].groups[list(ncFile.groups[list(ncFile.groups.keys())[i]].groups.keys())[j]].variables: #if we find the ebv_cube variable
+                        ebvCube = ncFile.groups[list(ncFile.groups.keys())[i]].groups[list(ncFile.groups[list(ncFile.groups.keys())[i]].groups.keys())[j]].variables['ebv_cube'] #we get the ebv_cube variable
+                        break #we break the loop
+
+         #we get the data of the ebv_cube variable
+        ebvCubeData = ebvCube[timeIndex, entityIndex, :, :]
+        #we get the importat attributes from the CRS varible of the ncFile file
+        crs = ncFile.variables['crs']
+        crsName = crs.grid_mapping_name #we get the name of the CRS
+        crsProj4 = crs.spatial_ref #we get the proj4 string of the CRS
+        
+        #time to set the attributes from the CRS variable to the QgsCoordinateReferenceSystem
+        crs = QgsCoordinateReferenceSystem()
+        crs.createFromProj4(crsProj4)
+        crs.createFromOgcWmsCrs(crsName)
+
+        #if the ebv_cube is a masked array we have to convert it to a normal array
+        if isinstance(ebvCubeData, np.ma.MaskedArray):
+            ebvCubeData = ebvCubeData.filled(np.nan)
+
+        #we set the name of the raster layer
+        rasterLayerName = ncFileName + " " + timeSelected + " " + entitySelected
+        
+        #than with the numpy array we create a QGIS raster layer
+        rasterLayer = QgsRasterLayer(ebvCubeData, rasterLayerName, "gdal")
+        #we set the CRS of the raster layer
+        rasterLayer.setCrs(crs)
+        #we add the raster layer to the QGIS
+        QgsProject.instance().addMapLayer(rasterLayer)
+
+        #we close the netCDF file
+        ncFile.close())
+
        
         
        
