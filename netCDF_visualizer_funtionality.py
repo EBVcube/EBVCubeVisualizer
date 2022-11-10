@@ -84,6 +84,7 @@ class maskAndFuntionality (BASE, WIDGET):
         self.btn_inputFile.clicked.connect(self.importData)
         self.btn_remove.clicked.connect(self.removePath)
         self.btn_load.clicked.connect(self.loadNetCDF)
+        self.btn_load.clicked.connect(self.setMapData)
         self.btn_remove_sel.clicked.connect(self.removeSelection)
         #here we set the clicked signal for the tree widget
         self.tree_data.itemClicked.connect(self.showInfo)
@@ -106,15 +107,13 @@ class maskAndFuntionality (BASE, WIDGET):
 
     def removePath(self):
         """This function removes the path from the text space"""
-        #we remove the path from the text space
         self.text_set.clear()
-        #we remove the information from the table widget
         self.tree_data.clear()
-        #we remove the information from the QtextBrowser
         self.text_info.clear()
-        #we remove the info from QCombobos
         self.cbox_entity.clear()
         self.cbox_time.clear()
+        self.cbox_scenarios.clear()
+        self.cbox_metric.clear()
 
     def removeSelection(self):
         """this function remove the selection in the tree widget"""
@@ -124,6 +123,8 @@ class maskAndFuntionality (BASE, WIDGET):
             self.text_info.clear()
             self.cbox_entity.clear()
             self.cbox_time.clear()
+            self.cbox_scenarios.clear()
+            self.cbox_metric.clear()
         #if the child item is selected we don't remove anything
         elif self.tree_data.currentItem() == None:
             pass
@@ -131,8 +132,6 @@ class maskAndFuntionality (BASE, WIDGET):
         else:
             pass
             
-        
-
 
     def loadNetCDF(self):
         """This function loads the netCDF file and shows the variables, groups and the variables of the gorups in the QTreeWidget"""
@@ -142,17 +141,13 @@ class maskAndFuntionality (BASE, WIDGET):
        
         else: #if the text space is not empty
             path = self.text_set.text() #we get the path from the text space
-            #we load the netCDF file
-            ncFile = nc.Dataset(path, 'r', format='NETCDF4')
-            #we get the name of the netCDF file to show it in the GUI
+            ncFile = nc.Dataset(path, 'r', format='NETCDF4'I
             ncFileName = os.path.basename(path)
-            #We get the title of the netCDF file
             ncFileTitle = ncFile.title
             #convert file name and file title into a QTreeWidgetItem
             top_level = QTreeWidgetItem([ncFileName, ncFileTitle])
             #we get the variables of the netCDf file
             ncFileVariablesName = list(ncFile.variables.keys())
-            #we get the groups of the file
             ncFileGroupsName = list(ncFile.groups.keys())
   
             
@@ -196,22 +191,60 @@ class maskAndFuntionality (BASE, WIDGET):
             
             #expand all the data 
             self.tree_data.expandAll()
+            ncFile.close() #close the file
             
-            #we close the netCDF file
-            ncFile.close()
+    def setMapData(self):
+        """This function sets the entities, time, scenarios and metrics in the QComboBox"""
+        #we get the path from the text space
+        path = self.text_set.text()
+        ncFile = nc.Dataset(path, 'r', format='NETCDF4') 
 
+        metrics = list(ncFile.groups.keys()) #we get the metrics (name of the groups)
+        scenarios = list(ncFile.groups[metrics[0]].groups.keys()) #we get the scenarios(name of the groups of the groups)
+
+
+        #set scenario and metric in the QComboBox 
+        #if there ist just group in the file we set it in the cbox_metric and if there is groups of the groups we set the first group in the cbox_scenario
+        if len(metrics) == 1: #if there is just one group
+            self.cbox_metric.addItems(metrics)
+        elif len(metrics) > 1: #if there is more than one group
+            self.cbox_scenarios.addItems(scenarios)
+            self.cbox_metric.addItems(metrics)
+
+        #here we are gonna get the entities and the time of the netCDF file and set them into a QComboBox if the top level is clicked
+        #we get the time of the netCDF file
+        time = ncFile.variables['time']
+        timeUnits = time.units
+        timeCalendar = time.calendar
+        time = nc.num2date(time[:], timeUnits, timeCalendar)
+
+        #we set the time into the QComboBox
+        self.cbox_time.clear()
+        self.cbox_time.addItems([str(i) for i in time])
+        
+        #we get the entities
+        self.cbox_entity.clear()
+        entities = ncFile.variables['entity']
+        entityScope = entities.ebv_entity_scope.split(',')
+        numberOfEntities = len(entities)
+        #we set the entity_scope and the number of the entity into the QComboBox
+        #self.cbox_entity.addItems([entityScope[i] + " " + str(i) for i in range(numberOfEntities)])
+        
+        #we set the entities into the QComboBox
+        self.cbox_entity.addItems(entityScope)
+
+
+        #we close the netCDF file
+        ncFile.close()
+        
     def showInfo(self):
         """this function shows first the name of the file and the global attributes and then if a varible is clicked delete the info and add the attributes of the selected variable"""
         self.text_info.clear()
         #we get the path from the text space
         path = self.text_set.text()
-        #we load the netCDF file
         ncFile = nc.Dataset(path, 'r', format='NETCDF4')
-        #we get the name of the netCDF file to show it in the GUI
         ncFileName = os.path.basename(path)
-        #We get the title of the netCDF file
         ncFileTitle = ncFile.title
-        #we get the global attributes of the netCDF file
         ncFileGlobalAttributes = list(ncFile.ncattrs())
         
         #when we click on the top level item we show the name of the file, title and the global attributes
@@ -244,110 +277,92 @@ class maskAndFuntionality (BASE, WIDGET):
             variableAttributes = list(ncFile.groups[self.tree_data.currentItem().parent().text(0)].variables[self.tree_data.currentItem().text(0)].ncattrs())
             for i in range(len(variableAttributes)):
                 self.text_info.append("-- " + variableAttributes[i] + ": " + str(ncFile.groups[self.tree_data.currentItem().parent().text(0)].variables[self.tree_data.currentItem().text(0)].getncattr(variableAttributes[i])))
-    
-        #here we are gonna get the entities and the time of the netCDF file and set them into a QComboBox if the top level is clicked
-        if self.tree_data.currentItem().parent() == None:
-            #we get the time of the netCDF file
-            time = ncFile.variables['time']
-            #we have to get the units of the time
-            timeUnits = time.units
-            #get the calendar of the time
-            timeCalendar = time.calendar
-            #we get the time of the netCDF file
-            time = nc.num2date(time[:], timeUnits, timeCalendar)
-            #we set the time into the QComboBox
-            self.cbox_time.clear()
-            self.cbox_time.addItems([str(i) for i in time])
-            
-            #we get the entities
-            self.cbox_entity.clear()
-            #we get the entities of the netCDF file
-            entities = ncFile.variables['entity']
-            #we get the name of the entities
-            entityScope = entities.ebv_entity_scope.split(',')
-            #we get the number of entities of the netCDF file
-            numberOfEntities = len(entities)
-            #we set the entity_scope and the number of the entity into the QComboBox
-            #self.cbox_entity.addItems([entityScope[i] + " " + str(i) for i in range(numberOfEntities)])
-            
-            #we set the entities into the QComboBox
-            self.cbox_entity.addItems(entityScope)
-            
+
         #we close the netCDF file
         ncFile.close()
 
 
     def displayData(self):
-         """if the ebv_cube is clicked we add the raster layer to the QGIS"""
-        #we get the path from the text space
-        path = self.text_set.text()
-        #we load the netCDF file
-        ncFile = nc.Dataset(path, 'r', format='NETCDF4')
-        #we get the name of the netCDF file to show it in the GUI
-        ncFileName = os.path.basename(path)
+        """this fuction get the data of each ebv_cube and add it to the map"""
+        path = self.text_set.text() #we get the path from the text space
+        ncFile = nc.Dataset(path, 'r', format='NETCDF4') #we are gonna open the nedCDF file with the netCDF4 library
+        ncFileName = os.path.basename(path) #We get the name of the netCDF file to show it in the GUI
+        #get part of the name of the netCDF file
+        ncFileName = ncFileName.split('_')
+        ncFileName = ncFileName[0] + '_' + ncFileName[1] + '_' + ncFileName[2]
+        nameOfRasterLayer =  ncFileName + "_entity: " + self.cbox_entity.currentText() + "_time: " + self.cbox_time.currentText() #we get the name of the raster layer
         
-        #we get the time of the netCDF file
+        #time
+        #we get the time 
         time = ncFile.variables['time']
-        #we have to get the units of the time
-        timeUnits = time.units
-        #get the calendar of the time
+        timeUnits = time.units 
         timeCalendar = time.calendar
-        #we get the time of the netCDF file
         time = nc.num2date(time[:], timeUnits, timeCalendar)
-        #we get the time selected in the QComboBox
+        time = [str(i) for i in time] #we have to convert the time into a string
+        max_time = len(time) #we get the length of the time
+      
+        #time selected in the QComboBox
         timeSelected = self.cbox_time.currentText()
-        #we get the index of the time selected
-        timeIndex = [str(i) for i in time].index(timeSelected)
+        timeIndex = time.index(timeSelected) #we get the index of the time selected
         
+
+        #Entity
         #we get the entities
-        #we get the entities of the netCDF file
-        entities = ncFile.variables['entity']
-        #we get the name of the entities
-        entityScope = entities.ebv_entity_scope.split(',')
-        #we get the entity selected in the QComboBox
+        entity = ncFile.variables['entity']
+        entityScope = entity.ebv_entity_scope.split(',') #we get the name of the entities
+
+        #entity selected in the QComboBox
         entitySelected = self.cbox_entity.currentText()
-        #we get the index of the entity selected
-        entityIndex = entityScope.index(entitySelected)
+        entityIndex = entityScope.index(entitySelected) #we get the index of the entity selected
 
-        #from the groups and the groups of the groups we get the ebv_cube variable
-        for i in range(len(ncFile.groups)): #we go through the groups
-            if 'ebv_cube' in ncFile.groups[list(ncFile.groups.keys())[i]].variables: #if we find the ebv_cube variable
-                ebvCube = ncFile.groups[list(ncFile.groups.keys())[i]].variables['ebv_cube'] #we get the ebv_cube variable
-                break #we break the loop
-            else: #if we don't find the ebv_cube variable
-                for j in range(len(ncFile.groups[list(ncFile.groups.keys())[i]].groups)): #we go through the groups of the groups
-                    if 'ebv_cube' in ncFile.groups[list(ncFile.groups.keys())[i]].groups[list(ncFile.groups[list(ncFile.groups.keys())[i]].groups.keys())[j]].variables: #if we find the ebv_cube variable
-                        ebvCube = ncFile.groups[list(ncFile.groups.keys())[i]].groups[list(ncFile.groups[list(ncFile.groups.keys())[i]].groups.keys())[j]].variables['ebv_cube'] #we get the ebv_cube variable
-                        break #we break the loop
-
-         #we get the data of the ebv_cube variable
-        ebvCubeData = ebvCube[timeIndex, entityIndex, :, :]
-        #we get the importat attributes from the CRS varible of the ncFile file
-        crs = ncFile.variables['crs']
-        crsName = crs.grid_mapping_name #we get the name of the CRS
-        crsProj4 = crs.spatial_ref #we get the proj4 string of the CRS
+        #we have to get the scenarios and the metrics from the interface 
         
-        #time to set the attributes from the CRS variable to the QgsCoordinateReferenceSystem
-        crs = QgsCoordinateReferenceSystem()
-        crs.createFromProj4(crsProj4)
-        crs.createFromOgcWmsCrs(crsName)
-
-        #if the ebv_cube is a masked array we have to convert it to a normal array
-        if isinstance(ebvCubeData, np.ma.MaskedArray):
-            ebvCubeData = ebvCubeData.filled(np.nan)
-
-        #we set the name of the raster layer
-        rasterLayerName = ncFileName + " " + timeSelected + " " + entitySelected
+        #if we click on the ebv_cube item in the QTreeWidget we get the name group and the group of the group and turn the row grey 
+        if self.tree_data.currentItem().text(0) == 'ebv_cube':
+            self.tree_data.currentItem().setBackground(0, QBrush(QColor(200, 200, 200)))
+            #we get the name of the group
+            groupName = self.tree_data.currentItem().parent().text(0)
+            groupOfGroupName = self.tree_data.currentItem().parent().parent().text(0)
         
-        #than with the numpy array we create a QGIS raster layer
-        rasterLayer = QgsRasterLayer(ebvCubeData, rasterLayerName, "gdal")
-        #we set the CRS of the raster layer
-        rasterLayer.setCrs(crs)
-        #we add the raster layer to the QGIS
+        #if there not a group of the gorup we create a uri to add the raster layer just with the group name
+        if 'groupOfGroupName' not in locals():
+            uri = r'NETCDF:"'+ path + '":'+ groupName + '/ebv_cube'
+        else:
+            uri = r'NETCDF:"'+ path + '":'+ groupOfGroupName + '/' + groupName + '/ebv_cube'
+
+        #load the raster layer into the QGIS canvas
+        rasterLayer = QgsRasterLayer(uri, nameOfRasterLayer, "gdal")
+        print(rasterLayer,isValid())
+        
+        
+        #calculate the band number
+        band = (entityIndex-1)*max_time+ timeIndex
+        
+        
+        #get the min and the max value of the band
+        dp = rasterLayer.dataProvider()
+        stats = dp.bandStatistics(band)
+        min = stats.minimumValue
+        max = stats.maximumValue
+
+        #build the color ramp
+        colorRamp = QgsColorRampShader(min, max)
+        colorRamp.setColorRampType(QgsColorRampShader.Interpolated)
+        colorRamp.setColorRampItemList([QgsColorRampShader.ColorRampItem(min, QColor(0, 0, 255)), 
+                                        QgsColorRampShader.ColorRampItem(max, QColor(255, 0, 0))])
+        #build the shader
+        shader = QgsRasterShader()
+        shader.setRasterShaderFunction(colorRamp)
+
+        #build the renderer
+        renderer = QgsSingleBandPseudoColorRenderer(rasterLayer.dataProvider(), band, shader) #we have to put the band number
+        rasterLayer.setRenderer(renderer)   
+
+        #add the raster layer to the map
         QgsProject.instance().addMapLayer(rasterLayer)
 
-        #we close the netCDF file
-        ncFile.close())
+        #close the netCDF file
+        ncFile.close()
 
        
         
