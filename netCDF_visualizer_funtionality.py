@@ -141,7 +141,7 @@ class maskAndFuntionality (BASE, WIDGET):
        
         else: #if the text space is not empty
             path = self.text_set.text() #we get the path from the text space
-            ncFile = nc.Dataset(path, 'r', format='NETCDF4'I
+            ncFile = nc.Dataset(path, 'r', format='NETCDF4')
             ncFileName = os.path.basename(path)
             ncFileTitle = ncFile.title
             #convert file name and file title into a QTreeWidgetItem
@@ -195,21 +195,34 @@ class maskAndFuntionality (BASE, WIDGET):
             
     def setMapData(self):
         """This function sets the entities, time, scenarios and metrics in the QComboBox"""
+        #we clear the QComboBox
+        self.cbox_entity.clear()
+        self.cbox_time.clear()
+        self.cbox_scenarios.clear()
+        self.cbox_metric.clear()
+        
         #we get the path from the text space
         path = self.text_set.text()
         ncFile = nc.Dataset(path, 'r', format='NETCDF4') 
 
-        metrics = list(ncFile.groups.keys()) #we get the metrics (name of the groups)
-        scenarios = list(ncFile.groups[metrics[0]].groups.keys()) #we get the scenarios(name of the groups of the groups)
+        groups = list(ncFile.groups.keys()) #we get the metrics (name of the groups)
+        groupsOfGroups = list(ncFile.groups[groups[0]].groups.keys()) #we get the scenarios(name of the groups of the groups)
 
 
-        #set scenario and metric in the QComboBox 
-        #if there ist just group in the file we set it in the cbox_metric and if there is groups of the groups we set the first group in the cbox_scenario
-        if len(metrics) == 1: #if there is just one group
-            self.cbox_metric.addItems(metrics)
-        elif len(metrics) > 1: #if there is more than one group
-            self.cbox_scenarios.addItems(scenarios)
-            self.cbox_metric.addItems(metrics)
+        #set scenario and metric in the QComboBox  
+        #if there is just groups we set the groups in the cbox_metric 
+        self.cbox_metric.addItems(groups)
+        self.cbox_scenarios.addItem("not scenarios")
+        self.cbox_scenarios.setEnabled(False)
+        
+        if len(groupsOfGroups)>0:
+            self.cbox_scenarios.setEnabled(True)
+            self.cbox_scenarios.clear()
+            self.cbox_scenarios.addItems(groups)
+            self.cbox_metric.clear()
+            self.cbox_metric.addItems(groupsOfGroups)
+        else:
+            pass
 
         #here we are gonna get the entities and the time of the netCDF file and set them into a QComboBox if the top level is clicked
         #we get the time of the netCDF file
@@ -314,25 +327,29 @@ class maskAndFuntionality (BASE, WIDGET):
         #entity selected in the QComboBox
         entitySelected = self.cbox_entity.currentText()
         entityIndex = entityScope.index(entitySelected) #we get the index of the entity selected
-
-        #we have to get the scenarios and the metrics from the interface 
         
-        #if we click on the ebv_cube item in the QTreeWidget we get the name group and the group of the group and turn the row grey 
-        if self.tree_data.currentItem().text(0) == 'ebv_cube':
-            self.tree_data.currentItem().setBackground(0, QBrush(QColor(200, 200, 200)))
-            #we get the name of the group
-            groupName = self.tree_data.currentItem().parent().text(0)
-            groupOfGroupName = self.tree_data.currentItem().parent().parent().text(0)
         
-        #if there not a group of the gorup we create a uri to add the raster layer just with the group name
-        if 'groupOfGroupName' not in locals():
-            uri = r'NETCDF:"'+ path + '":'+ groupName + '/ebv_cube'
-        else:
-            uri = r'NETCDF:"'+ path + '":'+ groupOfGroupName + '/' + groupName + '/ebv_cube'
+        #get the scenarios and the metrics from the interface
+        #scenarios
+        scenarioSelected = self.cbox_scenarios.currentText()
+        scenarioIndex = self.cbox_scenarios.currentIndex()
+        #metrics
+        metricSelected = self.cbox_metric.currentText()
+        metricIndex = self.cbox_metric.currentIndex()
+        
+        uri = r'NETCDF:"'+ path + '":' + metricSelected + '/ebv_cube'
+        
+        #if there just metrics and no scenarios we have to create a uri with the metric selected in the QComboBox
+        # if scenarioIndex == 0:
+        #     uri = r'NETCDF:"'+ path + '":' + metricSelected + '/ebv_cube'
+        # else:
+        #     uri = r'NETCDF:"'+ path + '":'+ scenarioSelected + '/' + metricSelected + '/ebv_cube'
+        
+      
 
         #load the raster layer into the QGIS canvas
         rasterLayer = QgsRasterLayer(uri, nameOfRasterLayer, "gdal")
-        print(rasterLayer,isValid())
+        print(rasterLayer.isValid())
         
         
         #calculate the band number
