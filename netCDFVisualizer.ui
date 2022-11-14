@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1274</width>
-    <height>880</height>
+    <width>1273</width>
+    <height>792</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -18,8 +18,8 @@
   </property>
   <property name="minimumSize">
    <size>
-    <width>1203</width>
-    <height>792</height>
+    <width>1273</width>
+    <height>0</height>
    </size>
   </property>
   <property name="maximumSize">
@@ -30,6 +30,9 @@
   </property>
   <property name="windowTitle">
    <string>EBVCubeVisualizer</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">background-color: rgb(249, 255, 254);</string>
   </property>
   <property name="modal">
    <bool>false</bool>
@@ -170,7 +173,7 @@
   <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
-     <x>953</x>
+     <x>1010</x>
      <y>750</y>
      <width>231</width>
      <height>25</height>
