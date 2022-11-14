@@ -1,8 +1,8 @@
 #the __init__ gives the construction order for the plugin
-from .netCDF_visualizer import netCDFVisualizer
+from .EBVCubeVisualizer import EBVCubeVisualizer
 
 def classFactory(iface):
-    plugin = netCDFVisualizer(iface)
+    plugin = EBVCubeVisualizer(iface)
     return plugin
 
 
