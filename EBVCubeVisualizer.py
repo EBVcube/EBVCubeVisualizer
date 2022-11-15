@@ -28,6 +28,7 @@ from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *  
 #import everthing from the netCDF_visualization_funtionality.py file
 from .EBVCubeVisualizer_funtionality import *
+from .resources import *
 #we write a class, Plugins is a class
 import os
 
@@ -154,7 +155,7 @@ class EBVCubeVisualizer:
     #when we click the plugin in QGIS the plugin will be loaded
     def initGui(self):
         """Create the menu entries and toolbar icons inside the QGIS GUI."""
-        icon_path = ':/plugins/EBVCubeVisualizer/adventure.png'
+        icon_path = ':/plugins/EBVCubeVisualizer/EBV.jpg'
         self.add_action(
             icon_path,
             text=self.tr(u'EBVCubeVisualizer'),
