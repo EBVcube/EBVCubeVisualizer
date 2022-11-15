@@ -263,33 +263,36 @@ class maskAndFuntionality (BASE, WIDGET):
         #when we click on the top level item we show the name of the file, title and the global attributes
         if self.tree_data.currentItem().parent() == None:
             self.text_info.clear()
-            self.text_info.append("File name: " + ncFileName)
-            self.text_info.append("Title: " + ncFileTitle)
-            self.text_info.append("Global attributes:")
-            for i in range(len(ncFileGlobalAttributes)):
-                self.text_info.append("-- " + ncFileGlobalAttributes[i] + ": " + str(ncFile.getncattr(ncFileGlobalAttributes[i])))
+            self.text_info.append("<b><font size=4>" + "File name: " + ncFileName + "</font></b>")
+            self.text_info.append("<b><font size=3>" + "Title: " + ncFileTitle + "</font></b>")
+            self.text_info.append(" ")
+            self.text_info.append("<b><font size=3>" +"Global attributes: " + "</font></b>")
+            for i in range(len(ncFileGlobalAttributes)): 
+                self.text_info.append("<b>" + ncFileGlobalAttributes[i] +  ": " + "</b>"  + str(ncFile.getncattr(ncFileGlobalAttributes[i])))
                 
         #when we click on a group we show the name of the group and the attributes of the group and if we click on a variable of the group we show the attributes of the variable
         elif self.tree_data.currentItem().parent().parent() == None:
             self.text_info.clear()
-            self.text_info.append("File name: " + ncFileName)
-            self.text_info.append("Title: " + ncFileTitle)
-            self.text_info.append("Group name: " + self.tree_data.currentItem().text(0))
-            self.text_info.append("Long name: " + self.tree_data.currentItem().text(1))
-            self.text_info.append("Attributes:")
+            self.text_info.append("<b><font size=4>" + "File name: " + ncFileName + "</font></b>")
+            self.text_info.append("<b><font size=3>" + "Title: " + ncFileTitle + "</font></b>")
+            self.text_info.append("<b><font size=3>" + "Group name: " + self.tree_data.currentItem().text(0) + "</font></b>")
+            self.text_info.append("<b><font size=3>" + "Long name: " + self.tree_data.currentItem().text(1) + "</font></b>")
+            self.text_info.append(" ")
+            self.text_info.append("<b><font size=3>" + "Attributes:" + "</font></b>")
             for i in range(len(ncFile.groups[self.tree_data.currentItem().text(0)].ncattrs())):
-                self.text_info.append("-- " + ncFile.groups[self.tree_data.currentItem().text(0)].ncattrs()[i] + ": " + str(ncFile.groups[self.tree_data.currentItem().text(0)].getncattr(ncFile.groups[self.tree_data.currentItem().text(0)].ncattrs()[i])))   
+                self.text_info.append("<b>" + "-- " + ncFile.groups[self.tree_data.currentItem().text(0)].ncattrs()[i] + ": " + "</b>" + str(ncFile.groups[self.tree_data.currentItem().text(0)].getncattr(ncFile.groups[self.tree_data.currentItem().text(0)].ncattrs()[i])))   
         
         #when we click on a variable of the group and the attributes of the varibales
         else:
-            self.text_info.append("File name: " + ncFileName)
-            self.text_info.append("Title: " + ncFileTitle)
-            self.text_info.append("Variable name: " + self.tree_data.currentItem().text(0))
-            self.text_info.append("Long name: " + self.tree_data.currentItem().text(1))
-            self.text_info.append("Attributes:")
+            self.text_info.append("<b><font size=4>" + "File name: " + ncFileName + "</font></b>")
+            self.text_info.append("<b><font size=3>" + "Title: " + ncFileTitle + "</font></b>")
+            self.text_info.append("<b><font size=3>" + "Variable name: " + self.tree_data.currentItem().text(0) + "</font></b>")
+            self.text_info.append("<b><font size=3>" + "Long name: " + self.tree_data.currentItem().text(1) + "</font></b>")
+            self.text_info.append(" ")
+            self.text_info.append("<b><font size=3>" + "Attributes:" + "</font></b>")
             variableAttributes = list(ncFile.groups[self.tree_data.currentItem().parent().text(0)].variables[self.tree_data.currentItem().text(0)].ncattrs())
             for i in range(len(variableAttributes)):
-                self.text_info.append("-- " + variableAttributes[i] + ": " + str(ncFile.groups[self.tree_data.currentItem().parent().text(0)].variables[self.tree_data.currentItem().text(0)].getncattr(variableAttributes[i])))
+                self.text_info.append("<b>" + "-- " + variableAttributes[i] + ": " + "</b>" + str(ncFile.groups[self.tree_data.currentItem().parent().text(0)].variables[self.tree_data.currentItem().text(0)].getncattr(variableAttributes[i])))
 
         #we close the netCDF file
         ncFile.close()
@@ -349,7 +352,12 @@ class maskAndFuntionality (BASE, WIDGET):
 
         #load the raster layer into the QGIS canvas
         rasterLayer = QgsRasterLayer(uri, nameOfRasterLayer, "gdal")
-        print(rasterLayer.isValid())
+        
+        if not rasterLayer.isValid():
+            self.iface.messageBar().pushMessage("Error", "The layer is not valid", level=Qgis.Critical, duration=5)
+            return
+        
+        
         
         
         #calculate the band number
