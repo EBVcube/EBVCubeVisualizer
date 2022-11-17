@@ -235,17 +235,28 @@ class maskAndFuntionality (BASE, WIDGET):
         self.cbox_time.clear()
         self.cbox_time.addItems([str(i) for i in time])
         
+     
         #we get the entities
         self.cbox_entity.clear()
         entities = ncFile.variables['entity']
-        entityScope = entities.ebv_entity_scope.split(',')
-        numberOfEntities = len(entities)
-        #we set the entity_scope and the number of the entity into the QComboBox
-        #self.cbox_entity.addItems([entityScope[i] + " " + str(i) for i in range(numberOfEntities)])
         
-        #we set the entities into the QComboBox
-        self.cbox_entity.addItems(entityScope)
+        #empty list
+        entityDrop = []
+        
+        for i in range(len(entities)):
+            entity = entities[i]
+            entity = np.array(entity)
+            entity = entity.tostring().decode('UTF-8').strip()
+            #print(entity)
+            #print(type(entity))
+            entityDrop.append(entity)
 
+        #set the entities inyo the cbox_enity
+        self.cbox_entity.addItems(entityDrop)
+        
+        #check the number of entitites
+        #entityNumber = len(entityDrop)
+        #print(entityNumber)
 
         #we close the netCDF file
         ncFile.close()
@@ -324,41 +335,47 @@ class maskAndFuntionality (BASE, WIDGET):
 
         #Entity
         #we get the entities
-        entity = ncFile.variables['entity']
-        entityScope = entity.ebv_entity_scope.split(',') #we get the name of the entities
+        entities = ncFile.variables['entity']
+        entityDrop = []
+        for i in range(len(entities)):
+            entity = entities[i]
+            entity = np.array(entity)
+            entity = entity.tostring().decode('UTF-8').strip()
+            entityDrop.append(entity)
 
+        #check the number of entitites
+        #entityNumber = len(entityDrop)
+        #print(entityNumber)
+ 
         #entity selected in the QComboBox
         entitySelected = self.cbox_entity.currentText()
-        entityIndex = entityScope.index(entitySelected) #we get the index of the entity selected
+        entityIndex = entityDrop.index(entitySelected) #we get the index of the entity selected
         
         
         #get the scenarios and the metrics from the interface
         #scenarios
         scenarioSelected = self.cbox_scenarios.currentText()
         scenarioIndex = self.cbox_scenarios.currentIndex()
+        
         #metrics
         metricSelected = self.cbox_metric.currentText()
         metricIndex = self.cbox_metric.currentIndex()
         
-        uri = r'NETCDF:"'+ path + '":' + metricSelected + '/ebv_cube'
+        
         
         #if there just metrics and no scenarios we have to create a uri with the metric selected in the QComboBox
-        # if scenarioIndex == 0:
-        #     uri = r'NETCDF:"'+ path + '":' + metricSelected + '/ebv_cube'
-        # else:
-        #     uri = r'NETCDF:"'+ path + '":'+ scenarioSelected + '/' + metricSelected + '/ebv_cube'
-        
+        if scenarioIndex == None:
+            uri = r'NETCDF:"'+ path + '":' + metricSelected + '/ebv_cube'
+        elif scenarioIndex != None:
+            uri = r'NETCDF:"'+ path + '":'+ scenarioSelected + '/' + metricSelected + '/ebv_cube'
+        else:
+            pass
       
 
         #load the raster layer into the QGIS canvas
         rasterLayer = QgsRasterLayer(uri, nameOfRasterLayer, "gdal")
-        
-        if not rasterLayer.isValid():
-            self.iface.messageBar().pushMessage("Error", "The layer is not valid", level=Qgis.Critical, duration=5)
-            return
-        
-        
-        
+    
+
         
         #calculate the band number
         band = (entityIndex-1)*max_time+ timeIndex
