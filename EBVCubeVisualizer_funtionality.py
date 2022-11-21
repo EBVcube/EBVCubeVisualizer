@@ -36,8 +36,7 @@ import os
 #to import general tools from QGIS we need the qgis.core module
 from qgis.core import *
 from qgis.utils import iface
-import re
-from colour import Color
+
 
 #for loading the netCDF files we need the netCDF4 module
 try:
