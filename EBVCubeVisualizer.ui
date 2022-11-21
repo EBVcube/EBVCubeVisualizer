@@ -62,24 +62,24 @@
      <x>10</x>
      <y>40</y>
      <width>751</width>
-     <height>25</height>
+     <height>27</height>
     </rect>
    </property>
    <layout class="QHBoxLayout" name="horizontalLayout">
     <item>
+     <widget class="QLineEdit" name="text_set"/>
+    </item>
+    <item>
      <widget class="QToolButton" name="btn_inputFile">
       <property name="text">
-       <string>...</string>
+       <string>load data</string>
       </property>
      </widget>
     </item>
     <item>
-     <widget class="QLineEdit" name="text_set"/>
-    </item>
-    <item>
      <widget class="QPushButton" name="btn_load">
       <property name="text">
-       <string>load</string>
+       <string>Read </string>
       </property>
      </widget>
     </item>
@@ -328,58 +328,18 @@
        </property>
       </widget>
      </item>
-     <item row="2" column="0">
-      <widget class="QLabel" name="label_4">
+     <item row="1" column="0">
+      <widget class="QLabel" name="label_8">
+       <property name="font">
+        <font>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
        <property name="text">
-        <string>Scenario:</string>
+        <string>    select:</string>
        </property>
       </widget>
-     </item>
-     <item row="2" column="1">
-      <widget class="QComboBox" name="cbox_scenarios"/>
-     </item>
-     <item row="4" column="0">
-      <widget class="QLabel" name="label_5">
-       <property name="text">
-        <string>Metric:</string>
-       </property>
-      </widget>
-     </item>
-     <item row="4" column="1">
-      <widget class="QComboBox" name="cbox_metric"/>
-     </item>
-     <item row="7" column="0">
-      <widget class="QLabel" name="label_2">
-       <property name="text">
-        <string>Entity:</string>
-       </property>
-      </widget>
-     </item>
-     <item row="7" column="1">
-      <widget class="QComboBox" name="cbox_entity"/>
-     </item>
-     <item row="8" column="0">
-      <widget class="QLabel" name="label_3">
-       <property name="text">
-        <string>Time:</string>
-       </property>
-      </widget>
-     </item>
-     <item row="8" column="1">
-      <widget class="QComboBox" name="cbox_time"/>
-     </item>
-     <item row="5" column="1">
-      <spacer name="verticalSpacer_2">
-       <property name="orientation">
-        <enum>Qt::Vertical</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>20</width>
-         <height>40</height>
-        </size>
-       </property>
-      </spacer>
      </item>
      <item row="1" column="1">
       <spacer name="verticalSpacer">
@@ -394,31 +354,72 @@
        </property>
       </spacer>
      </item>
-     <item row="5" column="0">
-      <widget class="QLabel" name="label_7">
-       <property name="font">
-        <font>
-         <weight>75</weight>
-         <bold>true</bold>
-        </font>
-       </property>
-       <property name="text">
-        <string>         text:</string>
+     <item row="2" column="1">
+      <widget class="Line" name="line_3">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
        </property>
       </widget>
      </item>
-     <item row="1" column="0">
-      <widget class="QLabel" name="label_8">
-       <property name="font">
-        <font>
-         <weight>75</weight>
-         <bold>true</bold>
-        </font>
-       </property>
+     <item row="3" column="0">
+      <widget class="QLabel" name="label_4">
        <property name="text">
-        <string>        text:</string>
+        <string>Scenario:</string>
        </property>
       </widget>
+     </item>
+     <item row="3" column="1">
+      <widget class="QComboBox" name="cbox_scenarios"/>
+     </item>
+     <item row="5" column="0">
+      <widget class="QLabel" name="label_5">
+       <property name="text">
+        <string>Metric:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="5" column="1">
+      <widget class="QComboBox" name="cbox_metric"/>
+     </item>
+     <item row="7" column="1">
+      <spacer name="verticalSpacer_2">
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>20</width>
+         <height>40</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item row="8" column="1">
+      <widget class="Line" name="line">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+      </widget>
+     </item>
+     <item row="9" column="0">
+      <widget class="QLabel" name="label_2">
+       <property name="text">
+        <string>Entity:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="9" column="1">
+      <widget class="QComboBox" name="cbox_entity"/>
+     </item>
+     <item row="10" column="0">
+      <widget class="QLabel" name="label_3">
+       <property name="text">
+        <string>Time:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="10" column="1">
+      <widget class="QComboBox" name="cbox_time"/>
      </item>
     </layout>
    </widget>

@@ -36,6 +36,8 @@ import os
 #to import general tools from QGIS we need the qgis.core module
 from qgis.core import *
 from qgis.utils import iface
+import re
+from colour import Color
 
 #for loading the netCDF files we need the netCDF4 module
 try:
@@ -230,10 +232,11 @@ class maskAndFuntionality (BASE, WIDGET):
         timeUnits = time.units
         timeCalendar = time.calendar
         time = nc.num2date(time[:], timeUnits, timeCalendar)
+        time = [str(i).split(" ")[0] for i in time] #we leave just the date and not the time
 
         #we set the time into the QComboBox
         self.cbox_time.clear()
-        self.cbox_time.addItems([str(i) for i in time])
+        self.cbox_time.addItems(time)
         
      
         #we get the entities
@@ -308,24 +311,25 @@ class maskAndFuntionality (BASE, WIDGET):
         #we close the netCDF file
         ncFile.close()
 
+    
+
+
 
     def displayData(self):
         """this fuction get the data of each ebv_cube and add it to the map"""
-        path = self.text_set.text() #we get the path from the text space
-        ncFile = nc.Dataset(path, 'r', format='NETCDF4') #we are gonna open the nedCDF file with the netCDF4 library
-        ncFileName = os.path.basename(path) #We get the name of the netCDF file to show it in the GUI
-        #get part of the name of the netCDF file
-        ncFileName = ncFileName.split('_')
-        ncFileName = ncFileName[0] + '_' + ncFileName[1] + '_' + ncFileName[2]
-        nameOfRasterLayer =  ncFileName + "_entity: " + self.cbox_entity.currentText() + "_time: " + self.cbox_time.currentText() #we get the name of the raster layer
         
+        #we get the path from the text space
+        path = self.text_set.text() 
+        ncFile = nc.Dataset(path, 'r', format='NETCDF4') 
+        
+    
         #time
         #we get the time 
         time = ncFile.variables['time']
         timeUnits = time.units 
         timeCalendar = time.calendar
         time = nc.num2date(time[:], timeUnits, timeCalendar)
-        time = [str(i) for i in time] #we have to convert the time into a string
+        time = [str(i).split(" ")[0] for i in time] #we have to convert the time into a string
         max_time = len(time) #we get the length of the time
       
         #time selected in the QComboBox
@@ -356,6 +360,7 @@ class maskAndFuntionality (BASE, WIDGET):
         #scenarios
         scenarioSelected = self.cbox_scenarios.currentText()
         scenarioIndex = self.cbox_scenarios.currentIndex()
+        scenarioIndex = scenarioIndex + 1
         
         #metrics
         metricSelected = self.cbox_metric.currentText()
@@ -364,21 +369,40 @@ class maskAndFuntionality (BASE, WIDGET):
         
         
         #if there just metrics and no scenarios we have to create a uri with the metric selected in the QComboBox
-        if scenarioIndex == None:
-            uri = r'NETCDF:"'+ path + '":' + metricSelected + '/ebv_cube'
-        elif scenarioIndex != None:
-            uri = r'NETCDF:"'+ path + '":'+ scenarioSelected + '/' + metricSelected + '/ebv_cube'
+        if self.cbox_scenarios.isEnabled() == True:
+            uri = r'NETCDF:'+ path + ':'+ scenarioSelected + '/' + metricSelected + '/ebv_cube'
+            uri = str(uri)
+            # print(uri)
+            # print("entity Index: " + str(entityIndex+1))
+            # print("scenarioSelected: " + str(scenarioSelected))
+            # print("metricsSelected: " + str(metricSelected))
+            
         else:
-            pass
-      
-
-        #load the raster layer into the QGIS canvas
-        rasterLayer = QgsRasterLayer(uri, nameOfRasterLayer, "gdal")
-    
-
+            uri = r'NETCDF:'+ path + ':' + metricSelected + '/ebv_cube'
+            uri = str(uri)
+            # print(uri)
+            # print("entity Index: " + str(entityIndex+1))
+            # print("metricsSelected: " + str(metricSelected))
         
+        
+        #here we create the name of the layer
+        if self.cbox_scenarios.isEnabled() == True:
+            standardName = ncFile.groups[scenarioSelected].groups[metricSelected].getncattr('standard_name')
+        else:
+            standardName = ncFile.groups[metricSelected].getncattr('standard_name')
+            
+        entitySelected = self.cbox_entity.currentText()
+        timeSelected = self.cbox_time.currentText() 
+        rasterName = standardName + "_entity: " + entitySelected + "_time: " + timeSelected
+        
+        #load the raster layer into the QGIS canvas
+        rasterLayer = QgsRasterLayer(uri, rasterName)
+        
+
         #calculate the band number
-        band = (entityIndex-1)*max_time+ timeIndex
+        realEntityIndex = entityIndex + 1
+        realTimeIndex = timeIndex + 1
+        band = (realEntityIndex-1)*max_time + realTimeIndex
         
         
         #get the min and the max value of the band
@@ -405,11 +429,3 @@ class maskAndFuntionality (BASE, WIDGET):
 
         #close the netCDF file
         ncFile.close()
-
-       
-        
-       
-        
-
-       
-        
