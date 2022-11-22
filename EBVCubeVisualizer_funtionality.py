@@ -266,51 +266,178 @@ class maskAndFuntionality (BASE, WIDGET):
     def showInfo(self):
         """this function shows first the name of the file and the global attributes and then if a varible is clicked delete the info and add the attributes of the selected variable"""
         self.text_info.clear()
-        #we get the path from the text space
-        path = self.text_set.text()
-        ncFile = nc.Dataset(path, 'r', format='NETCDF4')
-        ncFileName = os.path.basename(path)
-        ncFileTitle = ncFile.title
-        ncFileGlobalAttributes = list(ncFile.ncattrs())
+        path = self.text_set.text() #we get the path from the text space
+        ncFile = nc.Dataset(path, 'r', format='NETCDF4') #we open the netCDF file
+        ncFileName = os.path.basename(path) 
+        ncFileTitle = ncFile.title 
+        globalAttributesName = list(ncFile.ncattrs())
+
+        # here remove the info and add the attributes of the selected variable
+        globalAttributesName.remove('title')
+        globalAttributesName.remove('history')
+        globalAttributesName.remove('Conventions')
+        globalAttributesName.remove('date_issued')
+
+
+        #groups could be scenarios or metrics
+        groups = list(ncFile.groups.keys())
         
-        #when we click on the top level item we show the name of the file, title and the global attributes
-        if self.tree_data.currentItem().parent() == None:
+        #if the first group is scenarios we get the groups of the scenarios
+        groupsOfGroups = []
+        for i in range(len(groups)):
+            groupsOfGroups.append(list(ncFile.groups[groups[i]].groups.keys()))
+
+        #if the groups are metrics we get the variables of the metrics
+        variablesOfGroups = [] 
+        for i in range(len(groups)):
+            variablesOfGroups.append(list(ncFile.groups[groups[i]].variables.keys()))
+        
+        #we get the variables of the groups of the scenarios
+        variablesOfGroupsOfGroups = []
+        for i in range(len(groups)):
+            variablesOfGroupsOfGroups.append([])
+            for j in range(len(groupsOfGroups[i])):
+                variablesOfGroupsOfGroups[i].append(list(ncFile.groups[groups[i]].groups[groupsOfGroups[i][j]].variables.keys()))
+        
+        
+        #set global attributes from the netCDF file
+        if  self.tree_data.currentItem().text(0) == ncFileName:
             self.text_info.clear()
             self.text_info.append("<b><font size=4>" + "File name: " + ncFileName + "</font></b>")
             self.text_info.append("<b><font size=3>" + "Title: " + ncFileTitle + "</font></b>")
             self.text_info.append(" ")
             self.text_info.append("<b><font size=3>" +"Global attributes: " + "</font></b>")
-            for i in range(len(ncFileGlobalAttributes)): 
-                self.text_info.append("<b>" + ncFileGlobalAttributes[i] +  ": " + "</b>"  + str(ncFile.getncattr(ncFileGlobalAttributes[i])))
+            self.text_info.append(" ")
+            for i in range(len(globalAttributesName)):
+                sttributes = ncFile.getncattr(globalAttributesName[i])
+                self.text_info.append("<b><font size=3>" + globalAttributesName[i] + ": " + "</font></b>" + str(sttributes))
+        
+        #attributes of the groups. The groups are scenarios or metrics
+        elif self.tree_data.currentItem().text(0) in groups:
+            self.text_info.append("<b><font size=4>" + "File name: " + ncFileName + "</font></b>")
+            self.text_info.append("<b><font size=3>" + "Title: " + ncFileTitle + "</font></b>")
+            self.text_info.append(" ")
+
+            #name and standard name of the groups (scenarios or metrics)
+            groupName = self.tree_data.currentItem().text(0)
+            standardName = ncFile.groups[groups[0]].getncattr('standard_name')
+
+            self.text_info.append("<b><font size=3>" + "Group: " + "</font></b>" + groupName )
+            self.text_info.append("<b><font size=3>" + "Standard name: " + "</font></b>" + standardName)
+            self.text_info.append(" ")
+            self.text_info.append("<b><font size=3>" + "Attributes" + "</font></b>")
+            self.text_info.append(" ")
+            
+            #name of the attributes of the groups
+            attributesNameScenario = ncFile.groups[self.tree_data.currentItem().text(0)].ncattrs()
+            attributesNameScenario.remove('standard_name')
+
+            #value of the attributes of the groups
+            for i in range(len(attributesNameScenario)):
+                sttributesScenario = ncFile.groups[self.tree_data.currentItem().text(0)].getncattr(attributesNameScenario[i])
+                self.text_info.append("<b><font size=3>" + attributesNameScenario[i] + ": " + "</font></b>" + str(sttributesScenario))
                 
-        #when we click on a group we show the name of the group and the attributes of the group and if we click on a variable of the group we show the attributes of the variable
-        elif self.tree_data.currentItem().parent().parent() == None:
+        
+        #groups of the scenarios
+        elif self.tree_data.currentItem().text(0) in groupsOfGroups[0]:
             self.text_info.clear()
             self.text_info.append("<b><font size=4>" + "File name: " + ncFileName + "</font></b>")
             self.text_info.append("<b><font size=3>" + "Title: " + ncFileTitle + "</font></b>")
-            self.text_info.append("<b><font size=3>" + "Group name: " + self.tree_data.currentItem().text(0) + "</font></b>")
-            self.text_info.append("<b><font size=3>" + "Long name: " + self.tree_data.currentItem().text(1) + "</font></b>")
             self.text_info.append(" ")
-            self.text_info.append("<b><font size=3>" + "Attributes:" + "</font></b>")
-            for i in range(len(ncFile.groups[self.tree_data.currentItem().text(0)].ncattrs())):
-                self.text_info.append("<b>" + "-- " + ncFile.groups[self.tree_data.currentItem().text(0)].ncattrs()[i] + ": " + "</b>" + str(ncFile.groups[self.tree_data.currentItem().text(0)].getncattr(ncFile.groups[self.tree_data.currentItem().text(0)].ncattrs()[i])))   
-        
-        #when we click on a variable of the group and the attributes of the varibales
-        else:
+
+            standardName = ncFile.groups[groups[0]].groups[groupsOfGroups[0][0]].getncattr('standard_name')
+            groupName = self.tree_data.currentItem().text(0)
+            
+            self.text_info.append("<b><font size=3>" + "Group: " + "</font></b>" + groupName )
+            self.text_info.append("<b><font size=3>" + "Standard name: " + "</font></b>" + standardName)
+            self.text_info.append(" ")
+            self.text_info.append("<b><font size=3>" + "Attributes" + "</font></b>")
+            self.text_info.append(" ")
+            
+            # here we get the name of the attributes from the group
+
+            attributesNameMetrics = ncFile.groups[groups[0]].groups[groupsOfGroups[0][0]].ncattrs()
+            attributesNameMetrics.remove('standard_name')
+
+            for i in range(len(attributesNameMetrics)):
+                sttributesMetrics = ncFile.groups[groups[0]].groups[groupsOfGroups[0][0]].getncattr(attributesNameMetrics[i])
+                self.text_info.append("<b><font size=3>" + attributesNameMetrics[i] + ": " + "</font></b>" + str(sttributesMetrics))
+            
+        #we get te variables of the groups of the groups but not the variables of the groups
+        elif self.tree_data.currentItem().text(0) in variablesOfGroupsOfGroups[0][0]:
+            self.text_info.clear()
             self.text_info.append("<b><font size=4>" + "File name: " + ncFileName + "</font></b>")
             self.text_info.append("<b><font size=3>" + "Title: " + ncFileTitle + "</font></b>")
-            self.text_info.append("<b><font size=3>" + "Variable name: " + self.tree_data.currentItem().text(0) + "</font></b>")
-            self.text_info.append("<b><font size=3>" + "Long name: " + self.tree_data.currentItem().text(1) + "</font></b>")
+            self.text_info.append(" ")
+
+            #standard name and nams of the variables of the groups of the groups
+            standardName = ncFile.groups[groups[0]].groups[groupsOfGroups[0][0]].getncattr('standard_name')
+            groupName = self.tree_data.currentItem().parent().text(0)
+
+            self.text_info.append("<b><font size=3>" + "Group: " + "</font></b>" +  groupName) 
+            self.text_info.append("<b><font size=3>" + "Standard name: " + "</font></b>" + standardName)
+            self.text_info.append(" ")
+
+            #name of the variable
+            variableName = self.tree_data.currentItem().text(0)
+
+            self.text_info.append("<b><font size=3>" + "Variable: " + "</font></b>" + variableName)
+            self.text_info.append(" ")
+            self.text_info.append("<b><font size=3>" + "Attributes" + "</font></b>")
+            self.text_info.append(" ")
+
+            # here we get the the attributes from the variable
+            
+            attributesNameCubes = ncFile.groups[groups[0]].groups[groupsOfGroups[0][0]].variables[variableName].ncattrs()
+            attributesNameCubes.remove('_FillValue')
+            print(attributesNameCubes)
+
+            for i in range(len(attributesNameCubes)):
+                sttributesCubes = ncFile.groups[groups[0]].groups[groupsOfGroups[0][0]].variables[variableName].getncattr(attributesNameCubes[i])
+                self.text_info.append("<b><font size=3>" + attributesNameCubes[i] + ": " + "</font></b>" + str(sttributesCubes))
+
+            #we get the _FillValue
+            fillValue = ncFile.groups[groups[0]].groups[groupsOfGroups[0][0]].variables[variableName].getncattr('_FillValue')
+            self.text_info.append("<b><font size=3>" + "NoData_value: " + "</font></b>" + str(fillValue))
+
+        #if the groups are just metrics we get the variables of the metrics
+        elif self.tree_data.currentItem().text(0) == groups[1]:
+            self.text_info.clear()
+            self.text_info.append("<b><font size=4>" + "File name: " + ncFileName + "</font></b>")
+            self.text_info.append("<b><font size=3>" + "Title: " + ncFileTitle + "</font></b>")
+            self.text_info.append(" ")
+
+            #we get the name of the group and the standard name
+            groupName = self.tree_data.currentItem().parent().text(0)
+            standardName = ncFile.groups[groups[0]].getncattr('standard_name')
+
+            self.text_info.append("<b><font size=3>" + "Group: " + "</font></b>" + groupName )
+            self.text_info.append("<b><font size=3>" + "Standard name: " + "</font></b>" + standardName)
+            self.text_info.append(" ")
+
+            #we get the name of the variable
+            variableName = self.tree_data.currentItem().text(0)
+
+            self.text_info.append("<b><font size=3>" + "Variable: " + "</font></b>" + variableName)
             self.text_info.append(" ")
             self.text_info.append("<b><font size=3>" + "Attributes:" + "</font></b>")
-            variableAttributes = list(ncFile.groups[self.tree_data.currentItem().parent().text(0)].variables[self.tree_data.currentItem().text(0)].ncattrs())
-            for i in range(len(variableAttributes)):
-                self.text_info.append("<b>" + "-- " + variableAttributes[i] + ": " + "</b>" + str(ncFile.groups[self.tree_data.currentItem().parent().text(0)].variables[self.tree_data.currentItem().text(0)].getncattr(variableAttributes[i])))
+            self.text_info.append(" ")
+        
+            # here we get the name of the attributes from the variable
+            attributesNameVariable = ncFile.groups[groups[0]].variables[self.tree_data.currentItem().text(0)].ncattrs()
+            attributesNameVariable.remove('_FillValue')
 
-        #we close the netCDF file
+            for i in range(len(attributesNameVariable)):
+                attributesVariable = ncFile.groups[groups[0]].variables[self.tree_data.currentItem().text(0)].getncattr(attributesNameVariable[i])
+                self.text_info.append("<b><font size=3>" + attributesNameVariable[i] + ": " + "</font></b>" + str(attributesVariable))
+
+            #set NoData value
+            fillValue = ncFile.groups[groups[0]].variables[self.tree_data.currentItem().text(0)].getncattr('_FillValue')
+            self.text_info.append("<b><font size=3>" + "NoData_value: " + "</font></b>" + str(fillValue))
+        
+        
+        # we close the netCDF file
         ncFile.close()
-
-    
 
 
 
