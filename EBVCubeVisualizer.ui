@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>netCDF</class>
- <widget class="QDialog" name="netCDF">
+ <class>EBVCube</class>
+ <widget class="QDialog" name="EBVCube">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -18,14 +18,14 @@
   </property>
   <property name="minimumSize">
    <size>
-    <width>1273</width>
-    <height>792</height>
+    <width>0</width>
+    <height>0</height>
    </size>
   </property>
-  <property name="maximumSize">
+  <property name="sizeIncrement">
    <size>
-    <width>16777215</width>
-    <height>16777190</height>
+    <width>0</width>
+    <height>0</height>
    </size>
   </property>
   <property name="mouseTracking">
@@ -33,6 +33,9 @@
   </property>
   <property name="windowTitle">
    <string>EBVCubeVisualizer</string>
+  </property>
+  <property name="toolTip">
+   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
   </property>
   <property name="autoFillBackground">
    <bool>false</bool>
@@ -49,10 +52,10 @@
   <widget class="QLabel" name="label_6">
    <property name="geometry">
     <rect>
-     <x>20</x>
+     <x>30</x>
      <y>10</y>
-     <width>61</width>
-     <height>16</height>
+     <width>271</width>
+     <height>31</height>
     </rect>
    </property>
    <property name="font">
@@ -62,37 +65,8 @@
     </font>
    </property>
    <property name="text">
-    <string>Load data:</string>
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:18pt; font-weight:600; color:#00226a;&quot;&gt;EBV Cube Visualizer&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
-  </widget>
-  <widget class="QWidget" name="horizontalLayoutWidget">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>40</y>
-     <width>751</width>
-     <height>27</height>
-    </rect>
-   </property>
-   <layout class="QHBoxLayout" name="horizontalLayout">
-    <item>
-     <widget class="QLineEdit" name="text_set"/>
-    </item>
-    <item>
-     <widget class="QToolButton" name="btn_inputFile">
-      <property name="text">
-       <string>load data</string>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QPushButton" name="btn_load">
-      <property name="text">
-       <string>Read </string>
-      </property>
-     </widget>
-    </item>
-   </layout>
   </widget>
   <widget class="QWidget" name="gridLayoutWidget">
    <property name="geometry">
@@ -217,7 +191,7 @@
      <x>770</x>
      <y>110</y>
      <width>491</width>
-     <height>381</height>
+     <height>371</height>
     </rect>
    </property>
    <layout class="QVBoxLayout" name="verticalLayout">
@@ -272,9 +246,9 @@
    <property name="geometry">
     <rect>
      <x>770</x>
-     <y>500</y>
+     <y>490</y>
      <width>491</width>
-     <height>241</height>
+     <height>251</height>
     </rect>
    </property>
    <property name="sizePolicy">
@@ -308,7 +282,7 @@
         <string notr="true">selection-background-color: rgb(83, 194, 200);</string>
        </property>
        <property name="text">
-        <string>data display</string>
+        <string>add layer </string>
        </property>
       </widget>
      </item>
@@ -333,20 +307,7 @@
         </font>
        </property>
        <property name="text">
-        <string>map data</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="0">
-      <widget class="QLabel" name="label_8">
-       <property name="font">
-        <font>
-         <weight>75</weight>
-         <bold>true</bold>
-        </font>
-       </property>
-       <property name="text">
-        <string>    select:</string>
+        <string>layer data</string>
        </property>
       </widget>
      </item>
@@ -430,8 +391,87 @@
      <item row="10" column="1">
       <widget class="QComboBox" name="cbox_time"/>
      </item>
+     <item row="1" column="0">
+      <widget class="QLabel" name="label_8">
+       <property name="font">
+        <font>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>    select:</string>
+       </property>
+      </widget>
+     </item>
     </layout>
    </widget>
+  </widget>
+  <widget class="QToolButton" name="btn_inputFile">
+   <property name="geometry">
+    <rect>
+     <x>610</x>
+     <y>60</y>
+     <width>71</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>0</width>
+     <height>0</height>
+    </size>
+   </property>
+   <property name="sizeIncrement">
+    <size>
+     <width>0</width>
+     <height>0</height>
+    </size>
+   </property>
+   <property name="baseSize">
+    <size>
+     <width>0</width>
+     <height>0</height>
+    </size>
+   </property>
+   <property name="toolTip">
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+   </property>
+   <property name="text">
+    <string>Load</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="btn_load">
+   <property name="geometry">
+    <rect>
+     <x>690</x>
+     <y>60</y>
+     <width>71</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
+   <property name="text">
+    <string>Open</string>
+   </property>
+   <property name="autoRepeat">
+    <bool>false</bool>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="text_set">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>60</y>
+     <width>591</width>
+     <height>20</height>
+    </rect>
+   </property>
   </widget>
  </widget>
  <resources/>
