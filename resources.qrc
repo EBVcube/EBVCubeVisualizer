@@ -1,5 +1,5 @@
-<RCC>
-    <qresource prefix="/plugins/EBVCubeVisualizerPlugin" >
-        <file>EBVIcon.png</file>
-    </qresource>
+<!DOCTYPE RCC><RCC version="1.0">
+<qresource prefix="/plugins/EBVCubeVisualizer">
+    <file>EBVIcon.png</file>
+</qresource>
 </RCC>
