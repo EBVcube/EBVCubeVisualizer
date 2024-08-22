@@ -23,14 +23,16 @@
 '''
 #we import the important functions from the pyQt5 library
 
+#we import the important functions from the pyQt5 library
 from PyQt5.QtCore import *  
 from PyQt5.QtGui import *  
 from PyQt5.QtWidgets import *  
 #import everthing from the netCDF_visualization_funtionality.py file
-from .EBVCubeVisualizer_funtionality import *
-from .resources import *
+from .EBVCubeVisualizer_funtionality import maskAndFunctionality
+from . import resources_rc
 #we write a class, Plugins is a class
 import os
+
 
 
 
@@ -155,7 +157,7 @@ class EBVCubeVisualizer:
     #when we click the plugin in QGIS the plugin will be loaded
     def initGui(self):
         """Create the menu entries and toolbar icons inside the QGIS GUI."""
-        icon_path = ':/plugins/EBVCubeVisualizer/EBV.jpg'
+        icon_path = ':/plugins/EBVCubeVisualizer/EBVIcon.png'
         self.add_action(
             icon_path,
             text=self.tr(u'EBVCubeVisualizer'),
@@ -176,7 +178,8 @@ class EBVCubeVisualizer:
     #we create a function to call the mask       
     def callMask(self):
         #we create the mask or GUI
-        self.mask = maskAndFuntionality(self.iface)
+        self.mask = maskAndFunctionality(self.iface)
         #we show the mask
         self.mask.show()
+
 
