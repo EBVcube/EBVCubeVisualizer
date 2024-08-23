@@ -109,19 +109,23 @@ class maskAndFunctionality(base_class, ui_class):
 
     def removeSelection(self):
         """this function remove the selection in the tree widget"""
-        #if the top level item is selected we remove the Item and the children as well text_info, cbox_entity and cbox_time
-        if self.tree_data.currentItem().parent() == None:
-            self.tree_data.takeTopLevelItem(self.tree_data.indexOfTopLevelItem(self.tree_data.currentItem()))
+        
+        # Get currently selected item
+        selected_item = self.tree_data.currentItem()
+
+        # Chec if no item is selected
+        if selected_item is None:
+            return # Do nothing
+        # If the top-level item is selected, remove the item and clear related UI elements
+        if selected_item.parent() is None:
+            self.tree_data.takeTopLevelItem(self.tree_data.indexOfTopLevelItem(selected_item))
             self.text_info.clear()
             self.cbox_entity.clear()
             self.cbox_time.clear()
             self.cbox_scenarios.clear()
             self.cbox_metric.clear()
-        #if the child item is selected we don't remove anything
-        elif self.tree_data.currentItem() == None:
-            pass
-
         else:
+            # If a child item is selected, do nothing
             pass
             
 
@@ -504,9 +508,9 @@ class maskAndFunctionality(base_class, ui_class):
             
             # Set the name of the raster including the scneario if exists
             if self.cbox_scenarios.isEnabled():
-                rasterName = f"scenario: {scenarioSelected}_metric: {metricSelected}_entity: {entitySelected}_time: {timeSelected}"
+                rasterName = f"scenario: {scenarioSelected} metric: {metricSelected} entity: {entitySelected} time: {timeSelected}"
             else:
-                rasterName = f"metric: {metricSelected}_entity: {entitySelected}_time: {timeSelected}"
+                rasterName = f"metric: {metricSelected} entity: {entitySelected} time: {timeSelected}"
             
             # Import raster
             rasterLayer = QgsRasterLayer(uri, rasterName, 'gdal')
@@ -552,7 +556,7 @@ class maskAndFunctionality(base_class, ui_class):
             QgsProject.instance().addMapLayer(rasterLayer)
 
             # Show success message
-            QMessageBox.information(None, "Success", "Raster layer loaded successfully.")
+            QMessageBox.information(None, "Layer Added", f"The layer '{rasterName}' has been successfully added.")
 
         finally:
             # Ensure the NetCDF file is closed
