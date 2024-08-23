@@ -31,6 +31,7 @@ import json
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
+from PyQt5.QtWidgets import QMessageBox
 from PyQt5 import uic
 
 # Import QGIS modules
@@ -237,75 +238,6 @@ class maskAndFunctionality(base_class, ui_class):
         ncFile.close()
     
     
-    # def setMapData(self):
-        # """This function sets the entities, time, scenarios and metrics in the QComboBox"""
-        # #we clear the QComboBox
-        # self.cbox_entity.clear()
-        # self.cbox_time.clear()
-        # self.cbox_scenarios.clear()
-        # self.cbox_metric.clear()
-        
-        # #we get the path from the text space
-        # path = self.text_set.text()
-        # ncFile = nc.Dataset(path, 'r', format='NETCDF4') 
-
-        # groups = list(ncFile.groups.keys()) #we get the metrics (name of the groups)
-        # groupsOfGroups = list(ncFile.groups[groups[0]].groups.keys()) #we get the scenarios(name of the groups of the groups)
-
-
-        # #set scenario and metric in the QComboBox  
-        # #if there is just groups we set the groups in the cbox_metric 
-        # self.cbox_metric.addItems(groups)
-        # self.cbox_scenarios.addItem("not scenarios")
-        # self.cbox_scenarios.setEnabled(False)
-        
-        # if len(groupsOfGroups)>0:
-            # self.cbox_scenarios.setEnabled(True)
-            # self.cbox_scenarios.clear()
-            # self.cbox_scenarios.addItems(groups)
-            # self.cbox_metric.clear()
-            # self.cbox_metric.addItems(groupsOfGroups)
-        # else:
-            # pass
-
-        # #here we are gonna get the entities and the time of the netCDF file and set them into a QComboBox if the top level is clicked
-        # #we get the time of the netCDF file
-        # time = ncFile.variables['time']
-        # timeUnits = time.units
-        # timeCalendar = time.calendar
-        # time = nc.num2date(time[:], timeUnits, timeCalendar)
-        # time = [str(i).split(" ")[0] for i in time] #we leave just the date and not the time
-
-        # #we set the time into the QComboBox
-        # self.cbox_time.clear()
-        # self.cbox_time.addItems(time)
-        
-     
-        # #we get the entities
-        # self.cbox_entity.clear()
-        # entities = ncFile.variables['entity']
-        
-        # #empty list
-        # entityDrop = []
-        
-        # for i in range(len(entities)):
-            # entity = entities[i]
-            # entity = np.array(entity)
-            # entity = entity.tostring().decode('UTF-8').strip()
-            # #print(entity)
-            # #print(type(entity))
-            # entityDrop.append(entity)
-
-        # #set the entities inyo the cbox_enity
-        # self.cbox_entity.addItems(entityDrop)
-        
-        # #check the number of entitites
-        # #entityNumber = len(entityDrop)
-        # #print(entityNumber)
-
-        # #we close the netCDF file
-        # ncFile.close()
-    
     def showInfo(self):
         """Show the attributes of the scenarios, metrics, and variables."""
         self.text_info.clear()
@@ -459,17 +391,17 @@ class maskAndFunctionality(base_class, ui_class):
                     if metricSelected in ncFile.groups[scenarioSelected].groups:
                         data_variable = ncFile.groups[scenarioSelected].groups[metricSelected].variables['ebv_cube']
                     else:
-                        print(f"Metric '{metricSelected}' not found in scenario '{scenarioSelected}'.")
+                        #print(f"Metric '{metricSelected}' not found in scenario '{scenarioSelected}'.")
                         return
                 else:
-                    print(f"Scenario '{scenarioSelected}' not found.")
+                    #print(f"Scenario '{scenarioSelected}' not found.")
                     return
             else:
                 metricSelected = self.cbox_metric.currentText()
                 if metricSelected in ncFile.groups:
                     data_variable = ncFile.groups[metricSelected].variables['ebv_cube']
                 else:
-                    print(f"Metric '{metricSelected}' not found.")
+                    #print(f"Metric '{metricSelected}' not found.")
                     return
             
             # Handle entity selection (since entities are the first dimension)
@@ -495,8 +427,8 @@ class maskAndFunctionality(base_class, ui_class):
             metricSelected = self.cbox_metric.currentText()
             
             # Debugging: Print selected scenario and metric
-            print(f"Scenario selected: {scenarioSelected}")
-            print(f"Metric selected: {metricSelected}")
+            #print(f"Scenario selected: {scenarioSelected}")
+            #print(f"Metric selected: {metricSelected}")
 
             # Subset the data based on the selections
             if self.cbox_scenarios.isEnabled():
@@ -508,15 +440,15 @@ class maskAndFunctionality(base_class, ui_class):
 
                         if 'ebv_cube' in metric_group.variables:
                             data_variable = metric_group.variables['ebv_cube']
-                            print(f"Accessin 'ebv_cube' in scenario '{scenarioSelected}' and metric '{metricSelected}'")
+                            #print(f"Accessin 'ebv_cube' in scenario '{scenarioSelected}' and metric '{metricSelected}'")
                         else:
-                            print(f"Variable 'ebv_cube' not found in scenario '{scenarioSelected}' and metric '{metricSelected}'.")
+                            #print(f"Variable 'ebv_cube' not found in scenario '{scenarioSelected}' and metric '{metricSelected}'.")
                             return
                     else:
-                        print(f"Metric '{metricSelected}' not found in scenario '{scenarioSelected}'.")
+                        #print(f"Metric '{metricSelected}' not found in scenario '{scenarioSelected}'.")
                         return
                 else:
-                    print(f"Scenario '{scenarioSelected}' not found.")
+                    #print(f"Scenario '{scenarioSelected}' not found.")
                     return
             else:
                 if metricSelected in ncFile.groups:
@@ -529,7 +461,7 @@ class maskAndFunctionality(base_class, ui_class):
                         print(f"Error: 'ebv_cube' not found in metric '{metricSelected}'.")
                         return
                 else:
-                    print(f"Metric '{metricSelected}' not found.")
+                    #print(f"Metric '{metricSelected}' not found.")
                     return
             
             # Ensure the indices are within the bounds of the data variable
@@ -546,8 +478,6 @@ class maskAndFunctionality(base_class, ui_class):
                 crs_var = ncFile.variables['crs']
                 if 'spatial_ref' in crs_var.ncattrs():
                     crs_wkt = crs_var.getncattr('spatial_ref')
-
-
 
             # Create a temporary NetCDF file to store the subset
             temp_nc_path = tempfile.mktemp(suffix='.nc')
@@ -571,16 +501,19 @@ class maskAndFunctionality(base_class, ui_class):
 
             # Load the temporary NetCDF file into QGIS
             uri = f'NETCDF:"{temp_nc_path}":ebv_cube'
+            
             # Set the name of the raster including the scneario if exists
             if self.cbox_scenarios.isEnabled():
                 rasterName = f"scenario: {scenarioSelected}_metric: {metricSelected}_entity: {entitySelected}_time: {timeSelected}"
             else:
                 rasterName = f"metric: {metricSelected}_entity: {entitySelected}_time: {timeSelected}"
+            
+            # Import raster
             rasterLayer = QgsRasterLayer(uri, rasterName, 'gdal')
 
             # Check if the layer is valid
             if not rasterLayer.isValid():
-                print("Failed to load the raster layer.")
+                #print("Failed to load the raster layer.")
                 return
             
             # Set the CRS of the raster layer
@@ -617,6 +550,9 @@ class maskAndFunctionality(base_class, ui_class):
             
             # Add the raster layer to the map
             QgsProject.instance().addMapLayer(rasterLayer)
+
+            # Show success message
+            QMessageBox.information(None, "Success", "Raster layer loaded successfully.")
 
         finally:
             # Ensure the NetCDF file is closed
