@@ -800,13 +800,45 @@ class maskAndFunctionality(base_class, ui_class):
             # Get selected scenario and metric
             scenarioSelected = self.cbox_scenarios.currentText()
             metricSelected = self.cbox_metric.currentText()
+            
+            # Debugging: Print selected scenario and metric
+            print(f"Scenario selected: {scenarioSelected}")
+            print(f"Metric selected: {metricSelected}")
 
             # Subset the data based on the selections
             if self.cbox_scenarios.isEnabled():
-                data_variable = ncFile.groups[scenarioSelected].groups[metricSelected].variables['ebv_cube']
-            else:
-                data_variable = ncFile.groups[metricSelected].variables['ebv_cube']
+                if scenarioSelected in ncFile.groups:
+                    scenario_group = ncFile.groups[scenarioSelected]
 
+                    if metricSelected in scenario_group.groups:
+                        metric_group = scenario_group.groups[metricSelected]
+
+                        if 'ebv_cube' in metric_group.variables:
+                            data_variable = metric_group.variables['ebv_cube']
+                            print(f"Accessin 'ebv_cube' in scenario '{scenarioSelected}' and metric '{metricSelected}'")
+                        else:
+                            print(f"Variable 'ebv_cube' not found in scenario '{scenarioSelected}' and metric '{metricSelected}'.")
+                            return
+                    else:
+                        print(f"Metric '{metricSelected}' not found in scenario '{scenarioSelected}'.")
+                        return
+                else:
+                    print(f"Scenario '{scenarioSelected}' not found.")
+                    return
+            else:
+                if metricSelected in ncFile.groups:
+                    metric_group = ncFile.groups[metricSelected]
+
+                    if 'ebv_cube' in metric_group.variables:
+                        data_variable = metric_group.variables['ebv_cube']
+                        print(f"Accessin 'ebv_cube' in metric '{metricSelected}'")
+                    else:
+                        print(f"Error: 'ebv_cube' not found in metric '{metricSelected}'.")
+                        return
+                else:
+                    print(f"Metric '{metricSelected}' not found.")
+                    return
+            
             # Ensure the indices are within the bounds of the data variable
             if entityIndex >= data_variable.shape[0] or timeIndex >= data_variable.shape[1]:
                 print(f"Indices out of bounds: entityIndex={entityIndex}, timeIndex={timeIndex}")
@@ -846,8 +878,12 @@ class maskAndFunctionality(base_class, ui_class):
 
             # Load the temporary NetCDF file into QGIS
             uri = f'NETCDF:"{temp_nc_path}":ebv_cube'
-            rasterName = f"{metricSelected}_entity: {entitySelected}_time: {timeSelected}"
-            rasterLayer = QgsRasterLayer(uri, rasterName)
+            # Set the name of the raster including the scneario if exists
+            if self.cbox_scenarios.isEnabled():
+                rasterName = f"scenario: {scenarioSelected}_metric: {metricSelected}_entity: {entitySelected}_time: {timeSelected}"
+            else:
+                rasterName = f"metric: {metricSelected}_entity: {entitySelected}_time: {timeSelected}"
+            rasterLayer = QgsRasterLayer(uri, rasterName, 'gdal')
 
             # Check if the layer is valid
             if not rasterLayer.isValid():
