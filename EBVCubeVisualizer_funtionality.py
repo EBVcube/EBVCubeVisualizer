@@ -21,52 +21,35 @@
 * If not, see http://www.gnu.org/licenses/.
 ****************************************************************************************/
 '''
-#we import the impotant libraries and modules
-#always import the libraries and modules at the top of the code
+# Import necessary standard libraries
+import os
+import tempfile
 from datetime import datetime
-from json import load
-from msilib.schema import tables
-from PyQt5.QtCore import *  
+import json
+
+# Import PyQt5 modules for GUI development
+from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 from PyQt5 import uic
 
-#we want to work with the os module
-import os
-#to import general tools from QGIS we need the qgis.core module
+# Import QGIS modules
 from qgis.core import *
 from qgis.utils import iface
 
-# For loading the netCDF files we need the netCDF4 module
+# Import netCDF4 for handling NetCDF files
 try:
     import netCDF4 as nc
 except ImportError:
     raise ImportError(
         "The 'netCDF4' module is required for this plugin but is not installed. "
         "Please install it using the OSGeo4W shell or the QGIS Python console. "
-        "Run `pip install netCDF4`."
-    )
-#for loading the netCDF files we need the netCDF4 module
-#try:
-#   from pip import main as pipmain
-#except ImportError:
-#   from pip._internal import main as pipmain
+        "Run `pip install netCDF4`.")
 
-#try:
-#   import netCDF4 as nc
-#except ImportError:
-#   pipmain(['install', 'netCDF4'])
-#   import netCDF4 as nc
-#   from netCDF4 import Dataset
-   
-
-#we need the matplotlib module to plot the data
-import matplotlib.pyplot as plt
-#we need gdal to work with the raster data 
-from osgeo import osr, gdal, ogr
-#we ned the numpy module to work with the data
+# Import additional libraries for data processing and visualization
 import numpy as np
-import tempfile
+import matplotlib.pyplot as plt
+from osgeo import osr, gdal, ogr
 
 
 #we create the path to the ui file
@@ -764,236 +747,148 @@ class maskAndFunctionality(base_class, ui_class):
 
 
     def displayData(self):
+        """This function extracts a subset of data from a NetCDF file based on the user's selections and adds it to the QGIS map as a raster layer."""
+        
+        # Get the path from the text field
         path = self.text_set.text()
         ncFile = nc.Dataset(path, 'r', format='NETCDF4')
 
-        # Get selected time and entity
-        timeSelected = self.cbox_time.currentText()
-        entitySelected = self.cbox_entity.currentText()
+        try:
+            # Debug: Print the structure of the NetCDF file
+            print("NetCDF file structure:")
+            print(ncFile)
 
-        # Convert time and entity to indices
-        time = ncFile.variables['time']
-        timeUnits = time.units
-        timeCalendar = time.calendar
-        time = nc.num2date(time[:], timeUnits, timeCalendar)
-        time = [str(i).split(" ")[0] for i in time]
-        if timeSelected not in time:
-            print(f"Time selected {timeSelected} not found in available times")
-            return
-        timeIndex = time.index(timeSelected)
-
-        entities = ncFile.variables['entity']
-        entityDrop = [np.array(entities[i]).tobytes().decode('UTF-8').strip() for i in range(len(entities))]
-        if entitySelected not in entityDrop:
-            print(f"Entity selected {entitySelected} not found in available entities")
-            return
-        entityIndex = entityDrop.index(entitySelected)
-
-        # Get selected scenario and metric
-        scenarioSelected = self.cbox_scenarios.currentText()
-        metricSelected = self.cbox_metric.currentText()
-
-        # Determine the URI and standard name
-        if self.cbox_scenarios.isEnabled():
-            data_variable = ncFile.groups[scenarioSelected].groups[metricSelected].variables['ebv_cube']
-            standardName = ncFile.groups[scenarioSelected].groups[metricSelected].getncattr('standard_name')
-        else:
-            data_variable = ncFile.groups[metricSelected].variables['ebv_cube']
-            standardName = ncFile.groups[metricSelected].getncattr('standard_name')
-
-        # Ensure the indices are within the bounds of the data variable
-        if timeIndex >= data_variable.shape[0] or entityIndex >= data_variable.shape[1]:
-            print(f"Indices out of bounds: timeIndex={timeIndex}, entityIndex={entityIndex}")
-            return
-
-        # Extract the subset
-        data_subset = data_variable[timeIndex, entityIndex, :, :]
-
-        # Create a temporary netCDF file to store the subset
-        temp_nc_path = tempfile.mktemp(suffix='.nc')
-        with nc.Dataset(temp_nc_path, 'w', format='NETCDF4') as temp_nc:
-            # Copy dimensions except entity and time
-            for name, dimension in ncFile.dimensions.items():
-                if name not in ['entity', 'time']:
-                    temp_nc.createDimension(name, len(dimension))
-            
-            # Create the entity and time dimensions with length 1
-            temp_nc.createDimension('entity', 1)
-            temp_nc.createDimension('time', 1)
-
-            # Copy latitude and longitude dimensions
-            for dim in ['latitude', 'longitude']:
-                if dim in ncFile.dimensions:
-                    temp_nc.createDimension(dim, len(ncFile.dimensions[dim]))
-                else:
-                    print(f"Dimension {dim} not found in the original file")
-
-            # Copy variables except the data variable
-            for name, variable in ncFile.variables.items():
-                if name != 'ebv_cube':
-                    var = temp_nc.createVariable(name, variable.datatype, variable.dimensions)
-                    var.setncatts({k: variable.getncattr(k) for k in variable.ncattrs()})
-                    if 'entity' in variable.dimensions or 'time' in variable.dimensions:
-                        var[0] = variable[0]
+            # Navigate to the correct group based on scenario and metric
+            if self.cbox_scenarios.isEnabled():
+                scenarioSelected = self.cbox_scenarios.currentText()
+                metricSelected = self.cbox_metric.currentText()
+                if scenarioSelected in ncFile.groups:
+                    if metricSelected in ncFile.groups[scenarioSelected].groups:
+                        data_variable = ncFile.groups[scenarioSelected].groups[metricSelected].variables['ebv_cube']
                     else:
-                        var[:] = variable[:]
-
-            # Copy latitude and longitude variables
-            for name in ['latitude', 'longitude']:
-                if name in ncFile.variables:
-                    var = temp_nc.createVariable(name, ncFile.variables[name].datatype, ncFile.variables[name].dimensions)
-                    var.setncatts({k: ncFile.variables[name].getncattr(k) for k in ncFile.variables[name].ncattrs()})
-                    var[:] = ncFile.variables[name][:]
+                        print(f"Metric '{metricSelected}' not found in scenario '{scenarioSelected}'.")
+                        return
                 else:
-                    print(f"Variable {name} not found in the original file")
+                    print(f"Scenario '{scenarioSelected}' not found.")
+                    return
+            else:
+                metricSelected = self.cbox_metric.currentText()
+                if metricSelected in ncFile.groups:
+                    data_variable = ncFile.groups[metricSelected].variables['ebv_cube']
+                else:
+                    print(f"Metric '{metricSelected}' not found.")
+                    return
+            
+            # Handle entity selection (since entities are the first dimension)
+            entities = ncFile.variables['entity']
+            entityDrop = [np.array(entities[i]).tobytes().decode('UTF-8').strip() for i in range(len(entities))]
+            entitySelected = self.cbox_entity.currentText()
+            entityIndex = entityDrop.index(entitySelected)
 
-            # Create the data variable with the subset
-            temp_data_var = temp_nc.createVariable('ebv_cube', data_variable.datatype, ('time', 'entity', 'latitude', 'longitude'))
-            temp_data_var.setncatts({k: data_variable.getncattr(k) for k in data_variable.ncattrs()})
-            temp_data_var[0, 0, :, :] = data_subset
+            # Handle time selection (since time is the second dimension)
+            time = ncFile.variables['time']
+            timeUnits = time.units
+            timeCalendar = time.calendar
+            time = [str(i).split(" ")[0] for i in nc.num2date(time[:], timeUnits, timeCalendar)]
+            timeSelected = self.cbox_time.currentText()
+            timeIndex = time.index(timeSelected)
 
-        # Load the temporary netCDF file into QGIS
-        uri = f'NETCDF:"{temp_nc_path}":ebv_cube'
-        rasterName = f"{standardName}_entity: {entitySelected}_time: {timeSelected}"
-        rasterLayer = QgsRasterLayer(uri, rasterName)
+            # Debug: Print selected indices and data shape
+            #print(f"Selected Entity Index: {entityIndex}, Time Index: {timeIndex}")
+            #print(f"Shape of data variable: {ncFile.variables['ebv_cube'].shape}")
 
-        # Get the min and max value of the band
-        dp = rasterLayer.dataProvider()
-        stats = dp.bandStatistics(1)  # Only one band in the subset
-        min_val = stats.minimumValue
-        max_val = stats.maximumValue
+            # Get selected scenario and metric
+            scenarioSelected = self.cbox_scenarios.currentText()
+            metricSelected = self.cbox_metric.currentText()
 
-        # Build the color ramp
-        colorRamp = QgsColorRampShader(min_val, max_val)
-        colorRamp.setColorRampType(QgsColorRampShader.Interpolated)
-        colorRamp.setColorRampItemList([QgsColorRampShader.ColorRampItem(min_val, QColor(0, 0, 255)),
-                                        QgsColorRampShader.ColorRampItem(max_val, QColor(255, 0, 0))])
+            # Subset the data based on the selections
+            if self.cbox_scenarios.isEnabled():
+                data_variable = ncFile.groups[scenarioSelected].groups[metricSelected].variables['ebv_cube']
+            else:
+                data_variable = ncFile.groups[metricSelected].variables['ebv_cube']
 
-        # Build the shader
-        shader = QgsRasterShader()
-        shader.setRasterShaderFunction(colorRamp)
+            # Ensure the indices are within the bounds of the data variable
+            if entityIndex >= data_variable.shape[0] or timeIndex >= data_variable.shape[1]:
+                print(f"Indices out of bounds: entityIndex={entityIndex}, timeIndex={timeIndex}")
+                return
 
-        # Build the renderer
-        renderer = QgsSingleBandPseudoColorRenderer(rasterLayer.dataProvider(), 1, shader)
-        rasterLayer.setRenderer(renderer)
+            # Extract the subset (note that entity is first, time is second)
+            data_subset = data_variable[entityIndex, timeIndex, :, :]
 
-        # Add the raster layer to the map
-        QgsProject.instance().addMapLayer(rasterLayer)
-        ncFile.close()
+             # Retrieve the CRS information from the 'crs' variable
+            crs_wkt = None
+            if 'crs' in ncFile.variables:
+                crs_var = ncFile.variables['crs']
+                if 'spatial_ref' in crs_var.ncattrs():
+                    crs_wkt = crs_var.getncattr('spatial_ref')
 
 
 
-    # def displayData(self):
-        # """this fuction get the data of each ebv_cube and add it to the map"""
-        
-        # #we get the path from the text space
-        # path = self.text_set.text() 
-        # ncFile = nc.Dataset(path, 'r', format='NETCDF4') 
-        
+            # Create a temporary NetCDF file to store the subset
+            temp_nc_path = tempfile.mktemp(suffix='.nc')
+            with nc.Dataset(temp_nc_path, 'w', format='NETCDF4') as temp_nc:
+                # Copy the relevant dimensions
+                temp_nc.createDimension('lat', len(ncFile.dimensions['lat']))
+                temp_nc.createDimension('lon', len(ncFile.dimensions['lon']))
+                temp_nc.createDimension('time', 1)  # Only one time step
+                temp_nc.createDimension('entity', 1)  # Only one entity
+
+                # Copy coordinate variables
+                for dim in ['lat', 'lon']:
+                    var = temp_nc.createVariable(dim, ncFile.variables[dim].datatype, (dim,))
+                    var[:] = ncFile.variables[dim][:]
+                    var.setncatts({k: ncFile.variables[dim].getncattr(k) for k in ncFile.variables[dim].ncattrs()})
+                
+                # Create the data variable with the subset
+                temp_data_var = temp_nc.createVariable('ebv_cube', data_variable.datatype, ('entity', 'time', 'lat', 'lon'))
+                temp_data_var.setncatts({k: data_variable.getncattr(k) for k in data_variable.ncattrs()})
+                temp_data_var[0, 0, :, :] = data_subset
+
+            # Load the temporary NetCDF file into QGIS
+            uri = f'NETCDF:"{temp_nc_path}":ebv_cube'
+            rasterName = f"{metricSelected}_entity: {entitySelected}_time: {timeSelected}"
+            rasterLayer = QgsRasterLayer(uri, rasterName)
+
+            # Check if the layer is valid
+            if not rasterLayer.isValid():
+                print("Failed to load the raster layer.")
+                return
+            
+            # Set the CRS of the raster layer
+            if crs_wkt:
+                crs = QgsCoordinateReferenceSystem()
+                crs.createFromWkt(crs_wkt)
+                rasterLayer.setCrs(crs)
+
+            # Set custom band naem
+            dp = rasterLayer.dataProvider()
+            band = 1
     
-        # #time
-        # #we get the time 
-        # time = ncFile.variables['time']
-        # timeUnits = time.units 
-        # timeCalendar = time.calendar
-        # time = nc.num2date(time[:], timeUnits, timeCalendar)
-        # time = [str(i).split(" ")[0] for i in time] #we have to convert the time into a string
-        # max_time = len(time) #we get the length of the time
-      
-        # #time selected in the QComboBox
-        # timeSelected = self.cbox_time.currentText()
-        # timeIndex = time.index(timeSelected) #we get the index of the time selected
-        
+            # Build the color ramp and renderer
+            stats = dp.bandStatistics(band)  # Only one band in the subset
+            min_val = stats.minimumValue
+            max_val = stats.maximumValue
 
-        # #Entity
-        # #we get the entities
-        # entities = ncFile.variables['entity']
-        # entityDrop = []
-        # for i in range(len(entities)):
-            # entity = entities[i]
-            # entity = np.array(entity)
-            # entity = entity.tostring().decode('UTF-8').strip()
-            # entityDrop.append(entity)
+            # Build the color ramp and renderer
+            colorRamp = QgsColorRampShader(min_val, max_val)
+            colorRamp.setColorRampType(QgsColorRampShader.Interpolated)
 
-        # #check the number of entitites
-        # #entityNumber = len(entityDrop)
-        # #print(entityNumber)
- 
-        # #entity selected in the QComboBox
-        # entitySelected = self.cbox_entity.currentText()
-        # entityIndex = entityDrop.index(entitySelected) #we get the index of the entity selected
-        
-        
-        # #get the scenarios and the metrics from the interface
-        # #scenarios
-        # scenarioSelected = self.cbox_scenarios.currentText()
-        # scenarioIndex = self.cbox_scenarios.currentIndex()
-        # scenarioIndex = scenarioIndex + 1
-        
-        # #metrics
-        # metricSelected = self.cbox_metric.currentText()
-        # metricIndex = self.cbox_metric.currentIndex()
-        
-        
-        
-        # #if there just metrics and no scenarios we have to create a uri with the metric selected in the QComboBox
-        # if self.cbox_scenarios.isEnabled() == True:
-            # uri = r'NETCDF:'+ path + ':'+ scenarioSelected + '/' + metricSelected + '/ebv_cube'
-            # uri = str(uri)
-            # # print(uri)
-            # # print("entity Index: " + str(entityIndex+1))
-            # # print("scenarioSelected: " + str(scenarioSelected))
-            # # print("metricsSelected: " + str(metricSelected))
+            # Define custom colors (replace with your desired colors)
+            colorRamp.setColorRampItemList([
+                QgsColorRampShader.ColorRampItem(min_val, QColor(0, 255, 0)),  # Green for minimum value
+                QgsColorRampShader.ColorRampItem((min_val + max_val) / 2, QColor(255, 255, 0)),  # Yellow for mid-range value
+                QgsColorRampShader.ColorRampItem(max_val, QColor(255, 0, 0))  # Red for maximum value
+            ])
             
-        # else:
-            # uri = r'NETCDF:'+ path + ':' + metricSelected + '/ebv_cube'
-            # uri = str(uri)
-            # # print(uri)
-            # # print("entity Index: " + str(entityIndex+1))
-            # # print("metricsSelected: " + str(metricSelected))
-        
-        
-        # #here we create the name of the layer
-        # if self.cbox_scenarios.isEnabled() == True:
-            # standardName = ncFile.groups[scenarioSelected].groups[metricSelected].getncattr('standard_name')
-        # else:
-            # standardName = ncFile.groups[metricSelected].getncattr('standard_name')
+            shader = QgsRasterShader()
+            shader.setRasterShaderFunction(colorRamp)
             
-        # entitySelected = self.cbox_entity.currentText()
-        # timeSelected = self.cbox_time.currentText() 
-        # rasterName = standardName + "_entity: " + entitySelected + "_time: " + timeSelected
-        
-        # #load the raster layer into the QGIS canvas
-        # rasterLayer = QgsRasterLayer(uri, rasterName)
-        
+            renderer = QgsSingleBandPseudoColorRenderer(dp,band,shader)
+            rasterLayer.setRenderer(renderer)
+            
+            # Add the raster layer to the map
+            QgsProject.instance().addMapLayer(rasterLayer)
 
-        # #calculate the band number
-        # realEntityIndex = entityIndex + 1
-        # realTimeIndex = timeIndex + 1
-        # band = (realEntityIndex-1)*max_time + realTimeIndex
-        
-        
-        # #get the min and the max value of the band
-        # dp = rasterLayer.dataProvider()
-        # stats = dp.bandStatistics(band)
-        # min = stats.minimumValue
-        # max = stats.maximumValue
-
-        # #build the color ramp
-        # colorRamp = QgsColorRampShader(min, max)
-        # colorRamp.setColorRampType(QgsColorRampShader.Interpolated)
-        # colorRamp.setColorRampItemList([QgsColorRampShader.ColorRampItem(min, QColor(0, 0, 255)), 
-                                        # QgsColorRampShader.ColorRampItem(max, QColor(255, 0, 0))])
-        # #build the shader
-        # shader = QgsRasterShader()
-        # shader.setRasterShaderFunction(colorRamp)
-
-        # #build the renderer
-        # renderer = QgsSingleBandPseudoColorRenderer(rasterLayer.dataProvider(), band, shader) #we have to put the band number
-        # rasterLayer.setRenderer(renderer)   
-
-        # #add the raster layer to the map
-        # QgsProject.instance().addMapLayer(rasterLayer)
-
-        # #close the netCDF file
-        # ncFile.close()
+        finally:
+            # Ensure the NetCDF file is closed
+            ncFile.close()
