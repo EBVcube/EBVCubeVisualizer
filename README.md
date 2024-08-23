@@ -1,4 +1,4 @@
-# EBVCubeVisualizerPlugin   ![plot](https://github.com/E-O-Conchas/EBVCubeVisualizerPlugin/blob/master/EBVIcon.png)
+# EBVCubeVisualizerPlugin                         <img src="Conchas/EBVCubeVisualizerPlugin/blob/master/EBVIcon.png" width="200" />           
 
 **EBVCubeVisualizerPlugin** is a QGIS plugin designed for visualizing Essential Biodiversity Variables (EBVs) stored in [EBV portal](https://portal.geobon.org/home) as NetCDF files. The plugin allows users to select and display specific subsets of EBV data based on time, entity, scenario, and metric, providing a flexible and powerful tool for biodiversity analysis.
 
