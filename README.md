@@ -65,7 +65,6 @@ If you encounter any issues with the plugin, please follow these steps:
 1. Ensure that all dependencies are installed and correctly configured.
 2. Verify that the NetCDF file you are using is properly formatted and contains the required dimensions (e.g., `entity`, `time`, `lat`, `lon`).
 3. Check the QGIS Python console for any error messages and provide them when seeking help.
-4. Refer to the plugin’s documentation and FAQs for common issues and solutions.
 
 ## Contributing
 
