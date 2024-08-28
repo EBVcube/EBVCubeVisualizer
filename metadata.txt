@@ -12,24 +12,21 @@ name=EBVCubeVisualizer
 email=e.oceguera@gmx.de
 author=Emmanuel Oceguera-Conchas
 qgisMinimumVersion=3.0
-description=The user can visualizes netCDF formatted data.
-about=The Plugin visualizes netCDF formatted data in a more efficient way, as well as creates plots of the data and can be exported.
+description= Visualize netCDF formatted data efficiently within QGIS.
+about=EBVCubeVisualizer enhances the visualization of netCDF formatted data, allowing users to explore and export plots in an efficient and interactive manner.
 version=0.1
-
-
 repository=https://github.com/EmmaOceg/EBVCubeVisualizerPlugin
+
 
 #end of the mandatory metadata
 
 #tags are comma separated with spaces allowed
-tags=python,netCDF,Visualizer, EBVCube, EuropaBon
+tags=python, netCDF, visualizer, EBVCube, EuropaBon, biodiversity, 3D visualization
 
 homepage=http://homepage
 category=Plugins
 icon=EBVIcon.png
 
-#experimental flag
-experimental=False
-
-# deprecated flag (applies to the whole plugin, not just a single version)
-deprecated=False
+# Flags:
+experimental=True  # True if the plugin is in experimental stages.
+deprecated=False    # True if the plugin is deprecated. Deprecated flag (applies to the whole plugin, not just a single version)
