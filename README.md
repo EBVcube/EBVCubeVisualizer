@@ -73,26 +73,13 @@ We welcome contributions to this project! If you have an idea for a new feature 
 
 ### How to Contribute:
 
-1. Fork the repository.
-2. Create a new branch for your feature or bugfix: `git checkout -b feature-name`
-3. Make your changes and commit them: `git commit -m 'Add some feature'`
-4. Push your branch to GitHub: `git push origin feature-name`
-5. Open a pull request.
-
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## Acknowledgements
-
-- This plugin was developed using the QGIS Plugin Development framework.
-- Special thanks to the QGIS and NetCDF communities for their support and resources.
 
 ## Future Enhancements
-
-- **Expanded Data Sources:** Support for additional data formats beyond NetCDF.
-- **Advanced Analysis Tools:** Integrate additional biodiversity metrics and analysis tools directly into the plugin.
 - **User Interface Improvements:** Streamline the interface for easier parameter selection and data visualization.
-
+- **Data availability:** Provide the catalog of the EBV portla within the plug-in if possible
 Stay tuned for future updates and enhancements!
 
