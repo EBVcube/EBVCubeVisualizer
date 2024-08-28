@@ -6,7 +6,6 @@
 
 - Load and visualize EBV data stored in NetCDF files.
 - Subset data by time, entity, scenario, and metric.
-- Customize the visualization with color ramps and other display options.
 - Automatically apply the correct Coordinate Reference System (CRS) based on the NetCDF file metadata.
 - Display the selected data on the QGIS canvas with clear layer names that include entity and time information.
 
