@@ -25,27 +25,13 @@
    - Use the file browser to select a NetCDF file containing EBV data.
 
 3. **Select Parameters:**
-   - Choose the desired `Entity`, `Time`, `Scenario`, and `Metric` from the dropdown menus.
+   - Choose the desired `Entity`(e.g., species), `Time`(e.g., year), `Metric` (e.g., Biodiversity metric) and `Scenario` from the dropdown menus.
 
-4. **Display Data:**
-   - Click the `Add Layer` button to visualize the selected subset of data on the QGIS canvas.
+4. **Visualize Data:**
+   - Click the `Add Layer` button to display the selected subset of data on the QGIS canvas. The layer will be styled with an automatically generated color ramp base on the data values.
 
 5. **Customize Visualization:**
-   - The plugin automatically applies a color ramp to the displayed data. You can further customize the visualization using the QGIS layer properties.
-
-## Example Workflow
-
-1. **Load the NetCDF File:**
-   - Open the plugin and navigate to your NetCDF file. Load it into the plugin.
-   
-2. **Select Parameters:**
-   - Choose the specific `Entity` (e.g., species), `Time` (e.g., year), `Scenario` (e.g., climate scenario), and `Metric` (e.g., biodiversity metric) that you want to visualize.
-
-3. **Visualize Data:**
-   - The selected subset will be displayed on the QGIS canvas with an automatically generated color ramp based on the data values.
-
-4. **Explore and Analyze:**
-   - Use QGIS tools to explore, analyze, and interpret the EBV data. Apply further QGIS functionality, such as spatial analysis or custom styling, to gain insights from the visualized data.
+   - Use QGIS layer properties to further customize the visualization, such as adjusting the color scheme or applaying spatial analysis tools.
 
 ## Dependencies
 
@@ -55,7 +41,6 @@
   - `netCDF4`: Handles NetCDF file loading and data extraction.
   - `numpy`: Supports array operations and data handling.
   - `gdal`: Facilitates raster data management and processing.
-  - `matplotlib`: Used internally for plotting and data manipulation.
 
 ## Troubleshooting
 
@@ -69,12 +54,9 @@ If you encounter any issues with the plugin, please follow these steps:
 
 We welcome contributions to this project! If you have an idea for a new feature or have found a bug, feel free to open an issue or submit a pull request.
 
-### How to Contribute:
-
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
 
 ## Future Enhancements
 - **User Interface Improvements:** Streamline the interface for easier parameter selection and data visualization.
