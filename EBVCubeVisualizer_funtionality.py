@@ -3,13 +3,15 @@
 * This is a python script for visualizing netCDF files using PyQt5 and matplotlib
 * 
 * The script is based on the QGIS plugin template by Gispo
+* 
+* 
 ****************************************************************************************/
 
 /****************************************************************************************
 * The program is free software; you can redistribute it and/or modify                   
 * it under the terms of the GNU General Public License as published by                  
 * the Free Software Foundation; either version 2 of the License, or                              
-* at your option any later version.                                                     
+* at your option) any later version.                                                     
 * 
 * The script is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
 * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
@@ -50,11 +52,18 @@ import numpy as np
 import matplotlib.pyplot as plt
 from osgeo import osr, gdal, ogr
 
-# Path to the ui file
-ncvPath = os.path.dirname(__file__)  # The command dirname gives the path to the directory where the file is
+
+#we create the path to the ui file
+#Path to the Ordner where the ui file is
+ncvPath = os.path.dirname(__file__) #the comand dirname gives the path to the directory where the file is
+#path to the ui file
+#dosn't matter where the ui file is located in the directory 
 ui_file_path = os.path.join(ncvPath, 'EBVCubeVisualizer.ui')
 
-# Load UI file
+#TWO CLASES#    
+# WIDEGT is a class for the GUI
+# BASE is a PyQt5 class to insatalize the GUI
+# WIDGET, BASE = uic.loadUiType(uiPath)
 ui_class, base_class = uic.loadUiType(ui_file_path)
 
 class maskAndFunctionality(base_class, ui_class):
