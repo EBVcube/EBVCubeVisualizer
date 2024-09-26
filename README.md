@@ -11,7 +11,7 @@
 
 ## Installation
 
-1. Clone or download this repository.
+1. Download this repository as zip file.
 2. Open QGIS and go to `Plugins > Manage and Install Plugins...`.
 3. Click on `Install from ZIP` and select the downloaded file.
 4. Activate the plugin by checking the box next to "EBVCubeVisualizerPlugin" in the `Installed` tab.
