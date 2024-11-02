@@ -123,7 +123,7 @@ class maskAndFunctionality(base_class, ui_class):
             if dataset_name in self.loaded_datasets:
                 self.loaded_datasets.pop(dataset_name).close()
 
-    def loadNetCDF(self):
+    def loadNetCDF(self): # This function must be merge with the import data. Like this we avoid two steps to open the file
         """This function loads the netCDF file and shows the variables, groups, and sub-groups in the QTreeWidget."""
         path = self.text_set.text().strip()
 
