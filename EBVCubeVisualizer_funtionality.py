@@ -87,7 +87,7 @@ class maskAndFunctionality(base_class, ui_class):
         """This function closes the plugin"""
         self.close()
 
-    def importData(self):
+    def importData(self): # This need to be updated to import the data and directly open. Avoid two steps to open file
         """This function imports the netCDF file"""
         path = QFileDialog.getOpenFileName(None, "Select netCDF file", filter="*.nc")[0]
         if path:
