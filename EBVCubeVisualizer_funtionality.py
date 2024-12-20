@@ -74,7 +74,7 @@ class maskAndFunctionality(base_class, ui_class):
 
         # Connect signals and slots
         self.btn_closePlugin.clicked.connect(self.closePlugin)
-        self.btn_inputFile.clicked.connect(self.importData)
+        # self.btn_inputFile.clicked.connect(self.importData)
         self.btn_remove.clicked.connect(self.removePath)
         self.btn_load.clicked.connect(self.loadNetCDF)
         self.btn_load.clicked.connect(self.setMapData)
@@ -86,12 +86,6 @@ class maskAndFunctionality(base_class, ui_class):
     def closePlugin(self):
         """This function closes the plugin"""
         self.close()
-
-    def importData(self): # This need to be updated to import the data and directly open. Avoid two steps to open file
-        """This function imports the netCDF file"""
-        path = QFileDialog.getOpenFileName(None, "Select netCDF file", filter="*.nc")[0]
-        if path:
-            self.text_set.setText(path)
 
     def removePath(self):
         """This function removes the path from the text space"""
@@ -125,11 +119,13 @@ class maskAndFunctionality(base_class, ui_class):
 
     def loadNetCDF(self): # This function must be merge with the import data. Like this we avoid two steps to open the file
         """This function loads the netCDF file and shows the variables, groups, and sub-groups in the QTreeWidget."""
-        path = self.text_set.text().strip()
+        path, _ = QFileDialog.getOpenFileName(None, "Select netCDF file", filter="*.nc")
 
         if not path:
             QMessageBox.warning(None, "Warning", "Please select a netCDF file.")
             return
+        
+        self.text_set.text().strip()
 
         if path in self.loaded_datasets:
             ncFile = self.loaded_datasets[path]
@@ -153,7 +149,6 @@ class maskAndFunctionality(base_class, ui_class):
         self.tree_data.addTopLevelItem(top_level)
 
         self.populateTreeWidget(ncFile, top_level)
-
         self.tree_data.expandAll()
 
     def populateTreeWidget(self, ncFile, parent_item):
