@@ -122,10 +122,9 @@ class maskAndFunctionality(base_class, ui_class):
         path, _ = QFileDialog.getOpenFileName(None, "Select netCDF file", filter="*.nc")
 
         if not path:
-            QMessageBox.warning(None, "Warning", "Please select a netCDF file.")
             return
         
-        self.text_set.text().strip()
+        self.text_set.setText(path)
 
         if path in self.loaded_datasets:
             ncFile = self.loaded_datasets[path]
@@ -150,6 +149,9 @@ class maskAndFunctionality(base_class, ui_class):
 
         self.populateTreeWidget(ncFile, top_level)
         self.tree_data.expandAll()
+
+        # Call setMapSata after loading the file
+        self.setMapData(path)
 
     def populateTreeWidget(self, ncFile, parent_item):
         """Populate the tree widget with groups and variables from the NetCDF file."""
