@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1302</width>
-    <height>898</height>
+    <width>1206</width>
+    <height>931</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -198,6 +198,12 @@
           <layout class="QFormLayout" name="formLayout">
            <item row="0" column="1">
             <widget class="QTreeWidget" name="tree_data">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Ignored" vsizetype="Expanding">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
              <property name="font">
               <font>
                <weight>50</weight>
@@ -252,6 +258,29 @@
           </layout>
          </widget>
         </widget>
+       </item>
+       <item row="0" column="1">
+        <spacer name="verticalSpacer_2">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </item>
+     <item row="3" column="1">
+      <layout class="QVBoxLayout" name="verticalLayout">
+       <property name="sizeConstraint">
+        <enum>QLayout::SetDefaultConstraint</enum>
+       </property>
+       <item>
+        <widget class="QTextBrowser" name="text_info"/>
        </item>
       </layout>
      </item>
@@ -353,14 +382,7 @@
           <item row="5" column="1">
            <widget class="QComboBox" name="cbox_metric"/>
           </item>
-          <item row="7" column="1">
-           <widget class="Line" name="line">
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-           </widget>
-          </item>
-          <item row="8" column="0">
+          <item row="7" column="0">
            <widget class="QLabel" name="label_2">
             <property name="font">
              <font>
@@ -372,10 +394,10 @@
             </property>
            </widget>
           </item>
-          <item row="8" column="1">
+          <item row="7" column="1">
            <widget class="QComboBox" name="cbox_entity"/>
           </item>
-          <item row="9" column="0">
+          <item row="8" column="0">
            <widget class="QLabel" name="label_3">
             <property name="font">
              <font>
@@ -387,7 +409,7 @@
             </property>
            </widget>
           </item>
-          <item row="9" column="1">
+          <item row="8" column="1">
            <widget class="QComboBox" name="cbox_time"/>
           </item>
           <item row="10" column="1">
@@ -403,7 +425,7 @@
             </property>
            </spacer>
           </item>
-          <item row="11" column="1">
+          <item row="12" column="1">
            <widget class="QPushButton" name="btn_plot">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
@@ -445,16 +467,6 @@
         </item>
        </layout>
       </widget>
-     </item>
-     <item row="3" column="1">
-      <layout class="QVBoxLayout" name="verticalLayout">
-       <property name="sizeConstraint">
-        <enum>QLayout::SetDefaultConstraint</enum>
-       </property>
-       <item>
-        <widget class="QTextBrowser" name="text_info"/>
-       </item>
-      </layout>
      </item>
     </layout>
    </item>
