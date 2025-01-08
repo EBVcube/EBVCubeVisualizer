@@ -261,32 +261,34 @@ class maskAndFunctionality(base_class, ui_class):
 
     def displayGlobalAttributes(self, ncFile): 
         """Display global attributes of the NetCDF file with custom formatting."""
-        self.text_info.append(f"<b><font size=5>File name: {os.path.basename(ncFile.filepath())}</font></b>") # File name of the NetCDF file 
-        self.text_info.append(f"<b><font size=5>Title: {ncFile.title}</font></b>") # Title of the NetCDF file
+        self.text_info.append(f"<b><font size=4>File name: {os.path.basename(ncFile.filepath())}</font></b>") # File name of the NetCDF file 
+        self.text_info.append(f"<b><font size=4>Title: {ncFile.title}</font></b>") # Title of the NetCDF file
         self.text_info.append("<hr>") # 
-        self.text_info.append("<b><font size=4>Global Attributes:</font></b><br>") # Global Attributes 
+        self.text_info.append("<b><font size=3>Global Attributes</font></b><br>") # Global Attributes 
         for attr in ncFile.ncattrs(): 
             if attr not in ['title', 'history', 'Conventions', 'date_issued']:
-                self.text_info.append(f"<b><font size=3>• {attr}:</font></b> {ncFile.getncattr(attr)}<br>")
+                self.text_info.append(f"<b><font size=2>• {attr}:</font></b> <font size=2> {ncFile.getncattr(attr)}<br>")
         # move cursor to the start of the text
         self.text_info.moveCursor(QTextCursor.Start)  # Move cursor to the top
 
     def displayGroupAttributes(self, group):
         """Display attributes of a NetCDF group with custom formatting."""
         groupType = "Metric" if 'metric' in group.name.lower() else "Scenario" 
-        self.text_info.append(f"<b><font size=5>Attributes of the {groupType}:</font></b><br>")
+        self.text_info.append(f"<b><font size=4>Attributes of the {groupType}</font></b><br>")
         self.text_info.append("<hr style='border-top: 3px double #8c8b8b;'>") 
         for attr in group.ncattrs():
-            self.text_info.append(f"<b><font size=3>• {attr}:</font></b> {group.getncattr(attr)}<br>")
-        
+            self.text_info.append(f"<b><font size=2>• {attr}:</font></b> <font size=2>{group.getncattr(attr)}<br>")
+        # move cursor to the start of the text
+        self.text_info.moveCursor(QTextCursor.Start)  # Move cursor to the top
 
     def displayVariableAttributes(self, var):
         """Display attributes of a NetCDF variable with custom formatting."""
-        self.text_info.append("<b><font size=5>Attributes of the EBV cube :</font></b><br>")
+        self.text_info.append("<b><font size=4>Attributes of the EBV cube </font></b><br>")
         self.text_info.append("<hr style='border-top: 3px double #8c8b8b;'>")
         for attr in var.ncattrs():
-            self.text_info.append(f"<b><font size=3>• {attr}:</font></b> {var.getncattr(attr)}<br>")
-        
+            self.text_info.append(f"<b><font size=2>• {attr}:</font></b> <font size=2> {var.getncattr(attr)}<br>")
+        # move cursor to the start of the text
+        self.text_info.moveCursor(QTextCursor.Start)  # Move cursor to the top
 
     def displayData(self):
         """This function extracts a subset of data from a NetCDF file based on the user's selections and adds it to the QGIS map as a raster layer."""
@@ -298,34 +300,59 @@ class maskAndFunctionality(base_class, ui_class):
         ncFile = self.loaded_datasets[path]
 
         try:
+            # extract user selection from the GUI
             scenarioSelected = self.cbox_scenarios.currentText()
             metricSelected = self.cbox_metric.currentText()
             entitySelected = self.cbox_entity.currentText()
             timeSelected = self.cbox_time.currentText()
-
+            # Retrieve entity index
             entities = ncFile.variables['entity']
             entityDrop = [np.array(entities[i]).tobytes().decode('UTF-8').strip() for i in range(len(entities))]
             entityIndex = entityDrop.index(entitySelected)
-
+            # Retrieve time index
             time = ncFile.variables['time']
             timeUnits = time.units
             timeCalendar = time.calendar
             time = [str(i).split(" ")[0] for i in nc.num2date(time[:], timeUnits, timeCalendar)]
             timeIndex = time.index(timeSelected)
-
+            
+            # Access the data variable
             if self.cbox_scenarios.isEnabled():
                 data_variable = ncFile.groups[scenarioSelected].groups[metricSelected].variables['ebv_cube']
             else:
                 data_variable = ncFile.groups[metricSelected].variables['ebv_cube']
+            
+            print(f"Attributes of data_variable: {data_variable.ncattrs()}")
 
+            # Extract the subset of data
             data_subset = data_variable[entityIndex, timeIndex, :, :]
+            
+            # Retrive the standard name for the metric
+            if self.cbox_scenarios.isEnabled():
+                #metric is nested under the selected scenario
+                metric_variable = ncFile.groups[scenarioSelected].groups[metricSelected]
+                metric_standard_name = metric_variable.getncattr('standard_name') if 'standard_name' in metric_variable.ncattrs() else metricSelected
+            else:
+                metric_variable = ncFile.groups[metricSelected]
+                metric_standard_name = metric_variable.getncattr('standard_name') if 'standard_name' in metric_variable.ncattrs() else metricSelected
+            print(f"Attributes of metric_variable: {metric_variable.ncattrs()}")
+            # metric_standard_name = data_variable.getncattr('standard_name') if 'standard_name' in data_variable.ncattrs() else metricSelected
 
-            crs_wkt = None
-            if 'crs' in ncFile.variables:
-                crs_var = ncFile.variables['crs']
-                if 'spatial_ref' in crs_var.ncattrs():
-                    crs_wkt = crs_var.getncattr('spatial_ref')
+            # Retrieve the standard name for the scenario (if scenarios are enabled)
+            if self.cbox_scenarios.isEnabled():
+                scenario_variable = ncFile.groups[scenarioSelected]
+                scenario_standard_name = scenario_variable.getncattr('standard_name') if 'standard_name' in scenario_variable.ncattrs() else scenarioSelected
+            else:
+                scenario_standard_name = None
+            
+            # Construc the layer name
+            if scenario_standard_name:
+                rasterName = f"{scenario_standard_name} | {metric_standard_name} | Entity: {entitySelected} | Time: {timeSelected}"
+            else:
+                rasterName = f"{metric_standard_name} | Entity: {entitySelected} | Time: {timeSelected}"
+            
 
+            # Create a temporary NetCDF file with the subset of data
             temp_nc_path = tempfile.mktemp(suffix='.nc')
             with nc.Dataset(temp_nc_path, 'w', format='NETCDF4') as temp_nc:
                 temp_nc.createDimension('lat', len(ncFile.dimensions['lat']))
@@ -342,21 +369,24 @@ class maskAndFunctionality(base_class, ui_class):
                 temp_data_var.setncatts({k: data_variable.getncattr(k) for k in data_variable.ncattrs()})
                 temp_data_var[0, 0, :, :] = data_subset
 
+            
+            # Create the raster layer in QGIS
             uri = f'NETCDF:"{temp_nc_path}":ebv_cube'
-            rasterName = f"metric: {metricSelected} entity: {entitySelected} time: {timeSelected}"
-            if self.cbox_scenarios.isEnabled():
-                rasterName = f"scenario: {scenarioSelected} {rasterName}"
-
             rasterLayer = QgsRasterLayer(uri, rasterName, 'gdal')
 
             if not rasterLayer.isValid():
                 QMessageBox.warning(None, "Error", "Failed to load the raster layer.")
-                return
-
-            if crs_wkt:
-                crs = QgsCoordinateReferenceSystem()
-                crs.createFromWkt(crs_wkt)
-                rasterLayer.setCrs(crs)
+                return  
+            
+            # Get CRS from the NetCDF file
+            crs_wkt = None
+            if 'crs' in ncFile.variables:
+                crs_var = ncFile.variables['crs']
+                if 'spatial_ref' in crs_var.ncattrs():
+                    crs_wkt = crs_var.getncattr('spatial_ref')
+                    crs = QgsCoordinateReferenceSystem()
+                    crs.createFromWkt(crs_wkt)
+                    rasterLayer.setCrs(crs)
 
             dp = rasterLayer.dataProvider()
             band = 1
