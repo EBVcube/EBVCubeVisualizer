@@ -24,7 +24,7 @@ repository=https://github.com/EmmaOceg/EBVCubeVisualizerPlugin
 tags= python, netCDF, visualizer, EBVCube, biodiversity, visualization, raster data, interactive visualization
 
 homepage=https://portal.geobon.org/datasets
-category=Plugins
+category=Analysis
 icon=EBVIcon.png
 
 # Flags:
