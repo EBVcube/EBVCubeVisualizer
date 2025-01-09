@@ -1,12 +1,12 @@
 # EBVCubeVisualizerPlugin                                                 <img align="left" src="https://github.com/E-O-Conchas/EBVCubeVisualizerPlugin/blob/master/EBVIcon.png" alt="drawing" width="50"/>      
 
-**EBVCubeVisualizerPlugin** is a QGIS plugin designed for visualizing Essential Biodiversity Variables (EBVs) stored in [EBV portal](https://portal.geobon.org/home) as NetCDF files. The plugin allows users to select and display specific subsets of EBV data based on time, entity, scenario, and metric, providing a flexible and powerful tool for biodiversity analysis.
+**EBVCubeVisualizerPlugin** is a QGIS plugin designed for visualizing Essential Biodiversity Variables (EBVs) stored in the [EBV Data Portal](https://portal.geobon.org/datasets) as EBVCube netCDF files. The plugin allows users to select and display specific slices of EBV data cubes based on time, entity, scenario, and metric, providing a flexible and powerful tool for biodiversity analysis.
 
 ## Features
 
-- Load and visualize EBV data stored in NetCDF files.
+- Load and visualize EBVCube data stored in netCDF files.
 - Subset data by time, entity, scenario, and metric.
-- Automatically apply the correct Coordinate Reference System (CRS) based on the NetCDF file metadata.
+- Automatically apply the correct Coordinate Reference System (CRS) based on the netCDF file metadata.
 - Display the selected data on the QGIS canvas with clear layer names that include entity and time information.
 
 ## Installation
@@ -21,11 +21,11 @@
 1. **Open the Plugin:**
    - After installation, go to `Plugins > EBVCubeVisualizerPlugin` to open the plugin interface.
 
-2. **Load a NetCDF File:**
-   - Use the file browser to select a NetCDF file containing EBV data.
+2. **Load a netCDF File:**
+   - Use the file browser to select a netCDF file containing EBVCube data.
 
 3. **Select Parameters:**
-   - Choose the desired `Entity`(e.g., species), `Time`(e.g., year), `Metric` (e.g., Biodiversity metric) and `Scenario` from the dropdown menus.
+   - Choose the desired `Entity`(e.g., species), `Time`(e.g., year), `Metric` (e.g., Biodiversity metric) and `Scenario` (e.g., SSP1) from the dropdown menus.
 
 4. **Visualize Data:**
    - Click the `Add Layer` button to display the selected subset of data on the QGIS canvas. The layer will be styled with an automatically generated color ramp base on the data values.
@@ -38,7 +38,7 @@
 - QGIS 3.0 or later
 - Python 3.6 or later
 - Required Python Libraries:
-  - `netCDF4`: Handles NetCDF file loading and data extraction.
+  - `netCDF4`: Handles netCDF file loading and data extraction.
   - `numpy`: Supports array operations and data handling.
   - `gdal`: Facilitates raster data management and processing.
 
@@ -47,7 +47,7 @@
 If you encounter any issues with the plugin, please follow these steps:
 
 1. Ensure that all dependencies are installed and correctly configured.
-2. Verify that the NetCDF file you are using is properly formatted and contains the required dimensions (e.g., `entity`, `time`, `lat`, `lon`).
+2. Verify that the netCDF file you are using is properly formatted and contains the required dimensions (e.g., `entity`, `time`, `lat`, `lon`).
 3. Check the QGIS Python console for any error messages and provide them when seeking help.
 
 ## Contributing
