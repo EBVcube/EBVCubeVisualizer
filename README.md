@@ -1,6 +1,6 @@
 # EBVCubeVisualizer                                                <img align="left" src="https://github.com/E-O-Conchas/EBVCubeVisualizerPlugin/blob/master/EBVIcon.png" alt="drawing" width="100"/>      
 
-**EBVCubeVisualizer** is a QGIS plugin tailored for exploring Essential Biodiversity Variables (EBVs) stored in the [EBV Data Portal](https://portal.geobon.org/datasets) as EBVCube netCDF files. This plugin enables users to extract and visualize specific slices of EBV data cubes, allowing flexible selection based on *time*, *entity*, *scenario*, and *metric*. While not designed for in-depth biodiversity analysis, EBVCubeVisualizer serves as a powrful and intuitive starting point for exploring dataset and preparing data for further analysis.
+**EBVCubeVisualizer** is a QGIS plugin tailored for exploring Essential Biodiversity Variables (EBVs) stored in the [EBV Data Portal](https://portal.geobon.org/datasets) as EBVCube netCDF files. This plugin enables users to extract and visualize specific slices of EBV data cubes, allowing flexible selection based on *time*, *entity*, *scenario*, and *metric*. While not designed for in-depth biodiversity analysis, EBVCubeVisualizer serves as a powerful and intuitive starting point for exploring datasets and preparing data for further analysis.
 
 ## Features
 
@@ -67,8 +67,8 @@ We welcome contributions to this project! If you have an idea for a new feature 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## Future Enhancements
+ 
+- **User Interface Improvements:** Implement new features to enhance the user experience and make the plugin more intuitive.
+- **Data Availability:** Integrate the EBV Portal catalog within the plugin to facilitate data retrieval.
 
-- **User Interface Improvements:** Streamline the interface for easier parameter selection and data visualization.
-- **Data availability:** Provide the catalog of the EBV portla within the plug-in if possible
 Stay tuned for future updates and enhancements!
-
