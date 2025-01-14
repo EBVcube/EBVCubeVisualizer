@@ -21,16 +21,12 @@
 
 1. **Open the Plugin:**
    - After installation, go to `Plugins > EBVCubeVisualizerPlugin` to open the plugin interface.
-
 2. **Load a netCDF File:**
    - Use the file browser to select a netCDF file containing EBVCube data.
-
 3. **Select Parameters:**
    - Choose the desired `Entity`(e.g., species), `Time`(e.g., year), `Metric` (e.g., Biodiversity metric) and `Scenario` (e.g., SSP1) from the dropdown menus.
-
 4. **Visualize Data:**
    - Click the `Add Layer` button to display the selected subset of data on the QGIS canvas. The layer will be styled with an automatically generated color ramp base on the data values.
-
 5. **Customize Visualization:**
    - Use QGIS layer properties to further customize the visualization, such as adjusting the color scheme or applaying spatial analysis tools.
 
@@ -42,6 +38,16 @@
   - `netCDF4`: Handles netCDF file loading and data extraction.
   - `numpy`: Supports array operations and data handling.
   - `gdal`: Facilitates raster data management and processing.
+
+f you encounter issues with missing libraries, follow the instructions below to install them:
+
+### Installing Libraries via OSGeo4W Shell
+1. Open the **OSGeo4W Shell**.
+2. Run the following commands to install the required libraries:
+   ```bash
+   python -m pip install netCDF4 numpy gdal
+
+3. Restart QGIS to ensure the new libraries are recognized
 
 ## Troubleshooting
 
