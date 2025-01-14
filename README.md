@@ -1,13 +1,14 @@
 # EBVCubeVisualizer                                                <img align="left" src="https://github.com/E-O-Conchas/EBVCubeVisualizerPlugin/blob/master/EBVIcon.png" alt="drawing" width="50"/>      
 
-**EBVCubeVisualizer** is a QGIS plugin tailored for exploring Essential Biodiversity Variables (EBVs) stored in the [EBV Data Portal](https://portal.geobon.org/datasets) as EBVCube netCDF files. This plugin enables users to extract and visualize specific slices of EBV data cubes, allowing flexible selection based on time, entity, scenario, and metric. While not designed for in-depth biodiversity analysis, EBVCubeVisualizer serves as a powrful and intuitive starting point for exploring dataset and preparing data for further analysis.
+**EBVCubeVisualizer** is a QGIS plugin tailored for exploring Essential Biodiversity Variables (EBVs) stored in the [EBV Data Portal](https://portal.geobon.org/datasets) as EBVCube netCDF files. This plugin enables users to extract and visualize specific slices of EBV data cubes, allowing flexible selection based on *time*, *entity*, *scenario*, and *metric*. While not designed for in-depth biodiversity analysis, EBVCubeVisualizer serves as a powrful and intuitive starting point for exploring dataset and preparing data for further analysis.
 
 ## Features
 
-- Load and visualize EBVCube data stored in netCDF files.
-- Subset data by time, entity, scenario, and metric.
-- Automatically apply the correct Coordinate Reference System (CRS) based on the netCDF file metadata.
-- Display the selected data on the QGIS canvas with clear layer names that include entity and time information.
+- *Load and Visualize EBVCube Data:* Seamlessly load EBVCube dataset stored in netCDF format and visualize them directly in QGIs.
+- *Flexible Data Subsetting:* Extract specific slices of data by selecting time, entity, scenario, and metric, providing targeted views of biodiversity information.
+- *Metadata and Data Structure Discovery:* Explore the full metadata and hierarchical strcuture of EBVCube datasets, making it easier to understand and navigate complex biodiversity data.
+- *Automatic CRS Application:* Automatically apply the correct Coordinate Refrence System (CRS) based on the metadata embedded in the netCDF files. 
+- *Clear and Informative Layer Naming:* Display selected data on the QGIS canvas with meaningful layer names that incorporate entity and time details for easy identification.
 
 ## Installation
 
