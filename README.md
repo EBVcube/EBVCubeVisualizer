@@ -4,11 +4,11 @@
 
 ## Features
 
-- *Load and Visualize EBVCube Data:* Seamlessly load EBVCube dataset stored in netCDF format and visualize them directly in QGIs.
-- *Flexible Data Subsetting:* Extract specific slices of data by selecting time, entity, scenario, and metric, providing targeted views of biodiversity information.
-- *Metadata and Data Structure Discovery:* Explore the full metadata and hierarchical strcuture of EBVCube datasets, making it easier to understand and navigate complex biodiversity data.
-- *Automatic CRS Application:* Automatically apply the correct Coordinate Refrence System (CRS) based on the metadata embedded in the netCDF files. 
-- *Clear and Informative Layer Naming:* Display selected data on the QGIS canvas with meaningful layer names that incorporate entity and time details for easy identification.
+- `*Load and Visualize EBVCube Data:*` Seamlessly load EBVCube dataset stored in netCDF format and visualize them directly in QGIs.
+- `*Flexible Data Subsetting:*` Extract specific slices of data by selecting time, entity, scenario, and metric, providing targeted views of biodiversity information.
+- `*Metadata and Data Structure Discovery:*` Explore the full metadata and hierarchical strcuture of EBVCube datasets, making it easier to understand and navigate complex biodiversity data.
+- `*Automatic CRS Application:*` Automatically apply the correct Coordinate Refrence System (CRS) based on the metadata embedded in the netCDF files. 
+- `*Clear and Informative Layer Naming:*` Display selected data on the QGIS canvas with meaningful layer names that incorporate entity and time details for easy identification.
 
 ## Installation
 
@@ -39,7 +39,7 @@
   - `numpy`: Supports array operations and data handling.
   - `gdal`: Facilitates raster data management and processing.
 
-f you encounter issues with missing libraries, follow the instructions below to install them:
+if you encounter issues with missing libraries, follow the instructions below to install them:
 
 ### Installing Libraries via OSGeo4W Shell
 1. Open the **OSGeo4W Shell**.
