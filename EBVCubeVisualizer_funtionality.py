@@ -264,10 +264,10 @@ class maskAndFunctionality(base_class, ui_class):
         self.text_info.append(f"<b><font size=4>File name: {os.path.basename(ncFile.filepath())}</font></b>") # File name of the NetCDF file 
         self.text_info.append(f"<b><font size=4>Title: {ncFile.title}</font></b>") # Title of the NetCDF file
         self.text_info.append("<hr>") # 
-        self.text_info.append("<b><font size=3>Global Attributes</font></b><br>") # Global Attributes 
+        self.text_info.append("<b><font size=4>Global Attributes</font></b><br>") # Global Attributes 
         for attr in ncFile.ncattrs(): 
             if attr not in ['title', 'history', 'Conventions', 'date_issued']:
-                self.text_info.append(f"<b><font size=2>• {attr}:</font></b> <font size=2> {ncFile.getncattr(attr)}<br>")
+                self.text_info.append(f"<b><font size=3>• {attr}:</font></b> <font size=3> {ncFile.getncattr(attr)}<br>")
         # move cursor to the start of the text
         self.text_info.moveCursor(QTextCursor.Start)  # Move cursor to the top
 
@@ -277,7 +277,7 @@ class maskAndFunctionality(base_class, ui_class):
         self.text_info.append(f"<b><font size=4>Attributes of the {groupType}</font></b><br>")
         self.text_info.append("<hr style='border-top: 3px double #8c8b8b;'>") 
         for attr in group.ncattrs():
-            self.text_info.append(f"<b><font size=2>• {attr}:</font></b> <font size=2>{group.getncattr(attr)}<br>")
+            self.text_info.append(f"<b><font size=3>• {attr}:</font></b> <font size=3>{group.getncattr(attr)}<br>")
         # move cursor to the start of the text
         self.text_info.moveCursor(QTextCursor.Start)  # Move cursor to the top
 
@@ -286,7 +286,7 @@ class maskAndFunctionality(base_class, ui_class):
         self.text_info.append("<b><font size=4>Attributes of the EBV cube </font></b><br>")
         self.text_info.append("<hr style='border-top: 3px double #8c8b8b;'>")
         for attr in var.ncattrs():
-            self.text_info.append(f"<b><font size=2>• {attr}:</font></b> <font size=2> {var.getncattr(attr)}<br>")
+            self.text_info.append(f"<b><font size=3>• {attr}:</font></b> <font size=3> {var.getncattr(attr)}<br>")
         # move cursor to the start of the text
         self.text_info.moveCursor(QTextCursor.Start)  # Move cursor to the top
 
