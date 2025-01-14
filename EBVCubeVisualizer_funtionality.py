@@ -203,7 +203,7 @@ class maskAndFunctionality(base_class, ui_class):
 
         # Set scenario and metric in the QComboBox
         self.cbox_metric.addItems(groups)
-        self.cbox_scenarios.addItem("not scenarios")
+        self.cbox_scenarios.addItem("no scenario")
         self.cbox_scenarios.setEnabled(False)
 
         if groupsOfGroups:
