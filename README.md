@@ -42,6 +42,7 @@
 if you encounter issues with missing libraries, follow the instructions below to install them:
 
 ### Installing Libraries via OSGeo4W Shell
+
 1. Open the **OSGeo4W Shell**.
 2. Run the following commands to install the required libraries:
    ```bash
@@ -66,6 +67,7 @@ We welcome contributions to this project! If you have an idea for a new feature 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## Future Enhancements
+
 - **User Interface Improvements:** Streamline the interface for easier parameter selection and data visualization.
 - **Data availability:** Provide the catalog of the EBV portla within the plug-in if possible
 Stay tuned for future updates and enhancements!
