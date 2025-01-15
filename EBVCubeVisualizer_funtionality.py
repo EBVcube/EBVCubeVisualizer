@@ -299,8 +299,15 @@ class maskAndFunctionality(base_class, ui_class):
         """Display attributes of a NetCDF variable with custom formatting."""
         self.text_info.append("<b><font size=5>Attributes of the EBV cube </font></b><br>")
         self.text_info.append("<hr style='border-top: 3px double #8c8b8b;'>")
+
+        # Exclude technical attributes
+        excluded_attrs = {'grid_mapping', 'coordinates'}
+        
+        # Display all attributes except the excluded ones
         for attr in var.ncattrs():
-            self.text_info.append(f"<b><font size=4>• {attr}:</font></b> <font size=4> {var.getncattr(attr)}<br>")
+            if not attr in excluded_attrs:
+                self.text_info.append(f"<b><font size=4>• {attr}:</font></b> <font size=4> {var.getncattr(attr)}<br>")
+        
         # move cursor to the start of the text
         self.text_info.moveCursor(QTextCursor.Start)  # Move cursor to the top
 
