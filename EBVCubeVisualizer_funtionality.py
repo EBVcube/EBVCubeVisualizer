@@ -200,18 +200,44 @@ class maskAndFunctionality(base_class, ui_class):
         groups = list(ncFile.groups.keys()) # Get the metrics  
         groupsOfGroups = list(ncFile.groups[groups[0]].groups.keys()) if groups else [] 
 
-
-        # Set scenario and metric in the QComboBox
-        self.cbox_metric.addItems(groups)
-        self.cbox_scenarios.addItem("no scenario")
-        self.cbox_scenarios.setEnabled(False)
-
+        # We populate the scenarrios drop down menu
         if groupsOfGroups:
             self.cbox_scenarios.setEnabled(True)
             self.cbox_scenarios.clear()
-            self.cbox_scenarios.addItems(groups)
+            
+            # Add standard name to the scenarios
+            for group_name in groups:
+                group = ncFile.groups[group_name]
+                standard_name = getattr(group, 'standard_name', group_name)
+                self.cbox_scenarios.addItem(standard_name)
+        else:
+            self.cbox_scenarios.addItem("no scenario")
+            self.cbox_scenarios.setEnabled(False)
+
+        # Pupulate the metrics drop down menu
+        if groupsOfGroups:
             self.cbox_metric.clear()
-            self.cbox_metric.addItems(groupsOfGroups)
+            for sub_group_name in groupsOfGroups:
+                sub_group = ncFile.groups[groups[0]].groups[sub_group_name]
+                standard_name = getattr(sub_group, 'standard_name', sub_group_name)
+                self.cbox_metric.addItem(standard_name)
+        else:
+            for group_name in groups:
+                group = ncFile.groups[group_name]
+                standard_name = getattr(group, 'standard_name', group_name)
+                self.cbox_metric.addItem(standard_name)
+
+        # # Set scenario and metric in the QComboBox
+        # self.cbox_metric.addItems(groups)
+        # self.cbox_scenarios.addItem("no scenario")
+        # self.cbox_scenarios.setEnabled(False)
+
+        # if groupsOfGroups:
+        #     self.cbox_scenarios.setEnabled(True)
+        #     self.cbox_scenarios.clear()
+        #     self.cbox_scenarios.addItems(groups)
+        #     self.cbox_metric.clear()
+        #     self.cbox_metric.addItems(groupsOfGroups)
 
         time = ncFile.variables['time']
         timeUnits = time.units
@@ -261,32 +287,32 @@ class maskAndFunctionality(base_class, ui_class):
 
     def displayGlobalAttributes(self, ncFile): 
         """Display global attributes of the NetCDF file with custom formatting."""
-        self.text_info.append(f"<b><font size=4>File name: {os.path.basename(ncFile.filepath())}</font></b>") # File name of the NetCDF file 
-        self.text_info.append(f"<b><font size=4>Title: {ncFile.title}</font></b>") # Title of the NetCDF file
+        self.text_info.append(f"<b><font size=4.5>File name: {os.path.basename(ncFile.filepath())}</font></b>") # File name of the NetCDF file 
+        self.text_info.append(f"<b><font size=4.5>Title: {ncFile.title}</font></b>") # Title of the NetCDF file
         self.text_info.append("<hr>") # 
-        self.text_info.append("<b><font size=4>Global Attributes</font></b><br>") # Global Attributes 
+        self.text_info.append("<b><font size=4.5>Global Attributes</font></b><br>") # Global Attributes 
         for attr in ncFile.ncattrs(): 
             if attr not in ['title', 'history', 'Conventions', 'date_issued']:
-                self.text_info.append(f"<b><font size=3>• {attr}:</font></b> <font size=3> {ncFile.getncattr(attr)}<br>")
+                self.text_info.append(f"<b><font size=3.5>• {attr}:</font></b> <font size=3.5> {ncFile.getncattr(attr)}<br>")
         # move cursor to the start of the text
         self.text_info.moveCursor(QTextCursor.Start)  # Move cursor to the top
 
     def displayGroupAttributes(self, group):
         """Display attributes of a NetCDF group with custom formatting."""
         groupType = "Metric" if 'metric' in group.name.lower() else "Scenario" 
-        self.text_info.append(f"<b><font size=4>Attributes of the {groupType}</font></b><br>")
+        self.text_info.append(f"<b><font size=4.5>Attributes of the {groupType}</font></b><br>")
         self.text_info.append("<hr style='border-top: 3px double #8c8b8b;'>") 
         for attr in group.ncattrs():
-            self.text_info.append(f"<b><font size=3>• {attr}:</font></b> <font size=3>{group.getncattr(attr)}<br>")
+            self.text_info.append(f"<b><font size=3.5>• {attr}:</font></b> <font size=3.5>{group.getncattr(attr)}<br>")
         # move cursor to the start of the text
         self.text_info.moveCursor(QTextCursor.Start)  # Move cursor to the top
 
     def displayVariableAttributes(self, var):
         """Display attributes of a NetCDF variable with custom formatting."""
-        self.text_info.append("<b><font size=4>Attributes of the EBV cube </font></b><br>")
+        self.text_info.append("<b><font size=4.5>Attributes of the EBV cube </font></b><br>")
         self.text_info.append("<hr style='border-top: 3px double #8c8b8b;'>")
         for attr in var.ncattrs():
-            self.text_info.append(f"<b><font size=3>• {attr}:</font></b> <font size=3> {var.getncattr(attr)}<br>")
+            self.text_info.append(f"<b><font size=3.5>• {attr}:</font></b> <font size=3.5> {var.getncattr(attr)}<br>")
         # move cursor to the start of the text
         self.text_info.moveCursor(QTextCursor.Start)  # Move cursor to the top
 
