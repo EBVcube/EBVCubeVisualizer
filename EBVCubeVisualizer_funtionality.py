@@ -227,18 +227,6 @@ class maskAndFunctionality(base_class, ui_class):
                 standard_name = getattr(group, 'standard_name', group_name)
                 self.cbox_metric.addItem(standard_name)
 
-        # # Set scenario and metric in the QComboBox
-        # self.cbox_metric.addItems(groups)
-        # self.cbox_scenarios.addItem("no scenario")
-        # self.cbox_scenarios.setEnabled(False)
-
-        # if groupsOfGroups:
-        #     self.cbox_scenarios.setEnabled(True)
-        #     self.cbox_scenarios.clear()
-        #     self.cbox_scenarios.addItems(groups)
-        #     self.cbox_metric.clear()
-        #     self.cbox_metric.addItems(groupsOfGroups)
-
         time = ncFile.variables['time']
         timeUnits = time.units
         timeCalendar = time.calendar
