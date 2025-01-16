@@ -326,10 +326,21 @@ class maskAndFunctionality(base_class, ui_class):
             metricSelected = self.cbox_metric.currentText()
             entitySelected = self.cbox_entity.currentText()
             timeSelected = self.cbox_time.currentText()
+
+            # Retrieve the actual group/variable names using mapping dictionaries
+            if self.cbox_scenarios.isEnabled():
+                scenario_actual_name = self.scenario_name_map.get(scenarioSelected, scenarioSelected)
+                metric_actual_name = self.metric_name_map.get(metricSelected, metricSelected)
+                data_variable = ncFile.groups[scenario_actual_name].groups[metric_actual_name].variables['ebv_cube']
+            else:
+                metric_actual_name = self.metric_name_map.get(metricSelected, metricSelected)
+                data_variable = ncFile.groups[metric_actual_name].variables['ebv_cube']
+
             # Retrieve entity index
             entities = ncFile.variables['entity']
             entityDrop = [np.array(entities[i]).tobytes().decode('UTF-8').strip() for i in range(len(entities))]
             entityIndex = entityDrop.index(entitySelected)
+
             # Retrieve time index
             time = ncFile.variables['time']
             timeUnits = time.units
@@ -337,27 +348,17 @@ class maskAndFunctionality(base_class, ui_class):
             time = [str(i).split(" ")[0] for i in nc.num2date(time[:], timeUnits, timeCalendar)]
             timeIndex = time.index(timeSelected)
             
-            # Access the data variable
-            if self.cbox_scenarios.isEnabled():
-                data_variable = ncFile.groups[scenarioSelected].groups[metricSelected].variables['ebv_cube']
-            else:
-                data_variable = ncFile.groups[metricSelected].variables['ebv_cube']
-            
-            print(f"Attributes of data_variable: {data_variable.ncattrs()}")
-
             # Extract the subset of data
             data_subset = data_variable[entityIndex, timeIndex, :, :]
             
-            # Retrive the standard name for the metric
+            # Retrieve the standard name for the metric
+            metric_standard_name = metricSelected
             if self.cbox_scenarios.isEnabled():
-                #metric is nested under the selected scenario
-                metric_variable = ncFile.groups[scenarioSelected].groups[metricSelected]
+                metric_variable = ncFile.groups[scenario_actual_name].groups[metric_actual_name]
                 metric_standard_name = metric_variable.getncattr('standard_name') if 'standard_name' in metric_variable.ncattrs() else metricSelected
             else:
-                metric_variable = ncFile.groups[metricSelected]
+                metric_variable = ncFile.groups[metric_actual_name]
                 metric_standard_name = metric_variable.getncattr('standard_name') if 'standard_name' in metric_variable.ncattrs() else metricSelected
-            print(f"Attributes of metric_variable: {metric_variable.ncattrs()}")
-            # metric_standard_name = data_variable.getncattr('standard_name') if 'standard_name' in data_variable.ncattrs() else metricSelected
 
             # Retrieve the standard name for the scenario (if scenarios are enabled)
             if self.cbox_scenarios.isEnabled():
@@ -366,6 +367,12 @@ class maskAndFunctionality(base_class, ui_class):
             else:
                 scenario_standard_name = None
             
+            # Retrieve the standard name for the scenario (if scenarios are enabled)
+            scenario_standard_name = None
+            if self.cbox_scenarios.isEnabled():
+                scenario_variable = ncFile.groups[scenario_actual_name]
+                scenario_standard_name = scenario_variable.getncattr('standard_name') if 'standard_name' in scenario_variable.ncattrs() else scenarioSelected
+
             # Construc the layer name
             if scenario_standard_name:
                 rasterName = f"{scenario_standard_name} | {metric_standard_name} | Entity: {entitySelected} | Time: {timeSelected}"
