@@ -33,7 +33,7 @@
 
      *Example of the loaded dataset*
 
-     <img src="https://github.com/user-attachments/assets/75665bb8-95e0-436d-9493-3a4a26bc5b47" width="650"/>
+     <img src="https://github.com/user-attachments/assets/fb150dec-69cc-4515-97da-772d2ea4548e" width="650"/>
 
 4. **Explore the Dataset Structure**:
    - The **Dataset Explorer** shows the hierarchy of the dataset:
@@ -44,9 +44,11 @@
      - **Parent Nodes** to display group-level attributes (e.g., `long_name`, `standard_name`, `units`).
      - **Child Nodes** to display variable-specific attributes (e.g., `units`, `FillValue`, ` coverage_content_type`).
 
-     <img src="https://github.com/user-attachments/assets/75665bb8-95e0-436d-9493-3a4a26bc5b47" width="650"/>
+      *Example of attributes displayed when you click the parent node 'mteric_1'*
+     
+     <img src="https://github.com/user-attachments/assets/a4e7e607-b9d8-4dde-8cae-c0ed92ce0e4a" width="650"/>
 
-   - **Tip**: The attribute panel on the right updates dynamically based on your selection in the tree widget.
+   - **Tip**: The attribute panel on the right updates dynamically based on your selection in the **Dataset Explorer**.
 
 
 5. **Select Parameters:**!
