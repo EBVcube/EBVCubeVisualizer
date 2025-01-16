@@ -51,12 +51,29 @@
    - **Tip**: The attribute panel on the right updates dynamically based on your selection in the **Dataset Explorer**.
 
 
-5. **Select Parameters:**!
-   - Choose the desired `Entity`(e.g., species), `Time`(e.g., year), `Metric` (e.g., Biodiversity metric) and `Scenario` (e.g., SSP1) from the dropdown menus.
+5. **Select Parameters:**
+   - Use the dropdown menus under **Generate Map** to select:
+       - `Entity`: e.g., species like *Alauda arvensis*.
+       - `Time`: e.g., 2020.
+       - `Metric`: e.g., Biodiversity metric such as *Probability of occurrence*.
+       - `Scenario`: e.g., SSP1 (if available).
+
+       *Example of selecting parameters*
+       
+       <img src="https://github.com/user-attachments/assets/a4e7e607-b9d8-4dde-8cae-c0ed92ce0e4a" width="650"/>
+
 6. **Visualize Data:**
-   - Click the `Add Layer` button to display the selected subset of data on the QGIS canvas. The layer will be styled with an automatically generated color ramp base on the data values.
+   - Click the `Add Layer` button to display the selected subset of data on the QGIS canvas. 
+   - The layer will include an automatically generated color ramp based on the data values.
+   
+      *Example of a visualized layer on the QGIS canvas*
+
+      <img src="https://github.com/user-attachments/assets/a4e7e607-b9d8-4dde-8cae-c0ed92ce0e4a" width="650"/>
+
 7. **Customize Visualization:**
-   - Use QGIS layer properties to further customize the visualization, such as adjusting the color scheme or applaying spatial analysis tools.
+   - Use QGIS layer properties to further refine the visualization:
+     - Adjust the color ramp for better interpretation.
+     - Apply spatial analysis tools for advanced exploration.
 
 ## Dependencies
 
