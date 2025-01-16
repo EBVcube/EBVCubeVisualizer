@@ -24,7 +24,7 @@
 
      *Below is an example of the plugin interface:*
      
-     <img src="https://github.com/user-attachments/assets/350c1045-8b4e-409a-a1f2-1dbe89e8574b" width="100"/>
+     <img src="https://github.com/user-attachments/assets/350c1045-8b4e-409a-a1f2-1dbe89e8574b" width="300"/>
      
 
 3. **Load a netCDF File:**
@@ -32,8 +32,8 @@
    - Once loaded, the structure of the dataset is displayed in the **Tree Widget** on the left, showing groups (e.g. metrics) and their variables (e.g. 'ebv_cube')
 
      *Example of the loaded dataset*
-     
-   ![Picture2](https://github.com/user-attachments/assets/75665bb8-95e0-436d-9493-3a4a26bc5b47){: width="80%"}
+   <img src="https://github.com/user-attachments/assets/75665bb8-95e0-436d-9493-3a4a26bc5b47" width="300"/>
+   ![Picture2](){: width="80%"}
    
 5. **Select Parameters:**!
    - Choose the desired `Entity`(e.g., species), `Time`(e.g., year), `Metric` (e.g., Biodiversity metric) and `Scenario` (e.g., SSP1) from the dropdown menus.
