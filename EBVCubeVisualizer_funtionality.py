@@ -197,6 +197,7 @@ class maskAndFunctionality(base_class, ui_class):
 
         ncFile = self.loaded_datasets[path]
 
+        # Get the main groups and nested groups
         groups = list(ncFile.groups.keys()) # Get the metrics  
         groupsOfGroups = list(ncFile.groups[groups[0]].groups.keys()) if groups else [] 
 
@@ -205,19 +206,20 @@ class maskAndFunctionality(base_class, ui_class):
         self.scenario_name_map = {}
 
         # We populate the scenarrios drop down menu
-        if groupsOfGroups:
-            self.cbox_scenarios.setEnabled(True)
-            self.cbox_scenarios.clear()
+        if groups:
+            if groupsOfGroups:
+                self.cbox_scenarios.setEnabled(True)
+                self.cbox_scenarios.clear()
             
-            # Add standard name to the scenarios
-            for group_name in groups:
-                group = ncFile.groups[group_name]
-                standard_name = getattr(group, 'standard_name', group_name)
-                self.cbox_scenarios.addItem(standard_name)
-                self.scenario_name_map[standard_name] = group_name
-        else:
-            self.cbox_scenarios.addItem("no scenario")
-            self.cbox_scenarios.setEnabled(False)
+                 # Add standard name to the scenarios
+                for group_name in groups:
+                    group = ncFile.groups[group_name]
+                    standard_name = getattr(group, 'standard_name', group_name)
+                    self.cbox_scenarios.addItem(standard_name)
+                    self.scenario_name_map[standard_name] = group_name
+            else:
+                 self.cbox_scenarios.addItem("no scenario")
+                 self.cbox_scenarios.setEnabled(False)
 
         # Pupulate the metrics drop down menu
         if groupsOfGroups:
@@ -226,25 +228,28 @@ class maskAndFunctionality(base_class, ui_class):
                 sub_group = ncFile.groups[groups[0]].groups[sub_group_name]
                 standard_name = getattr(sub_group, 'standard_name', sub_group_name)
                 self.cbox_metric.addItem(standard_name)
+                self.metric_name_map[standard_name] = sub_group_name
         else:
             for group_name in groups:
                 group = ncFile.groups[group_name]
                 standard_name = getattr(group, 'standard_name', group_name)
                 self.cbox_metric.addItem(standard_name)
                 self.metric_name_map[standard_name] = group_name
-                
-        time = ncFile.variables['time']
-        timeUnits = time.units
-        timeCalendar = time.calendar
-        time = nc.num2date(time[:], timeUnits, timeCalendar)
-        time = [str(i).split(" ")[0] for i in time]
 
-        self.cbox_time.clear()
-        self.cbox_time.addItems(time)
+        if 'time' in ncFile.variables:
+            time = ncFile.variables['time']
+            timeUnits = time.units
+            timeCalendar = time.calendar
+            time = nc.num2date(time[:], timeUnits, timeCalendar)
+            time = [str(i).split(" ")[0] for i in time]
 
-        entities = ncFile.variables['entity']
-        entityDrop = [np.array(entities[i]).tobytes().decode('UTF-8').strip() for i in range(len(entities))]
-        self.cbox_entity.addItems(entityDrop)
+            self.cbox_time.clear()
+            self.cbox_time.addItems(time)
+
+        if 'entity' in ncFile.variables:
+            entities = ncFile.variables['entity']
+            entityDrop = [np.array(entities[i]).tobytes().decode('UTF-8').strip() for i in range(len(entities))]
+            self.cbox_entity.addItems(entityDrop)
 
     def showInfo(self):
         """Show the attributes of the scenarios, metrics, and variables."""
