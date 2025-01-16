@@ -22,40 +22,43 @@
 1. **Open the Plugin:**
    - After installation, go to `Plugins > EBVCubeVisualizer` to open the plugin interface.
 
-     *Below is an example of the plugin interface:*
+     *Below is an example of the plugin interface*
      
-     <img src="https://github.com/user-attachments/assets/350c1045-8b4e-409a-a1f2-1dbe89e8574b" width="650"/>
-     
+     <img src="https://github.com/user-attachments/assets/abbf4778-d74e-4432-8a08-f85e5ec193e1" width="650"/>
+
 
 3. **Load a netCDF File:**
-   - Use the file browser to select a netCDF file containing EBVCube data.
-   - Once loaded, the structure of the dataset is displayed in the **Tree Widget** on the left, showing groups (e.g. metrics) and their variables (e.g. 'ebv_cube')
+   - Use the file browser to select a EBVCube netCDF file.
+   - Once loaded, the structure of the dataset is displayed in the **Dataset Explorer** on the left, showing scnenarios (if available), metrics and the ebv data cube.
 
      *Example of the loaded dataset*
 
      <img src="https://github.com/user-attachments/assets/fb150dec-69cc-4515-97da-772d2ea4548e" width="650"/>
 
-4. **Explore the Dataset Structure**:
-   - The **Dataset Explorer** shows the hierarchy of the dataset:
-     - **Parent Nodes** (e.g., `scenario_1`, `metric_1`): Represent groups in the dataset.
-     - **Child Nodes** (e.g., `ebv_cube`): Represent variables or specific data items within each group.
+4. **Explore the Hierarchical Structure of the Dataset**:
+   - The **Dataset Explorer** displays the hierarchical structure, organized into:
+     - File name: Represent the root of the dataset.
+     - Scenarios (e.g., `scenario_1`): Represent different modeling or simulation scenarios in the dataset.
+     - Metrics (e.g., `metric_1`): Represent specific biodiversity measurements or calculations.
+     - Ebv data cube: Represent the four-dimensional data cube.
 
-   - To view details, click on:
-     - **Parent Nodes** to display group-level attributes (e.g., `long_name`, `standard_name`, `units`).
-     - **Child Nodes** to display variable-specific attributes (e.g., `units`, `FillValue`, ` coverage_content_type`).
-
-      *Example of attributes displayed when you click the parent node 'mteric_1'*
+   - To view details:
+     - File name: Click to display the global attributes of the data set (e.g., `doi`, `summary`, `project_name`, `data_created`)
+     - Scenarios: Click to view associated attributes (e.g., `standard_name`, `long_name`).
+     - Metric: Click to see specific attributes (e.g., `standard_name`, `long_name`, `units`).
+     - Ebv data cube: Click to explore its attibures (e.g., `units`, `FillValue`, `long_name`, ` coverage_content_type`)
+       
+      *Example of attributes displayed when you click 'mteric_1'*
      
      <img src="https://github.com/user-attachments/assets/a4e7e607-b9d8-4dde-8cae-c0ed92ce0e4a" width="650"/>
 
-   - **Tip**: The attribute panel on the right updates dynamically based on your selection in the **Dataset Explorer**.
-
+   - **Tip**: The attributes panel updates dynamically based on your selection in the **Dataset Explorer**.
 
 5. **Select Parameters:**
-   - Use the dropdown menus under **Generate Map** to select:
-       - `Entity`: e.g., species like *Alauda arvensis*.
-       - `Time`: e.g., 2020.
-       - `Metric`: e.g., Biodiversity metric such as *Probability of occurrence*.
+   - Use the dropdown menus under **Map Panel** to select:
+       - `Entity`: e.g., species like *Hyla arborea*.
+       - `Time`: e.g., 2020-01-01.
+       - `Metric`: e.g., Biodiversity metric such as *Weighted Mean habitat suitability*.
        - `Scenario`: e.g., SSP1 (if available).
 
        *Example of selecting parameters*
@@ -102,6 +105,14 @@ If you encounter any issues with the plugin, please follow these steps:
 1. Ensure that all dependencies are installed and correctly configured.
 2. Verify that the netCDF file you are using is properly formatted and contains the required dimensions (e.g., `entity`, `time`, `lat`, `lon`).
 3. Check the QGIS Python console for any error messages and provide them when seeking help.
+
+## Example Dataset
+
+The examples in this README use the publicly available dataset entitled **"Species habitat suitability of European terrestrial vertebrates for contemporary climate and land use"**, provided by the EBV Data Portal. It is stored as an EBVCube netCDF file and can be accessed directly through the following link:
+
+- **EBV Data Portal Link**: [Species habitat suitability of European terrestrial vertebrates for contemporary climate and land use](https://portal.geobon.org/ebv-detail?id=84&v=1)
+
+This dataset serves as an example to showcase the functionality of the plugin. You are encouraged to explore additional datasets available on the [EBV Data Portal](https://portal.geobon.org/datasets) for your analyses.
 
 ## Contributing
 
