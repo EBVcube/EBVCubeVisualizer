@@ -200,6 +200,10 @@ class maskAndFunctionality(base_class, ui_class):
         groups = list(ncFile.groups.keys()) # Get the metrics  
         groupsOfGroups = list(ncFile.groups[groups[0]].groups.keys()) if groups else [] 
 
+        # Dictionary to map standard_name to actual group/variable names
+        self.metric_name_map = {}
+        self.scenario_name_map = {}
+
         # We populate the scenarrios drop down menu
         if groupsOfGroups:
             self.cbox_scenarios.setEnabled(True)
@@ -210,6 +214,7 @@ class maskAndFunctionality(base_class, ui_class):
                 group = ncFile.groups[group_name]
                 standard_name = getattr(group, 'standard_name', group_name)
                 self.cbox_scenarios.addItem(standard_name)
+                self.scenario_name_map[standard_name] = group_name
         else:
             self.cbox_scenarios.addItem("no scenario")
             self.cbox_scenarios.setEnabled(False)
@@ -226,7 +231,8 @@ class maskAndFunctionality(base_class, ui_class):
                 group = ncFile.groups[group_name]
                 standard_name = getattr(group, 'standard_name', group_name)
                 self.cbox_metric.addItem(standard_name)
-
+                self.metric_name_map[standard_name] = group_name
+                
         time = ncFile.variables['time']
         timeUnits = time.units
         timeCalendar = time.calendar
