@@ -21,13 +21,20 @@
 
 1. **Open the Plugin:**
    - After installation, go to `Plugins > EBVCubeVisualizer` to open the plugin interface.
+     
+2. **Plugin Interface Overview:**
+   - The plugin interface consists of three main sections:
+     
+     - _Dataset Explorer:_ Located on the left, it displays the hierarchical structure of the loaded dataset, including scenarios, metrics, and EBV data cubes.
+     - _Attributes Panel:_ Positioned on the top-right, it dinamically updates to show the attributes of the selected data set, scenario, metric or EBV data cube
+     - _Map Panel:_ Found on the buttom-rigth, it allows users to select specific parameters (e.g., Scenario, Metric, Entity, and Time) and visualize the data by clicking the `Add Layer` button
 
      *Below is an example of the plugin interface*
      
      <img src="https://github.com/user-attachments/assets/abbf4778-d74e-4432-8a08-f85e5ec193e1" width="650"/>
 
 
-3. **Load a netCDF File:**
+4. **Load a netCDF File:**
    - Use the file browser to select a EBVCube netCDF file.
    - Once loaded, the structure of the dataset is displayed in the **Dataset Explorer** on the left, showing scnenarios (if available), metrics and the ebv data cube.
 
@@ -35,7 +42,7 @@
 
      <img src="https://github.com/user-attachments/assets/fb150dec-69cc-4515-97da-772d2ea4548e" width="650"/>
 
-4. **Explore the Hierarchical Structure of the Dataset**:
+5. **Explore the Hierarchical Structure of the Dataset**:
    - The **Dataset Explorer** displays the hierarchical structure, organized into:
      - File name: Represent the root of the dataset.
      - Scenarios (e.g., `scenario_1`): Represent different modeling or simulation scenarios in the dataset.
@@ -54,7 +61,7 @@
 
    - **Tip**: The attributes panel updates dynamically based on your selection in the **Dataset Explorer**.
 
-5. **Select Parameters:**
+6. **Select Parameters:**
    - Use the dropdown menus under **Map Panel** to select:
        - `Entity`: e.g., species like *Hyla arborea*.
        - `Time`: e.g., 2020-01-01.
@@ -65,7 +72,7 @@
        
       <img src="https://github.com/user-attachments/assets/94271659-116f-401f-b321-22f15d40ef60" width="400"/>
 
-6. **Visualize Data:**
+7. **Visualize Data:**
    - Click the `Add Layer` button to display the selected subset of data on the QGIS canvas. 
    - The layer will include an automatically generated color ramp based on the data values.
    
@@ -73,7 +80,7 @@
 
       <img src="https://github.com/user-attachments/assets/3578f1f0-d465-47d7-b0b9-0b00a5d1058e" width="900"/>
 
-7. **Customize Visualization:**
+8. **Customize Visualization:**
    - Use QGIS layer properties to further refine the visualization:
      - Adjust the color ramp for better interpretation.
      - Apply spatial analysis tools for advanced exploration.
