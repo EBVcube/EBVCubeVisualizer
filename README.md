@@ -60,7 +60,7 @@
 
        *Example of selecting parameters*
        
-       <img src="https://github.com/user-attachments/assets/a4e7e607-b9d8-4dde-8cae-c0ed92ce0e4a" width="650"/>
+      <img src="https://github.com/user-attachments/assets/94271659-116f-401f-b321-22f15d40ef60" width="400"/>
 
 6. **Visualize Data:**
    - Click the `Add Layer` button to display the selected subset of data on the QGIS canvas. 
@@ -68,7 +68,7 @@
    
       *Example of a visualized layer on the QGIS canvas*
 
-      <img src="https://github.com/user-attachments/assets/a4e7e607-b9d8-4dde-8cae-c0ed92ce0e4a" width="650"/>
+      <img src="https://github.com/user-attachments/assets/3578f1f0-d465-47d7-b0b9-0b00a5d1058e" width="900"/>
 
 7. **Customize Visualization:**
    - Use QGIS layer properties to further refine the visualization:
