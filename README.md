@@ -34,7 +34,21 @@
      *Example of the loaded dataset*
 
      <img src="https://github.com/user-attachments/assets/75665bb8-95e0-436d-9493-3a4a26bc5b47" width="650"/>
-   
+
+4. **Explore the Dataset Structure**:
+   - The **Tree Widget** shows the hierarchy of the dataset:
+     - **Parent Nodes** (e.g., `scenario_1`, `metric_1`): Represent groups in the dataset.
+     - **Child Nodes** (e.g., `ebv_cube`): Represent variables or specific data items within each group.
+
+   - To view details, click on:
+     - **Parent Nodes** to display group-level attributes (e.g., `long_name`, `standard_name`).
+     - **Child Nodes** to display variable-specific attributes (e.g., `units`, `grid_mapping`).
+
+     <img src="https://github.com/user-attachments/assets/75665bb8-95e0-436d-9493-3a4a26bc5b47" width="650"/>
+
+   - **Tip**: The attribute panel on the right updates dynamically based on your selection in the tree widget.
+
+
 5. **Select Parameters:**!
    - Choose the desired `Entity`(e.g., species), `Time`(e.g., year), `Metric` (e.g., Biodiversity metric) and `Scenario` (e.g., SSP1) from the dropdown menus.
 6. **Visualize Data:**
