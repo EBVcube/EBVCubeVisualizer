@@ -24,7 +24,7 @@
 
      *Below is an example of the plugin interface:*
      
-     <img src="https://github.com/user-attachments/assets/350c1045-8b4e-409a-a1f2-1dbe89e8574b" width="500"/>
+     <img src="https://github.com/user-attachments/assets/350c1045-8b4e-409a-a1f2-1dbe89e8574b" width="650"/>
      
 
 3. **Load a netCDF File:**
@@ -33,7 +33,7 @@
 
      *Example of the loaded dataset*
 
-     <img src="https://github.com/user-attachments/assets/75665bb8-95e0-436d-9493-3a4a26bc5b47" width="500"/>
+     <img src="https://github.com/user-attachments/assets/75665bb8-95e0-436d-9493-3a4a26bc5b47" width="650"/>
    
 5. **Select Parameters:**!
    - Choose the desired `Entity`(e.g., species), `Time`(e.g., year), `Metric` (e.g., Biodiversity metric) and `Scenario` (e.g., SSP1) from the dropdown menus.
