@@ -24,7 +24,8 @@
 
      *Below is an example of the plugin interface:*
      
-     ![Picture1](https://github.com/user-attachments/assets/350c1045-8b4e-409a-a1f2-1dbe89e8574b){: width="80%"}
+     <img src="https://github.com/user-attachments/assets/350c1045-8b4e-409a-a1f2-1dbe89e8574b" width="100"/>
+     
 
 3. **Load a netCDF File:**
    - Use the file browser to select a netCDF file containing EBVCube data.
