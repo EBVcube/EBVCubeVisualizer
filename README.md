@@ -1,4 +1,4 @@
-# EBVCubeVisualizer                                                <img align="left" src="https://github.com/E-O-Conchas/EBVCubeVisualizerPlugin/blob/master/EBVIcon.png" alt="drawing" width="100"/>      
+# EBVCubeVisualizer                                                <img align="left" src="https://github.com/E-O-Conchas/EBVCubeVisualizerPlugin/blob/master/EBVIcon.png" alt="drawing" width="80"/>      
 
 **EBVCubeVisualizer** is a QGIS plugin tailored for exploring Essential Biodiversity Variables (EBVs) stored in the [EBV Data Portal](https://portal.geobon.org/datasets) as EBVCube netCDF files. This plugin enables users to extract and visualize specific slices of EBV data cubes, allowing flexible selection based on *time*, *entity*, *scenario*, and *metric*. While not designed for in-depth biodiversity analysis, EBVCubeVisualizer serves as a powerful and intuitive starting point for exploring datasets and preparing data for further analysis.
 
@@ -24,7 +24,7 @@
 
      *Below is an example of the plugin interface:*
      
-     ![Picture1](https://github.com/user-attachments/assets/350c1045-8b4e-409a-a1f2-1dbe89e8574b)
+     ![Picture1](https://github.com/user-attachments/assets/350c1045-8b4e-409a-a1f2-1dbe89e8574b){: width="80%"}
 
 3. **Load a netCDF File:**
    - Use the file browser to select a netCDF file containing EBVCube data.
@@ -32,7 +32,7 @@
 
      *Example of the loaded dataset*
      
-   ![Picture2](https://github.com/user-attachments/assets/75665bb8-95e0-436d-9493-3a4a26bc5b47)
+   ![Picture2](https://github.com/user-attachments/assets/75665bb8-95e0-436d-9493-3a4a26bc5b47){: width="80%"}
    
 5. **Select Parameters:**!
    - Choose the desired `Entity`(e.g., species), `Time`(e.g., year), `Metric` (e.g., Biodiversity metric) and `Scenario` (e.g., SSP1) from the dropdown menus.
@@ -83,3 +83,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - **Data Availability:** Integrate the EBV Portal catalog within the plugin to facilitate data retrieval.
 
 Stay tuned for future updates and enhancements!
+````
