@@ -20,14 +20,25 @@
 ## Usage
 
 1. **Open the Plugin:**
-   - After installation, go to `Plugins > EBVCubeVisualizerPlugin` to open the plugin interface.
-2. **Load a netCDF File:**
+   - After installation, go to `Plugins > EBVCubeVisualizer` to open the plugin interface.
+
+     *Below is an example of the plugin interface:*
+     
+     ![Picture1](https://github.com/user-attachments/assets/350c1045-8b4e-409a-a1f2-1dbe89e8574b)
+
+3. **Load a netCDF File:**
    - Use the file browser to select a netCDF file containing EBVCube data.
-3. **Select Parameters:**
+   - Once loaded, the structure of the dataset is displayed in the **Tree Widget** on the left, showing groups (e.g. metrics) and their variables (e.g. 'ebv_cube')
+
+     *Example of the loaded dataset*
+     
+   ![Picture2](https://github.com/user-attachments/assets/75665bb8-95e0-436d-9493-3a4a26bc5b47)
+   
+5. **Select Parameters:**!
    - Choose the desired `Entity`(e.g., species), `Time`(e.g., year), `Metric` (e.g., Biodiversity metric) and `Scenario` (e.g., SSP1) from the dropdown menus.
-4. **Visualize Data:**
+6. **Visualize Data:**
    - Click the `Add Layer` button to display the selected subset of data on the QGIS canvas. The layer will be styled with an automatically generated color ramp base on the data values.
-5. **Customize Visualization:**
+7. **Customize Visualization:**
    - Use QGIS layer properties to further customize the visualization, such as adjusting the color scheme or applaying spatial analysis tools.
 
 ## Dependencies
