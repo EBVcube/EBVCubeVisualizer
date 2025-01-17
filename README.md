@@ -47,13 +47,13 @@
      - File name: Represent the root of the dataset.
      - Scenarios (e.g., `scenario_1`): Represent different modeling or simulation scenarios in the dataset.
      - Metrics (e.g., `metric_1`): Represent specific biodiversity measurements or calculations.
-     - data cube: Represent the four-dimensional EBVdata cube.
+     - Data cube: Represent the four-dimensional EBVdata cube.
 
    - To view details:
      - File name: Click to display the global attributes of the data set (e.g., `doi`, `summary`, `project_name`, `data_created`)
      - Scenarios: Click to view associated attributes (e.g., `standard_name`, `long_name`).
      - Metric: Click to see specific attributes (e.g., `standard_name`, `long_name`, `units`).
-     - data cube: Click to explore its attibures (e.g., `units`, `FillValue`, `long_name`, ` coverage_content_type`)
+     - Data cube: Click to explore its attibures (e.g., `units`, `FillValue`, `long_name`, ` coverage_content_type`)
        
       *Example of attributes displayed when you click 'mteric_1'*
      
