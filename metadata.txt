@@ -13,7 +13,7 @@ email=e.oceguera@idiv.de
 author=Emmanuel Oceguera-Conchas, Luise Quoss
 qgisMinimumVersion=3.0
 description= Visualize biodiversity-related netCDF data within QGIS.
-about= EBVCubeVisualizer empowers QGIS users with an iteractive tool to visualize, explore, and analyze biodiversity-related netCDF files. The plugin is tailored for scientists and analysts working with biodiversity Essential Biodiversity Variables (EBVs) and geospatial data, offering intuitive visualization, export features, and compatibility with standardized EBVCube datasets. This tool is particularly useful for exploting biodiversity data generated under the EuropaBON project or similar initiatives. 
+about= EBVCubeVisualizer empowers QGIS users with an intuitive and  iteractive tool for exploring biodiversity-related netCDF files. Designed with scientist, analyst, and geospatial enthusiasts in mind, this plugin enables users to explore, extract and visualize Essential Biodiversity Variables (EBVs) stored in standardized EBVCube datasets. With features like hierarchical dataset exploration, metadata discovery, and flexible subsetting by scenarios, metrics, entities, and time, the tool is particularly valuable for biodiversity research initiatives such as the EuropaBON project. While EBVCubeVisualizer is not intended for in-depth biodiversity analysis, it provides a powerful starting point for understanding and preparing data for advanced workflows.
 version=0.1
 repository=https://github.com/EmmaOceg/EBVCubeVisualizerPlugin
 
@@ -21,7 +21,7 @@ repository=https://github.com/EmmaOceg/EBVCubeVisualizerPlugin
 #end of the mandatory metadata
 
 #tags are comma separated with spaces allowed
-tags= python, netCDF, visualizer, EBVCube, biodiversity, visualization, raster data, interactive visualization
+tags= python, netCDF, visualizer, EBVCube, biodiversity, data cubes, interactive visualization
 
 homepage=https://portal.geobon.org/datasets
 category=Analysis
