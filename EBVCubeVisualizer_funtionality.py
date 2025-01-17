@@ -155,6 +155,13 @@ class maskAndFunctionality(base_class, ui_class):
 
     def populateTreeWidget(self, ncFile, parent_item):
         """Populate the tree widget with groups and variables from the NetCDF file."""
+        if "entity" in ncFile.variables:
+            entity_var = ncFile.variables["entity"]
+            long_name = getattr(entity_var, 'long_name', 'No Long Name')
+            # we add the entity variable to the tree widget
+            entity_item = QTreeWidgetItem(["entity", long_name]) 
+            parent_item.addChild(entity_item) 
+        
         ncFileGroupsName = list(ncFile.groups.keys())
 
         for group_name in ncFileGroupsName:
@@ -272,6 +279,8 @@ class maskAndFunctionality(base_class, ui_class):
 
         if current_item_text == os.path.basename(dataset_path):
             self.displayGlobalAttributes(ncFile)
+        elif current_item_text == 'entity':
+            self.displayEntityAttributes(ncFile.variables["entity"])
         elif current_item_text in ncFile.groups:
             self.displayGroupAttributes(ncFile.groups[current_item_text])
         elif selected_item.parent() and selected_item.parent().text(0) in ncFile.groups:
@@ -282,6 +291,22 @@ class maskAndFunctionality(base_class, ui_class):
                 self.displayVariableAttributes(parent_group.variables[current_item_text])
         # We call setMapData to update the entities, time, scenarios and metrics in the QComboBox
         self.setMapData(dataset_path)
+
+    def displayEntityAttributes(self, entity_var):
+        """Display attributes specific to the 'entity' variable."""
+        self.text_info.append("<b><font size=5>Entity Variable</font></b><br>")
+        self.text_info.append("<hr style='border-top: 3px double #8c8b8b;'>")
+
+        # We exclude the standard attributes
+        excluded_attrs = {'long_name', 'units'}
+        
+        # Display all standard attributes
+        for attr in entity_var.ncattrs():
+            if attr not in excluded_attrs:
+                value = entity_var.getncattr(attr)
+                self.text_info.append(f"<b><font size=4>• {attr}:</font></b> <font size=4> {entity_var.getncattr(attr)}<br>")
+                
+        self.text_info.moveCursor(QTextCursor.Start)
 
 
     def displayGlobalAttributes(self, ncFile): 
