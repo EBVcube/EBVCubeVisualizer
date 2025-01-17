@@ -146,7 +146,6 @@ class maskAndFunctionality(base_class, ui_class):
         top_level = QTreeWidgetItem([ncFileName, ncFileTitle])
         top_level.setData(0, Qt.UserRole, path)  # Store path for easy reference
         self.tree_data.addTopLevelItem(top_level)
-
         self.populateTreeWidget(ncFile, top_level)
         self.tree_data.expandAll()
 
@@ -305,7 +304,7 @@ class maskAndFunctionality(base_class, ui_class):
             if attr not in excluded_attrs:
                 value = entity_var.getncattr(attr)
                 self.text_info.append(f"<b><font size=4>• {attr}:</font></b> <font size=4> {entity_var.getncattr(attr)}<br>")
-                
+
         self.text_info.moveCursor(QTextCursor.Start)
 
 
