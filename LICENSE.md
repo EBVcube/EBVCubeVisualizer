@@ -1,6 +1,6 @@
 MIT License
 
-Copyright (c) 2021 [Emmanuel Oceguera-Conchas, Luise Quoss, and the EBV Data Portal Team]
+Copyright (c) 2024 [Emmanuel Oceguera-Conchas, Luise Quoss, and the EBV Data Portal Team]
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
