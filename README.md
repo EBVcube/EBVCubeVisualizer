@@ -31,7 +31,7 @@
 
      *Below the plugin interface*
      
-     <img src="https://github.com/user-attachments/assets/abbf4778-d74e-4432-8a08-f85e5ec193e1" style="border: 3xp solid black;" width="650"/>
+     <kbd><img src="https://github.com/user-attachments/assets/abbf4778-d74e-4432-8a08-f85e5ec193e1" width="650"/><kbd>
 
 
 4. **Load a EBVCube netCDF File:**
@@ -40,7 +40,7 @@
 
      *Example of the loaded dataset*
 
-     <img src="https://github.com/user-attachments/assets/fb150dec-69cc-4515-97da-772d2ea4548e" style="border: 3xp solid black;" width="650"/>
+     <kbd><img src="https://github.com/user-attachments/assets/fb150dec-69cc-4515-97da-772d2ea4548e" width="650"/><kbd>
 
 5. **Explore the Hierarchical Structure of the Dataset**:
    - The **Dataset Explorer** displays the hierarchical structure, organized into:
@@ -57,7 +57,7 @@
        
       *Example of attributes displayed when you click 'mteric_1'*
      
-     <img src="https://github.com/user-attachments/assets/a4e7e607-b9d8-4dde-8cae-c0ed92ce0e4a" style="border: 3xp solid black;" width="650"/>
+     <kbd><img src="https://github.com/user-attachments/assets/a4e7e607-b9d8-4dde-8cae-c0ed92ce0e4a" style="border: 3xp solid black;" width="650"/><kbd>
 
    - **Tip**: The attributes panel updates dynamically based on your selection in the **Dataset Explorer**.
 
@@ -70,7 +70,7 @@
        
        *Example of selecting parameters*
        
-      <img src="https://github.com/user-attachments/assets/94271659-116f-401f-b321-22f15d40ef60" style="border: 3xp solid black;" width="400"/>
+      <kbd><img src="https://github.com/user-attachments/assets/94271659-116f-401f-b321-22f15d40ef60" style="border: 3xp solid black;" width="400"/><kbd>
 
 7. **Visualize Data:**
    - Click the `Add Layer` button to display the selected subset of data on the QGIS canvas. 
@@ -78,7 +78,7 @@
    
       *Example of a visualized layer on the QGIS canvas*
 
-      <img src="https://github.com/user-attachments/assets/3578f1f0-d465-47d7-b0b9-0b00a5d1058e" style="border: 3xp solid black;" width="900"/>
+      <kbd><img src="https://github.com/user-attachments/assets/3578f1f0-d465-47d7-b0b9-0b00a5d1058e" style="border: 3xp solid black;" width="900"/><kbd>
 
 8. **Customize Visualization:**
    - Use QGIS layer properties to further refine the visualization:
