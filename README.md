@@ -1,6 +1,6 @@
 # EBVCubeVisualizer                                                <img align="left" src="https://github.com/E-O-Conchas/EBVCubeVisualizerPlugin/blob/master/EBVIcon.png" alt="drawing" width="100"/>      
 
-**EBVCubeVisualizer** is a QGIS plugin tailored for exploring Essential Biodiversity Variables (EBVs) stored in the [EBV Data Portal](https://portal.geobon.org/datasets) as EBVCube netCDF files. This plugin enables users to extract and visualize specific slices of ebv data cubes, allowing flexible selection based on *time*, *entity*, *scenario*, and *metric*. While not designed for in-depth biodiversity analysis, EBVCubeVisualizer serves as a powerful and intuitive starting point for exploring datasets and preparing data for further analysis.
+**EBVCubeVisualizer** is a QGIS plugin tailored for exploring Essential Biodiversity Variables (EBVs) stored as EBVCube netCDF files and available at [EBV Data Portal](https://portal.geobon.org/datasets). This plugin enables users to extract and visualize specific slices of ebv data cubes, allowing flexible selection based on *time*, *entity*, *scenario*, and *metric*. While not designed for in-depth biodiversity analysis, EBVCubeVisualizer serves as a powerful and intuitive GIS tool for exploring datasets and preparing data for further analysis.
 
 ## Features
 
@@ -27,7 +27,7 @@
      
      - _Dataset Explorer:_ Located on the left, it displays the hierarchical structure of the loaded dataset, including scenarios, metrics, and the data cube.
      - _Attributes Panel:_ Positioned on the top-right, it dinamically updates to show the attributes of the selected data set, scenario, metric or data cube
-     - _Map Panel:_ Found on the buttom-rigth, it allows users to select specific parameters (e.g., Scenario, Metric, Entity, and Time) and visualize the data by clicking the `Add Layer` button
+     - _Map Panel:_ Found on the buttom-rigth, it allows users to select specific parameters (e.g., Scenario, Metric, Entity, and Time) and visualize the data by clicking the `Add Layer` button.
 
      *Below the plugin interface*
      
@@ -55,7 +55,7 @@
      - Metric: Click to see specific attributes (e.g., `standard_name`, `long_name`, `units`).
      - Data cube: Click to explore its attibures (e.g., `units`, `FillValue`, `long_name`, ` coverage_content_type`)
        
-      *Example of attributes displayed when you click 'mteric_1'*
+      *Example of attributes displayed when you click 'metric_1'*
      
      <kbd><img src="https://github.com/user-attachments/assets/a4e7e607-b9d8-4dde-8cae-c0ed92ce0e4a" style="border: 3xp solid black;" width="650"/><kbd>
 
