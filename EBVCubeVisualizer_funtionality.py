@@ -293,7 +293,7 @@ class maskAndFunctionality(base_class, ui_class):
 
     def displayEntityAttributes(self, entity_var):
         """Display attributes specific to the 'entity' variable."""
-        self.text_info.append("<b><font size=5>Entity Variable</font></b><br>")
+        self.text_info.append("<b><font size=5>Entity Attributes</font></b><br>")
         self.text_info.append("<hr style='border-top: 3px double #8c8b8b;'>")
 
         # We exclude the standard attributes
