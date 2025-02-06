@@ -323,7 +323,7 @@ class maskAndFunctionality(base_class, ui_class):
     def displayGroupAttributes(self, group):
         """Display attributes of a NetCDF group with custom formatting."""
         groupType = "Metric" if 'metric' in group.name.lower() else "Scenario" 
-        self.text_info.append(f"<b><font size=5>Attributes of the {groupType}</font></b><br>")
+        self.text_info.append(f"<b><font size=5>{groupType} Attributes</font></b><br>")
         self.text_info.append("<hr style='border-top: 3px double #8c8b8b;'>") 
         for attr in group.ncattrs():
             self.text_info.append(f"<b><font size=4>• {attr}:</font></b> <font size=4>{group.getncattr(attr)}<br>")
@@ -332,7 +332,7 @@ class maskAndFunctionality(base_class, ui_class):
 
     def displayVariableAttributes(self, var):
         """Display attributes of a NetCDF variable with custom formatting."""
-        self.text_info.append("<b><font size=5>Attributes of the EBV cube </font></b><br>")
+        self.text_info.append("<b><font size=5>EBV cube Attributes </font></b><br>")
         self.text_info.append("<hr style='border-top: 3px double #8c8b8b;'>")
 
         # Exclude technical attributes
