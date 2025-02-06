@@ -26,40 +26,45 @@
    - The plugin interface consists of three main sections:
      
      - _Dataset Explorer:_ Located on the left, it displays the hierarchical structure of the loaded dataset, including scenarios, metrics, and the data cube.
-     - _Attributes Panel:_ Positioned on the top-right, it dinamically updates to show the attributes of the selected data set, scenario, metric or data cube
+     - _Metadata Panel:_ Positioned on the top-right, it dinamically updates to show the metadata of the selected data set, scenario, metric or data cube
      - _Map Panel:_ Found on the buttom-rigth, it allows users to select specific parameters (e.g., Scenario, Metric, Entity, and Time) and visualize the data by clicking the `Add Layer` button.
 
      *Below the plugin interface*
      
-     <kbd><img src="https://github.com/user-attachments/assets/abbf4778-d74e-4432-8a08-f85e5ec193e1" width="650"/><kbd>
+     <kbd><img src="https://github.com/user-attachments/assets/79ccdb04-9cf9-49f4-8d94-f6750632f341" width="650"/><kbd>
 
 
 4. **Load a EBVCube netCDF File:**
    - Use the file browser to select a EBVCube netCDF file.
-   - Once loaded, the structure of the dataset is displayed in the **Dataset Explorer** on the left, showing scnenarios (if available), metrics and the data cube.
+   - Once loaded, the structure of the dataset is displayed in the **Dataset Explorer** on the left, showing entity, scnenarios (if available), metrics and the data cube.
 
      *Example of the loaded dataset*
 
-     <kbd><img src="https://github.com/user-attachments/assets/fb150dec-69cc-4515-97da-772d2ea4548e" width="650"/><kbd>
+     <kbd><img src="https://github.com/user-attachments/assets/5faf1eae-028f-4a44-8c19-d21e415c92ce" width="650"/><kbd>
 
 5. **Explore the Hierarchical Structure of the Dataset**:
    - The **Dataset Explorer** displays the hierarchical structure, organized into:
      - File name: Represent the root of the dataset.
+     - Entity: Provides attributes about enititis analyzed in the dataset (e.g., species, taxonomic groups)
      - Scenarios (e.g., `scenario_1`): Represent different modeling or simulation scenarios in the dataset.
      - Metrics (e.g., `metric_1`): Represent specific biodiversity measurements or calculations.
      - Data cube: Represent the four-dimensional EBVdata cube.
 
    - To view details:
      - File name: Click to display the global attributes of the data set (e.g., `doi`, `summary`, `project_name`, `data_created`)
+     - Entity: Click to display the entity attibutes (e.g.,`ebv_entity_type`, `ebv_entity_scope`)
      - Scenarios: Click to view associated attributes (e.g., `standard_name`, `long_name`).
      - Metric: Click to see specific attributes (e.g., `standard_name`, `long_name`, `units`).
      - Data cube: Click to explore its attibures (e.g., `units`, `FillValue`, `long_name`, ` coverage_content_type`)
        
       *Example of attributes displayed when you click 'metric_1'*
      
-     <kbd><img src="https://github.com/user-attachments/assets/a4e7e607-b9d8-4dde-8cae-c0ed92ce0e4a" style="border: 3xp solid black;" width="650"/><kbd>
+     <kbd><img src="https://github.com/user-attachments/assets/6ff4a104-c452-421f-9e95-28961afc15d2" style="border: 3xp solid black;" width="650"/><kbd>
+     
+     <kbd><img src="https://github.com/user-attachments/assets/a64a3dbf-6f40-4cdf-8b7a-cbadcf616569" style="border: 3xp solid black;" width="650"/><kbd>
 
-   - **Tip**: The attributes panel updates dynamically based on your selection in the **Dataset Explorer**.
+
+   - **Tip**: The metadata panel updates dynamically based on your selection in the **Dataset Explorer**.
 
 6. **Select Parameters:**
    - Use the dropdown menus under **Map Panel** to select:
