@@ -132,7 +132,7 @@ We welcome contributions to this project! If you have an idea for a new feature 
 
 ## License
 
-This project is licensed under the MIT License. For more information, please refer to the [LICENSE.md](LICENSE.md) file.
+TThis project is licensed under the **GNU General Public License v3.0 or later (GPL-3.0-or-later)**. For more details, please refer to the [LICENSE](LICENSE) file.
 
 ## Future Enhancements
  
