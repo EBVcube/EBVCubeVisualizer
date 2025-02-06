@@ -26,12 +26,10 @@ from PyQt5.QtCore import *
 from PyQt5.QtGui import *  
 from PyQt5.QtWidgets import *  
 #import everthing from the netCDF_visualization_funtionality.py file
-from .EBVCubeVisualizer_funtionality import maskAndFunctionality
+from .EBVCubeVisualizer_functionality import maskAndFunctionality
 from . import resources_rc
 #we write a class, Plugins is a class
 import os
-
-
 
 
 class EBVCubeVisualizer:
