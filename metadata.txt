@@ -31,9 +31,9 @@ experimental=False  # True if the plugin is in experimental stages.
 deprecated=False    # True if the plugin is deprecated. Deprecated flag (applies to the whole plugin, not just a single version)
 
 # Extended features for the QGIS plugin ecosystem
-changelog=Initial release of the EBVCubeVisualizer plugin:
+changelog=Version 1.0.0 - First official release of the EBVCubeVisualizer:
   - Interactive visualization of netCDF files containing biodiversity data.
-  - Export capabilities for creating maps.
+  - Export capabilities for creating maps in QGIS.
   - Support for standardized EBVCube datasets.
   - Seamless integration with QGIS's geospatial tools.
   - Focus on biodiversity Essential Biodiversity Variables (EBVs).
