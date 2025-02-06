@@ -44,8 +44,8 @@ try:
 except ImportError:
     raise ImportError(
         "The 'netCDF4' module is required for this plugin but is not installed. "
-        "Please install it using the OSGeo4W shell or the QGIS Python console. "
-        "Run `pip install netCDF4`.")
+        "Please install it using the OSGeo4W shell. "
+        "Run `python -m pip install netCDF4`.")
 
 # Import additional libraries for data processing and visualization
 import numpy as np
@@ -258,7 +258,7 @@ class maskAndFunctionality(base_class, ui_class):
             self.cbox_entity.addItems(entityDrop)
 
     def showInfo(self):
-        """Show the attributes of the scenarios, metrics, and variables."""
+        """Show the attributes of the entity, scenarios, metrics, and variables."""
         self.text_info.clear()
 
         selected_item = self.tree_data.currentItem()
