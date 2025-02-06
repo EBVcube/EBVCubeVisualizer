@@ -4,19 +4,18 @@
 # embedding metadata in __init__.py will 
 # is no longer supported since version 2.0.
 
-
 # This file should be included when you package your plugin.# Mandatory items:
 
 [general]
 name=EBVCubeVisualizer
 email=e.oceguera@idiv.de
-author=Emmanuel Oceguera-Conchas, Luise Quoss
+author=Emmanuel Oceguera-Conchas, Luise Quoss, Lina Estupinan Suarez
 qgisMinimumVersion=3.0
 description= Visualize biodiversity-related netCDF data within QGIS.
 about= EBVCubeVisualizer empowers QGIS users with an intuitive and  iteractive tool for exploring biodiversity-related netCDF files. Designed with scientist, analyst, and geospatial enthusiasts in mind, this plugin enables users to explore, extract and visualize Essential Biodiversity Variables (EBVs) stored in standardized EBVCube datasets. With features like hierarchical dataset exploration, metadata discovery, and flexible subsetting by scenarios, metrics, entities, and time, the tool is particularly valuable for biodiversity research initiatives such as the EuropaBON project. While EBVCubeVisualizer is not intended for in-depth biodiversity analysis, it provides a powerful starting point for understanding and preparing data for advanced workflows.
-version=0.1
+version=1.0.0 - Initial release
 repository=https://github.com/EmmaOceg/EBVCubeVisualizerPlugin
-
+license=GPL-3.0-or-later
 
 #end of the mandatory metadata
 
