@@ -32,11 +32,14 @@ deprecated=False    # True if the plugin is deprecated. Deprecated flag (applies
 
 # Extended features for the QGIS plugin ecosystem
 changelog=Version 1.0.0 - First official release of the EBVCubeVisualizer:
-  - Interactive visualization of netCDF files containing biodiversity data.
-  - Export capabilities for creating maps in QGIS.
-  - Support for standardized EBVCube datasets.
-  - Seamless integration with QGIS's geospatial tools.
-  - Focus on biodiversity Essential Biodiversity Variables (EBVs).
+  - Visualization of netCDF files containing biodiversity data.
+  - Direct support for EBVcube datasets, ensuring interoperability with global biodiversity data standards.
+  - Exploration of biodiversity Essential Biodiversity Variables (EBVs) at different spatial and temporal resolutions.
+  - Hierarchical dataset navigation to explore data by entities, scenarios, metrics and Data cube
+  - Metadata visualization for better dataset understanding before processing.
+  - Subsetting tools by scenarios, metrics, entities, and time.
+  - Optimized compatibility with QGIS 3.x versions.
+  - Focus on Essential Biodiversity Variables (EBVs) for research applications.
 
 # Optional developer information
 tracker=https://github.com/EmmaOceg/EBVCubeVisualizerPlugin/issues
