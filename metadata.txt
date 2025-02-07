@@ -22,7 +22,7 @@ license=GPL-3.0-or-later
 #tags are comma separated with spaces allowed
 tags= python, netCDF, visualizer, EBVCube, biodiversity, data cubes, interactive visualization
 
-homepage=https://portal.geobon.org/datasets
+homepage=https://github.com/EmmaOceg/EBVCubeVisualizerPlugin
 category=Analysis
 icon=EBVIcon.png
 
