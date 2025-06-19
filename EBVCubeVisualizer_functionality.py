@@ -422,7 +422,8 @@ class maskAndFunctionality(base_class, ui_class):
 
             # Retrieve the standard name for the scenario (if scenarios are enabled)
             if self.cbox_scenarios.isEnabled():
-                scenario_variable = ncFile.groups[scenarioSelected]
+                scenario_actual_name = self.scenario_name_map.get(scenarioSelected, scenarioSelected)
+                scenario_variable = ncFile.groups[scenario_actual_name]
                 scenario_standard_name = scenario_variable.getncattr('standard_name') if 'standard_name' in scenario_variable.ncattrs() else scenarioSelected
             else:
                 scenario_standard_name = None
