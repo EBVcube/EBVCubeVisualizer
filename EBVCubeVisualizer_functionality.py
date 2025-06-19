@@ -272,22 +272,47 @@ class maskAndFunctionality(base_class, ui_class):
         dataset_path = root_item.data(0, Qt.UserRole)
         if dataset_path not in self.loaded_datasets:
             return
-
+        
+        
         ncFile = self.loaded_datasets[dataset_path]
         current_item_text = selected_item.text(0)
 
+        # show globals attributes
         if current_item_text == os.path.basename(dataset_path):
             self.displayGlobalAttributes(ncFile)
-        elif current_item_text == 'entity':
+            self.setMapData(dataset_path)
+
+        # show wntity attributes
+        if current_item_text == 'entity':
             self.displayEntityAttributes(ncFile.variables["entity"])
-        elif current_item_text in ncFile.groups:
+            return
+        
+        # Show group attributes
+        if current_item_text in ncFile.groups:
             self.displayGroupAttributes(ncFile.groups[current_item_text])
-        elif selected_item.parent() and selected_item.parent().text(0) in ncFile.groups:
-            parent_group = ncFile.groups[selected_item.parent().text(0)]
-            if current_item_text in parent_group.groups:
-                self.displayGroupAttributes(parent_group.groups[current_item_text])
-            elif current_item_text in parent_group.variables:
-                self.displayVariableAttributes(parent_group.variables[current_item_text])
+            return
+
+        # show nested group or variable (1-level) 
+        if selected_item.parent():
+            parent_name = selected_item.parent().text(0)
+            if parent_name in ncFile.groups:
+                parent_group = ncFile.groups[parent_name]   
+                if current_item_text in parent_group.groups:
+                    self.displayGroupAttributes(parent_group.groups[current_item_text])
+                    return 
+                elif current_item_text in parent_group.variables:
+                    self.displayVariableAttributes(parent_group.variables[current_item_text])
+                    return 
+        # Show variable in scenario > metric > variable (2-level nested)
+        if selected_item.parent() and selected_item.parent().parent():
+            grandparent_name = selected_item.parent().parent().text(0)  
+            if (grandparent_name in ncFile.groups and 
+                parent_name in ncFile.groups[grandparent_name].groups and
+                current_item_text in ncFile.groups[grandparent_name].groups[parent_name].variables):
+                
+                var = ncFile.groups[grandparent_name].groups[parent_name].variables[current_item_text]
+                self.displayVariableAttributes(var)
+
         # We call setMapData to update the entities, time, scenarios and metrics in the QComboBox
         self.setMapData(dataset_path)
 
@@ -405,6 +430,7 @@ class maskAndFunctionality(base_class, ui_class):
             # Retrieve the standard name for the scenario (if scenarios are enabled)
             scenario_standard_name = None
             if self.cbox_scenarios.isEnabled():
+                scenario_actual_name = self.scenario_name_map.get(scenarioSelected, scenarioSelected)
                 scenario_variable = ncFile.groups[scenario_actual_name]
                 scenario_standard_name = scenario_variable.getncattr('standard_name') if 'standard_name' in scenario_variable.ncattrs() else scenarioSelected
 
